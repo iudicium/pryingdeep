@@ -11,7 +11,7 @@ import (
 )
 
 
-var torProxy string = "socks5://127.0.0.1:9050"
+// var torProxy string = "socks5://127.0.0.1:9050"
 
 
 func main() {
@@ -20,7 +20,9 @@ func main() {
 
 	fmt.Println("Starting")
 	crawler.Crawl("https://google.com/", environmentVaribles.TorConf)
+	for {
 
+	}
 }
 
 
