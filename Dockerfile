@@ -10,8 +10,6 @@ RUN go mod download
 
 COPY . ./
 
+EXPOSE 8000
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o pryingdeep ./cmd/prying-deep
-
-
-ENTRYPOINT [ "./pryingdeep" ]

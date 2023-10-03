@@ -21,7 +21,7 @@ func main() {
 	fmt.Println("Starting")
 	crawler.Crawl("https://google.com/", environmentVaribles.TorConf)
 	for {
-
+							
 	}
 }
 

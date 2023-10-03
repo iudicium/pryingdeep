@@ -3,29 +3,33 @@ package crawler
 import (
 	"fmt"
 	"log"
+	"net/http"
+	"net/url"
 
 	"github.com/gocolly/colly/v2"
-    "github.com/gocolly/colly/v2/proxy"
 
 	"github.com/r00tk3y/prying-deep/configs"
 )
 
 
+const checkTor string = "https://check.torproject.org/"
 
-
-func Crawl(url string, socks5conf configs.Socks5Config) {
+func Crawl(urlToCrawl string, socks5conf configs.Socks5Config) {
 
 	torProxy := fmt.Sprintf("socks5://%s:%s", socks5conf.Host, socks5conf.Port)
-	checkTor := "https://check.torproject.org/"
+	
 
-	c := colly.NewCollector(colly.AllowURLRevisit())
-
-	rp, err := proxy.RoundRobinProxySwitcher(torProxy)
+	torProxyUrl, err := url.Parse(torProxy)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Error parsing Tor proxy URL:", torProxy, ".", err)
 	}
+	
+	torTransport := &http.Transport{Proxy: http.ProxyURL(torProxyUrl)}
+	
 
-	c.SetProxyFunc(rp)
+	c := colly.NewCollector()
+	c.WithTransport(torTransport)	
+
 
 	c.OnError(func(_ *colly.Response, err error) {
        log.Println("Something went wrong:", err)
