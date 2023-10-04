@@ -15,6 +15,8 @@ var data struct {
     IsTor bool `json:"IsTor"`
 }
 
+// This function is not too fast, but it works.
+
 func checkIfTorConnectionExists(torProxy string) (bool, error) {
     torProxyUrl, err := url.Parse(torProxy)
     if err != nil {

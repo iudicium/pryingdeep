@@ -2,10 +2,8 @@ package main
 
 
 import (
-	"fmt"
-
-
 	"github.com/r00tk3y/prying-deep/pkg/crawler"
+	"github.com/r00tk3y/prying-deep/pkg/logger"
 	"github.com/r00tk3y/prying-deep/configs"
 	
 )
@@ -15,11 +13,13 @@ import (
 
 
 func main() {
+	logger  := logger.NewLogger()
+	defer logger.Sync()
 
 	environmentVaribles := configs.SetupEnvironment()
 
-	fmt.Println("Starting")
-	crawler.Crawl("https://google.com/", environmentVaribles.TorConf)
+	logger.Info("Starting the crawl process")
+	crawler.Crawl("http://paavlaytlfsqyvkg3yqj7hflfg5jw2jdg2fgkza5ruf6lplwseeqtvyd.onion/", environmentVaribles.TorConf)
 	for {
 							
 	}
