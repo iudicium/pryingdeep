@@ -5,6 +5,8 @@ go 1.20
 require (
 	github.com/gocolly/colly/v2 v2.1.0
 	github.com/joho/godotenv v1.5.1
+	github.com/lib/pq v1.10.9
+	github.com/sqlc-dev/pqtype v0.3.0
 	go.uber.org/zap v1.26.0
 )
 

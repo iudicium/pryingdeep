@@ -13,7 +13,7 @@ func NewLogger() *zap.Logger {
 	config.EncoderConfig.TimeKey = "timestamp |"
 	config.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
 	config.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
-	config.Level = zap.NewAtomicLevelAt(zap.InfoLevel)
+	config.Level = zap.NewAtomicLevelAt(zap.DebugLevel)
 	config.OutputPaths = []string{
 		"stderr",
 	}

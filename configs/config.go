@@ -1,6 +1,7 @@
 package configs
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -16,7 +17,7 @@ type Socks5Config struct {
 	Port string
 }
 
-type PostgresConfig struct {
+type DBConfig struct {
 	Host string
 	Port string
 	DbName string
@@ -25,10 +26,10 @@ type PostgresConfig struct {
 	DbURL string
 }
 
-
+// TODO: probably need  a better name
 type Configuration struct {
 	TorConf Socks5Config
-	DbConf PostgresConfig
+	DbConf DBConfig
 
 }
 
@@ -50,44 +51,45 @@ func SetupSocks5s() Socks5Config {
   }
 }
 
-func SetupPostgres() PostgresConfig {
-	PostgresHost := os.Getenv("POSTGRES_HOST")
-	if PostgresHost == "" {
-		PostgresHost = "localhost"
-	}
+func SetupDatabase() DBConfig {
+    DBHost := os.Getenv("DB_HOST")
+    if DBHost == "" {
+        DBHost = "localhost"
+    }
 
-	PostgresPort := os.Getenv("POSTGRES_PORT")
-	if PostgresPort == "" {
-		PostgresPort = "5432"
-	}
+    DBPort := os.Getenv("DB_PORT")
+    if DBPort == "" {
+        DBPort = "5432"
+    }
 
-	DbName := os.Getenv("POSTGRES_DB")
-	if DbName == "" {
-		DbName = "postgres"
-	}
+    DbName := os.Getenv("DB_NAME")
+    if DbName == "" {
+        DbName = "postgres"
+    }
 
-	PostgresUser := os.Getenv("POSTGRES_USER")
-	if PostgresUser == "" {
-		PostgresUser = "postgres"
-	}
+    DBUser := os.Getenv("DB_USER")
+    if DBUser == "" {
+        DBUser = "postgres"
+    }
 
-	PostgresPass := os.Getenv("POSTGRES_PASS")
+    DBPass := os.Getenv("DB_PASS")
 
-	dbUrl := "postgres://" + PostgresUser + ":" + PostgresPass + "@" + PostgresHost + ":" + PostgresPort + "/" + DbName
+    dbURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", DBUser, DBPass, DBHost, DBPort, DbName)
 
+    config := DBConfig{
+        Host:     DBHost,
+        Port:     DBPort,
+        DbName:   DbName,
+        User:     DBUser,
+        Password: DBPass,
+        DbURL:    dbURL,
+    }
 
-	config := PostgresConfig{
-		Host:     PostgresHost,
-		Port:     PostgresPort,
-		DbName:   DbName,
-		User:     PostgresUser,
-		Password: PostgresPass,
-		DbURL:    dbUrl,
-	}
-		
-
-	return config
+    return config
 }
+
+
+
 
 func SetupEnvironment() Configuration {
   err := godotenv.Load(".env")
@@ -96,11 +98,11 @@ func SetupEnvironment() Configuration {
   }
 
   Socks5Config :=  SetupSocks5s()
-  PostgresConfig :=  SetupPostgres()
+  DbConfig :=  SetupDatabase()
 
   confing := Configuration{
 		TorConf: Socks5Config,
-		DbConf: PostgresConfig,
+		DbConf: DbConfig,
   } 
   return confing 
 }
