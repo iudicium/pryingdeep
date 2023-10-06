@@ -16,7 +16,6 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
-
     restart: always
 
     # Adjust the sleep value depending on how fast your computer starts tor. B

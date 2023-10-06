@@ -6,13 +6,9 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-
-
-
 )
 
-
-type Socks5Config struct {
+type TorConfig struct {
 	Host string
 	Port string
 }
@@ -26,15 +22,19 @@ type DBConfig struct {
 	DbURL string
 }
 
-// TODO: probably need  a better name
 type Configuration struct {
-	TorConf Socks5Config
-	DbConf DBConfig
-
+	TorConf TorConfig
+	DbConf  DBConfig
 }
 
 
-func SetupSocks5s() Socks5Config {
+var cfg Configuration
+
+func GetConfig() *Configuration {
+	return &cfg
+}
+
+func SetupSocks5s()  {
   Socks5Port :=  os.Getenv("SOCKS5_PORT")
   if Socks5Port == "" {
 	log.Fatal("Socks5 port was not specified")
@@ -44,14 +44,15 @@ func SetupSocks5s() Socks5Config {
   if Socks5Host == "" {
 	log.Fatal("Socks5 host was not specified ")
   }	
-	
-  return Socks5Config{
-	Host: Socks5Host,
-	Port:  Socks5Port,
+  
+  cfg.TorConf = TorConfig{
+    Host: Socks5Host,
+    Port: Socks5Port,
   }
+
 }
 
-func SetupDatabase() DBConfig {
+func SetupDatabase() {
     DBHost := os.Getenv("DB_HOST")
     if DBHost == "" {
         DBHost = "localhost"
@@ -76,7 +77,7 @@ func SetupDatabase() DBConfig {
 
     dbURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", DBUser, DBPass, DBHost, DBPort, DbName)
 
-    config := DBConfig{
+    cfg.DbConf = DBConfig{
         Host:     DBHost,
         Port:     DBPort,
         DbName:   DbName,
@@ -84,25 +85,15 @@ func SetupDatabase() DBConfig {
         Password: DBPass,
         DbURL:    dbURL,
     }
-
-    return config
 }
 
 
-
-
-func SetupEnvironment() Configuration {
+func SetupEnvironment() {
   err := godotenv.Load(".env")
   if err != nil {
     log.Fatal("Error loading .env file")
   }
-
-  Socks5Config :=  SetupSocks5s()
-  DbConfig :=  SetupDatabase()
-
-  confing := Configuration{
-		TorConf: Socks5Config,
-		DbConf: DbConfig,
-  } 
-  return confing 
+  SetupSocks5s()
+  SetupDatabase()
+ 
 }

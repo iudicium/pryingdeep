@@ -3,44 +3,40 @@ package crawler
 import (
 	"fmt"
 
-	"go.uber.org/zap"
 	"github.com/gocolly/colly/v2"
 	"github.com/gocolly/colly/v2/proxy"
+	"go.uber.org/zap"
 
-	"github.com/r00tk3y/prying-deep/pkg/parsers"
+	// "github.com/r00tk3y/prying-deep/pkg/parsers"
 	"github.com/r00tk3y/prying-deep/configs"
 	"github.com/r00tk3y/prying-deep/pkg/logger"
-
+	"github.com/r00tk3y/prying-deep/pkg/parsers"
+	"github.com/r00tk3y/prying-deep/pkg/utils"
 )
 
+func Crawl(urlToCrawl string, socks5conf configs.TorConfig, maxDepth int) {
 
-
-func Crawl(urlToCrawl string, socks5conf configs.Socks5Config, maxDepth int) {
-	logger := logger.NewLogger()
-
-	
 	torProxy := fmt.Sprintf("socks5://%s:%s", socks5conf.Host, socks5conf.Port)
 
 	c := colly.NewCollector(
 		colly.IgnoreRobotsTxt(),
 		colly.TraceHTTP(),
 		colly.MaxDepth(maxDepth),
-	
 	)
 	rp, err := proxy.RoundRobinProxySwitcher(torProxy)
 	if err != nil {
 		logger.Fatal(err.Error())
 	}
 	c.SetProxyFunc(rp)
-	
-	checkTorConnection, err := checkIfTorConnectionExists(torProxy)
+
+	checkTorConnection, err := utils.CheckIfTorConnectionExists(torProxy)
 	if !checkTorConnection {
-		logger.Fatal("Killing session. Can't connect to Tor.\nError:  ",  zap.Error(err))
+		logger.Fatal("Killing session. Can't connect to Tor.\nError:  ", zap.Error(err))
 	}
 
 	// c.OnError(func(_ *colly.Response, err error) {
-    //    logger.Error("Something went wrong: ", zap.Error(err))
-    // })
+	//    logger.Error("Something went wrong: ", zap.Error(err))
+	// })
 	// // Find and visit all links
 	// c.OnHTML("a[href]", func(e *colly.HTMLElement) {
 	// 	fmt.Println(e)
@@ -50,11 +46,10 @@ func Crawl(urlToCrawl string, socks5conf configs.Socks5Config, maxDepth int) {
 	c.OnRequest(func(r *colly.Request) {
 		fmt.Println(r.Headers)
 		fmt.Println("Visiting", r.URL)
-		parsers.ParseRequest(r, logger)
+		fmt.Println("Body:", r.Body)
+		parsers.ParseRequest(r)
 	})
 
-	
-	
 	c.OnResponse(func(response *colly.Response) {
 		logger.Info("Request Method", zap.Any("Trace callback", response.Trace))
 
@@ -62,5 +57,8 @@ func Crawl(urlToCrawl string, socks5conf configs.Socks5Config, maxDepth int) {
 		fmt.Println("Response Status Code:", response.StatusCode)
 		fmt.Println("Response Body:", string(response.Body))
 	})
-	c.Visit(urlToCrawl)
+	err = c.Visit(urlToCrawl)
+	if err != nil {
+		logger.Debug("Something went wrong", zap.Error(err))
+	}
 }

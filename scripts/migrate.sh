@@ -1,6 +1,6 @@
 #!/bin/bash
 
-STATE="up"
+STATE="u"
 
 while getopts "s:" opt; do
   case "${opt}" in
@@ -24,7 +24,7 @@ fi
 DATABASE_URL="postgres://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=disable"
 
 
-if [ "$STATE" == "up" ]; then
+if [ "$STATE" == "u" ]; then
     echo "Running Goose migrations up!"
     goose -dir internal/database/schema postgres "${DATABASE_URL}" up
 else

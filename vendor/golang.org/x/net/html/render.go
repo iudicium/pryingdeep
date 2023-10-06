@@ -85,7 +85,7 @@ func render1(w writer, n *Node) error {
 		if _, err := w.WriteString("<!--"); err != nil {
 			return err
 		}
-		if _, err := w.WriteString(n.Data); err != nil {
+		if err := escapeComment(w, n.Data); err != nil {
 			return err
 		}
 		if _, err := w.WriteString("-->"); err != nil {
@@ -96,7 +96,7 @@ func render1(w writer, n *Node) error {
 		if _, err := w.WriteString("<!DOCTYPE "); err != nil {
 			return err
 		}
-		if _, err := w.WriteString(n.Data); err != nil {
+		if err := escape(w, n.Data); err != nil {
 			return err
 		}
 		if n.Attr != nil {
@@ -263,7 +263,7 @@ var voidElements = map[string]bool{
 	"hr":     true,
 	"img":    true,
 	"input":  true,
-	"keygen": true,
+	"keygen": true, // "keygen" has been removed from the spec, but are kept here for backwards compatibility.
 	"link":   true,
 	"meta":   true,
 	"param":  true,
