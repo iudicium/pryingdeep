@@ -1,8 +1,6 @@
 package models
 
 import (
-	"time"
-
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
@@ -13,9 +11,7 @@ import (
 var db *gorm.DB
 
 type Model struct {
-	ID        uint      `gorm:"primaryKey"`
-	CreatedAt time.Time `gorm:"autoCreateTime"`
-	UpdatedAt time.Time `gorm:"autoUpdateTime"`
+	ID uint `gorm:"primaryKey"`
 }
 
 func SetupDatabase(cfg *configs.DBConfig) {
@@ -26,7 +22,7 @@ func SetupDatabase(cfg *configs.DBConfig) {
 		logger.Fatalf("models.Setup err: %v", err)
 	}
 
-	err = db.AutoMigrate(&Response{})
+	err = db.AutoMigrate(&WebPage{}, &WordpressFootPrint{}, &Email{})
 	if err != nil {
 		logger.Errorf("error during AutoMigrations", err)
 	}

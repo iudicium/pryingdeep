@@ -12,17 +12,13 @@ func main() {
 	defer logger.Logger.Sync()
 	configs.SetupEnvironment()
 	cfg := configs.GetConfig()
-	//TODO add .env support for user agent
 	//TODO add sitemap, wordpress, nginx searching for the tool
-	//TODO: Remove Response Model, unnecessary fields
 
-	ua := "Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0"
 	logger.Info("Configuring Database and Running migrations")
 	models.SetupDatabase(&cfg.DbConf)
 	logger.Info("Starting the crawl process")
 
-	// Allowed domains are specified splitting by ,
-	crawler.Crawl("http://xjfbpuj56rdazx4iolylxplbvyft2onuerjeimlcqwaihp3s6r4xebqd.onion/", cfg.TorConf, 2, ua)
+	crawler.Crawl(cfg.TorConf, cfg.CrawlerConf)
 
 }
 

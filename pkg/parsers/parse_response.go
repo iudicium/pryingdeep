@@ -6,20 +6,19 @@ import (
 	"github.com/r00tk3y/prying-deep/pkg/utils"
 )
 
-func ParseResponse(response *colly.Response) (uint, error) {
-	url := response.Request.URL.String()
-
-	// Body might take a long time but we thugging it out
-	body := string(response.Body)
-	context := utils.ConvertContextToPropertyMap(*response.Ctx)
+// TODO: Rename this file to something better, idk what yet, and also you probably do not need this as a package
+// TODO: Instead you can just insert it into the crawler package || However keep in mind, the more
+// TODO: modules you add the more you will have to expand it.
+func ParseResponse(url string, body string, response *colly.Response) (uint, error) {
+	title, _ := utils.ExtractTitleFromBody(body)
 	headers := utils.CreateMapFromValues(*response.Headers)
 
-	ResId, err := models.InsertResponse(
+	ResId, err := models.CreatePage(
+		url,
+		title,
 		response.StatusCode,
 		body,
-		context,
 		headers,
-		url,
 	)
 	if err != nil {
 		return 0, err

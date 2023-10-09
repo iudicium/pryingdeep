@@ -1,7 +1,6 @@
 package tests
 
 import (
-	"fmt"
 	"github.com/r00tk3y/prying-deep/pkg/pryingtools/wordpress"
 	"os"
 	"path/filepath"
@@ -30,8 +29,6 @@ func TestWordpressPatternsInHtml(t *testing.T) {
 		t.Error("something went wrong during test of wordpress", err)
 	}
 
-	fmt.Println(matches)
-	fmt.Println(len(matches))
 	if len(matches) != 247 {
 		t.Errorf("regexp erro")
 	}

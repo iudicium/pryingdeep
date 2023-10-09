@@ -2,76 +2,103 @@ package utils
 
 import (
 	"encoding/json"
+	"fmt"
+	"github.com/r00tk3y/prying-deep/pkg/logger"
 	"io"
-	"time"
 	"net/http"
 	"net/url"
-    
+	"regexp"
+	"time"
 
-    "github.com/gocolly/colly/v2"
-    "github.com/r00tk3y/prying-deep/models"
-	
+	"github.com/r00tk3y/prying-deep/models"
 )
 
 const checkTor string = "https://check.torproject.org/api/ip"
 
-var data struct {
-    IsTor bool `json:"IsTor"`
+type TorCheckResult struct {
+	IsTor  bool
+	Client *http.Client // Include the HTTP client
 }
 
+func SetupNewTorClient(torProxy string) (*http.Client, error) {
+	torProxyUrl, err := url.Parse(torProxy)
 
-func CheckIfTorConnectionExists(torProxy string) (bool, error) {
-    torProxyUrl, err := url.Parse(torProxy)
-    if err != nil {
-        return false, err
-    }
+	if err != nil {
+		logger.Infof("tor proxy url has the wrong format", err)
+	}
+	torTransport := &http.Transport{Proxy: http.ProxyURL(torProxyUrl)}
+	client := &http.Client{Transport: torTransport, Timeout: time.Second * 5}
+	return client, nil
+}
 
-    // Set up a custom HTTP transport to use the proxy and create the client
-    torTransport := &http.Transport{Proxy: http.ProxyURL(torProxyUrl)}
-    client := &http.Client{Transport: torTransport, Timeout: time.Second * 5}
+func CheckIfTorConnectionExists(torProxy string) (*TorCheckResult, error) {
+	client, err := SetupNewTorClient(torProxy)
+	if err != nil {
+		return nil, err
+	}
 
-    // Make request
-    resp, err := client.Get(checkTor)
-    if err != nil {
-        return false, err
-    }
-    defer resp.Body.Close()
+	resp, err := client.Get(checkTor)
+	fmt.Println(err)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
 
-    // Read response
-    body, err := io.ReadAll(resp.Body)
-    if err != nil {
-        return false, err
-    }
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
 
-    // Unmarshal the JSON response into the data struct
-    if err := json.Unmarshal(body, &data); err != nil {
-        return false, err
-    }
+	var data struct {
+		IsTor bool `json:"IsTor"`
+		IP    string
+	}
 
-    return data.IsTor, nil
+	if err := json.Unmarshal(body, &data); err != nil {
+		return nil, err
+	}
+
+	result := &TorCheckResult{
+		IsTor:  data.IsTor,
+		Client: client,
+	}
+
+	return result, nil
 }
 
 func CreateMapFromValues(data map[string][]string) models.PropertyMap {
-    resultMap := make(models.PropertyMap)
+	resultMap := make(models.PropertyMap)
 
-    for key, values := range data {
-        if len(values) == 1 {
-            resultMap[key] = values[0]
-        } else {
-            resultMap[key] = values
-        }
-    }
+	for key, values := range data {
+		if len(values) == 1 {
+			resultMap[key] = values[0]
+		} else {
+			resultMap[key] = values
+		}
+	}
 
-    return resultMap
+	return resultMap
 }
-func ConvertContextToPropertyMap(ctx colly.Context) models.PropertyMap {
-    resultMap := make(models.PropertyMap)
 
-    // Use ctx.ForEach to process the context values
-    ctx.ForEach(func(k string, v interface{}) interface{} {
-        resultMap[k] = v
-        return nil
-    })
+func CompileRegexSlice(patterns []string) ([]*regexp.Regexp, error) {
+	regexSlice := make([]*regexp.Regexp, len(patterns))
+	for i, pattern := range patterns {
+		regex, err := regexp.Compile(pattern)
+		if err != nil {
+			return nil, err
+		}
+		regexSlice[i] = regex
+	}
+	return regexSlice, nil
+}
 
-    return resultMap
+func ExtractTitleFromBody(body string) (string, error) {
+	titleRegex := regexp.MustCompile(`(?i)<title[^>]*>([^<]+)</title>`)
+	matches := titleRegex.FindStringSubmatch(body)
+
+	if len(matches) >= 2 {
+		return matches[1], nil
+	}
+
+	return "", fmt.Errorf("no title found in the HTML body")
 }
