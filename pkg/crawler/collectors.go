@@ -3,11 +3,13 @@ package crawler
 import (
 	"fmt"
 	"github.com/gocolly/colly/v2"
+	"github.com/gocolly/colly/v2/debug"
 	"github.com/gocolly/colly/v2/proxy"
 	"github.com/r00tk3y/prying-deep/configs"
 	"github.com/r00tk3y/prying-deep/pkg/logger"
 	"github.com/r00tk3y/prying-deep/pkg/utils"
 	"go.uber.org/zap"
+	"time"
 )
 
 func proxySetup(c *colly.Collector, tor configs.TorConfig) *colly.Collector {
@@ -71,9 +73,12 @@ func NewCollector(config configs.CollyConfig, torConfig configs.TorConfig) *coll
 		c.IgnoreRobotsTxt = config.IgnoreRobotsTxt
 	}
 
-	if config.Async {
-		c.Async = config.Async
+	if config.Debug {
+		c.SetDebugger(&debug.LogDebugger{})
 	}
+	c.SetRequestTimeout(time.Second * 30)
+
+	fmt.Println(c)
 	c = proxySetup(c, torConfig)
 	return c
 }

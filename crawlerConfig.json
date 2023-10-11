@@ -1,7 +1,7 @@
 {
-  "StartingURL": "http://wpzzhvw6q32pneau3rzsa5h7tzl7fgswya3cgtmu5rpesd725bii3cad.onion/coconut-flour-bread/",
+  "StartingURLS": [],
   "UserAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0",
-  "MaxDepth": 1,
+  "MaxDepth": 0,
   "AllowedDomains": [],
   "DisallowedDomains": [],
   "DisallowedURLFilters": [],
@@ -10,7 +10,7 @@
   "MaxBodySize": 5048,
   "CacheDir": "",
   "IgnoreRobotsTxt": true,
-  "Async": false,
-  "QueueThreads": 2,
-  "QueueMaxSize": 1000
+  "QueueThreads": 16,
+  "QueueMaxSize": 10000,
+  "Debug" : true
 }

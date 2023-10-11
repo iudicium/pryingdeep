@@ -7,10 +7,10 @@ github.com/andybalholm/cascadia
 # github.com/antchfx/htmlquery v1.2.3
 ## explicit; go 1.14
 github.com/antchfx/htmlquery
-# github.com/antchfx/xmlquery v1.2.4
+# github.com/antchfx/xmlquery v1.3.1
 ## explicit; go 1.14
 github.com/antchfx/xmlquery
-# github.com/antchfx/xpath v1.1.8
+# github.com/antchfx/xpath v1.1.10
 ## explicit
 github.com/antchfx/xpath
 # github.com/gobwas/glob v0.2.3
@@ -73,6 +73,9 @@ github.com/kennygrant/sanitize
 github.com/lib/pq
 github.com/lib/pq/oid
 github.com/lib/pq/scram
+# github.com/nyaruka/phonenumbers v1.1.8
+## explicit; go 1.18
+github.com/nyaruka/phonenumbers
 # github.com/saintfish/chardet v0.0.0-20120816061221-3af4cd4741ca
 ## explicit
 github.com/saintfish/chardet
@@ -119,11 +122,13 @@ golang.org/x/text/encoding/simplifiedchinese
 golang.org/x/text/encoding/traditionalchinese
 golang.org/x/text/encoding/unicode
 golang.org/x/text/internal
+golang.org/x/text/internal/format
 golang.org/x/text/internal/language
 golang.org/x/text/internal/language/compact
 golang.org/x/text/internal/tag
 golang.org/x/text/internal/utf8internal
 golang.org/x/text/language
+golang.org/x/text/language/display
 golang.org/x/text/runes
 golang.org/x/text/secure/bidirule
 golang.org/x/text/secure/precis

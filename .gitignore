@@ -21,3 +21,5 @@
 go.work
 .vscode
 logs/
+.env
+test

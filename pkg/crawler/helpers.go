@@ -2,7 +2,6 @@ package crawler
 
 import (
 	"github.com/gocolly/colly/v2"
-	"github.com/gocolly/colly/v2/queue"
 	"github.com/r00tk3y/prying-deep/models"
 	"github.com/r00tk3y/prying-deep/pkg/logger"
 	"github.com/r00tk3y/prying-deep/pkg/parsers"
@@ -10,24 +9,6 @@ import (
 	"github.com/r00tk3y/prying-deep/pkg/pryingtools/wordpress"
 	"regexp"
 )
-
-func ParseAndAddURL(q *queue.Queue, e *colly.HTMLElement) {
-	base := e.Request.URL
-	relURL := e.Attr("href")
-
-	absURL, err := base.Parse(relURL)
-	if err != nil {
-		logger.Errorf("Error parsing URL: %s", err)
-		return
-	}
-
-	if absURL.Fragment != "" {
-		return
-	}
-
-	absoluteURL := absURL.String()
-	q.AddURL(absoluteURL)
-}
 
 func HandleResponse(response *colly.Response) {
 	body := string(response.Body)

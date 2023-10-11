@@ -27,7 +27,8 @@ func SetupNewTorClient(torProxy string) (*http.Client, error) {
 		logger.Infof("tor proxy url has the wrong format", err)
 	}
 	torTransport := &http.Transport{Proxy: http.ProxyURL(torProxyUrl)}
-	client := &http.Client{Transport: torTransport, Timeout: time.Second * 5}
+	client := &http.Client{Transport: torTransport, Timeout: time.Second * 15}
+
 	return client, nil
 }
 
@@ -37,11 +38,8 @@ func CheckIfTorConnectionExists(torProxy string) (*TorCheckResult, error) {
 		return nil, err
 	}
 
-	resp, err := client.Get(checkTor)
-	fmt.Println(err)
-	if err != nil {
-		return nil, err
-	}
+	resp, _ := client.Get(checkTor)
+
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)

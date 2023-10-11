@@ -7,7 +7,7 @@ import (
 )
 
 type CollyConfig struct {
-	StartingURL          string   `json:"startingUrl"`
+	StartingURLS         []string `json:"startingUrls"`
 	UserAgent            string   `json:"userAgent"`
 	MaxDepth             int      `json:"maxDepth"`
 	AllowedDomains       []string `json:"allowedDomains"`
@@ -18,12 +18,13 @@ type CollyConfig struct {
 	MaxBodySize          int      `json:"maxBodySize"`
 	CacheDir             string   `json:"cacheDir"`
 	IgnoreRobotsTxt      bool     `json:"ignoreRobotsTxt"`
-	Async                bool     `json:"async"`
 	QueueThreads         int      `json:"queueThreads"`
 	QueueMaxSize         int      `json:"queueMaxSize"`
+	Debug                bool     `json:"debug"`
 }
 
 func LoadCrawlerConfig() {
+	log.Println("Loading crawler config...")
 	var config CollyConfig
 
 	fileContent, err := os.ReadFile("crawlerConfig.json")
