@@ -23,3 +23,4 @@ go.work
 logs/
 .env
 test
+./crawlerConfig.json

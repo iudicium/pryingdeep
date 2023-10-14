@@ -6,12 +6,13 @@ import (
 )
 
 type DBConfig struct {
-	Host     string
-	Port     string
-	DbName   string
-	User     string
-	Password string
-	DbURL    string
+	Host       string
+	Port       string
+	DbName     string
+	User       string
+	Password   string
+	DbURL      string
+	DbTestName string
 }
 
 func SetupDatabase() {
@@ -37,14 +38,17 @@ func SetupDatabase() {
 
 	DBPass := os.Getenv("DB_PASS")
 
+	DBTestingName := os.Getenv("DB_TESTING_NAME")
+
 	dbURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", DBUser, DBPass, DBHost, DBPort, DbName)
 
 	cfg.DbConf = DBConfig{
-		Host:     DBHost,
-		Port:     DBPort,
-		DbName:   DbName,
-		User:     DBUser,
-		Password: DBPass,
-		DbURL:    dbURL,
+		Host:       DBHost,
+		Port:       DBPort,
+		DbName:     DbName,
+		User:       DBUser,
+		Password:   DBPass,
+		DbURL:      dbURL,
+		DbTestName: DBTestingName,
 	}
 }

@@ -6,6 +6,7 @@ import (
 	"github.com/r00tk3y/prying-deep/pkg/logger"
 	"github.com/r00tk3y/prying-deep/pkg/parsers"
 	"github.com/r00tk3y/prying-deep/pkg/pryingtools/email"
+	"github.com/r00tk3y/prying-deep/pkg/pryingtools/phonenumber"
 	"github.com/r00tk3y/prying-deep/pkg/pryingtools/wordpress"
 	"regexp"
 )
@@ -30,7 +31,13 @@ func HandleResponse(response *colly.Response) {
 		logger.Infof("Email matches: %s", emailMatches)
 		models.CreateEmails(int(pageId), emailMatches)
 	}
-
+	//For now this works, later on i will have to add commands to run through all of em
+	phoneValidator, err := phonenumber.NewPhoneNumberValidator(phonenumber.RuRegex, "RU")
+	phones := phoneValidator.FindPhoneNumbers(body)
+	err = phoneValidator.FormatAndCreateNumbers(int(pageId), phones)
+	if err != nil {
+		logger.Errorf("something has gone wrong: %s", err)
+	}
 }
 func ConvertURLFiltersToRegexp(filters []string) []*regexp.Regexp {
 	var urlFilters []*regexp.Regexp

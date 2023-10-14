@@ -1,7 +1,7 @@
 FROM golang:1.20.8
 
 
-WORKDIR /src
+WORKDIR /prying-deep
 
 COPY go.mod go.sum ./
 

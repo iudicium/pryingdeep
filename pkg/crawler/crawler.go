@@ -15,7 +15,7 @@ func Crawl(torConf configs.TorConfig, crawlerConf configs.CollyConfig) {
 		crawlerConf.QueueThreads,
 		&queue.InMemoryQueueStorage{MaxSize: crawlerConf.QueueMaxSize},
 	)
-
+	//TODO: add  error handling to separate file
 	c.OnError(func(_ *colly.Response, err error) {
 		//TODO: This approach works for now but will need to a create custom error types in the future
 		if strings.Contains(err.Error(), "socks connect tcp 127.0.0.1") {
