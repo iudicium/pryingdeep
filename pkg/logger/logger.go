@@ -46,9 +46,9 @@ func InitLogger() {
 		level = zap.InfoLevel
 	}
 
-	if config.LoggerConf.Encoder == "json" {
-		encoder = zapcore.NewJSONEncoder(encoderConfig)
-	}
+	//if config.LoggerConf.Encoder == "json" {
+	//	encoder = zapcore.NewJSONEncoder(encoderConfig)
+	//}
 	//TODO: fix writing to file later
 	//
 	//fileWriter := zapcore.AddSync(&lumberjack.Logger{

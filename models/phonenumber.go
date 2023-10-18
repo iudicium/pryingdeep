@@ -1,7 +1,7 @@
 package models
 
 import (
-	"fmt"
+	"github.com/r00tk3y/prying-deep/pkg/logger"
 	"gorm.io/gorm"
 )
 
@@ -14,7 +14,6 @@ type PhoneNumber struct {
 	CountryCode         string  `json:"countryCode"`
 }
 
-// TODO: Create a higher order function
 func CreatePhoneNumber(webPageID int, interNum, natNum string, code string) error {
 	phoneNumber := &PhoneNumber{
 		WebPageId:           webPageID,
@@ -23,20 +22,17 @@ func CreatePhoneNumber(webPageID int, interNum, natNum string, code string) erro
 		CountryCode:         code,
 	}
 
-	// Start a database transaction
 	err := db.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Create(phoneNumber).Error; err != nil {
-			fmt.Println(err)
-			// Rollback the transaction on error
+			logger.Errorf("Error during transaction: %s", err)
 			tx.Rollback()
 			return err
 		}
-		//logger.Infof("Created phone number record\nNumber: %s, CountryCode: %v", interNum, code)
+		logger.Infof("Created phone number record | Number: %s, CountryCode: %v", interNum, code)
 		return nil
 	})
 
 	if err != nil {
-		//logger.Errorf("Error during database transaction: %s", err)
 		return err
 	}
 

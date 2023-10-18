@@ -3,7 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/r00tk3y/prying-deep/pkg/logger"
+	//"github.com/r00tk3y/prying-deep/pkg/logger"
 	"io"
 	"net/http"
 	"net/url"
@@ -24,7 +24,7 @@ func SetupNewTorClient(torProxy string) (*http.Client, error) {
 	torProxyUrl, err := url.Parse(torProxy)
 
 	if err != nil {
-		logger.Infof("tor proxy url has the wrong format", err)
+		//logger.Infof("tor proxy url has the wrong format", err)
 	}
 	torTransport := &http.Transport{Proxy: http.ProxyURL(torProxyUrl)}
 	client := &http.Client{Transport: torTransport, Timeout: time.Second * 15}

@@ -15,3 +15,4 @@ func FindEmail(html string) []string {
 }
 
 //TODO: add support for checking emails in various leaks, websites, etc
+//TODO: add tests

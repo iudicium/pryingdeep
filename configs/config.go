@@ -7,7 +7,8 @@ import (
 	"regexp"
 )
 
-const projectDirName = "prying-deep" // change to relevant project name
+const projectDirName = "pryingdeep" // change to relevant project name
+
 type Configuration struct {
 	TorConf     TorConfig
 	DbConf      DBConfig
@@ -27,7 +28,6 @@ func LoadEnv() {
 	currentWorkDirectory, _ := os.Getwd()
 	rootPath := projectName.Find([]byte(currentWorkDirectory))
 	err := godotenv.Load(string(rootPath) + `/.env`)
-
 	if err != nil {
 		log.Fatalf("Error loading .env file")
 	}

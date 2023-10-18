@@ -1,7 +1,6 @@
 package phonenumber
 
 import (
-	"fmt"
 	"github.com/r00tk3y/prying-deep/models"
 	"github.com/r00tk3y/prying-deep/pkg/logger"
 	"regexp"
@@ -12,6 +11,9 @@ import (
 const (
 	RuRegex = `(^8|7|\+7)((\d{10})|(\s\(\d{3}\)\s\d{3}\s\d{2}\s\d{2}))`
 	USRegex = `\(?\d{3}\)?-? *\d{3}-? *-?\d{4}`
+	UKRegex = `(\+44)?(\s+)?(\()?(\d{1,5}|\d{4}\s?\d{1,2})(\))?(\s+|-)?(\d{1,4}(\s+|-)?\d{1,4}|\d{6})`
+	DERegex = `[^\d]((\+49|0049|0)[\s]?1[567]\d{1,2}([ \-/]*\d){7})`
+	NLRegex = `(?:(?:\+31|0|0031)[\s-]?\d{1,3}[\s-]?\d{6,7}|06[\s-]?\d{8})`
 )
 
 // PhoneNumberValidator is an implementation of PhoneNumberMatcher for a specific country.
@@ -40,29 +42,22 @@ func (c *PhoneNumberValidator) FindPhoneNumbers(html string) []string {
 // Validates  phone numbers and returns a list of validated phone numbers with as much information as possible
 // From libphonenumbers
 // Function is not perfect and may sometimes fail
-func (p *PhoneNumberValidator) FormatAndCreateNumbers(webPageId int, phoneNumbers []string) error {
+func (p *PhoneNumberValidator) FormatAndCreateNumbers(webPageId int, phoneNumbers []string) {
 	for _, phoneNumber := range phoneNumbers {
-		fmt.Println(phoneNumber)
 		num, err := phonenumbers.Parse(phoneNumber, p.countryCode)
-
 		if err != nil {
-			logger.Errorf("err during parsing phone number: %s", err)
+			logger.Errorf("err during parsing phone number: %sCountry Code: %s", err, p.countryCode)
 		}
-
 		if phonenumbers.IsValidNumber(num) {
-
+			logger.Infof("Valid num: %s", num.String())
 			interNum := phonenumbers.Format(num, phonenumbers.INTERNATIONAL)
 			NatNum := phonenumbers.Format(num, phonenumbers.NATIONAL)
-			fmt.Println(interNum, NatNum)
 			err = models.CreatePhoneNumber(webPageId, interNum, NatNum, p.countryCode)
 			if err != nil {
-				//logger.Errorf("error during creation of phone numbers; %s", err)
+				logger.Errorf("error during creation of phone numbers; %s", err)
+
 			}
 		}
 	}
-	return nil
-}
 
-// TODO: it looks like i will have to create regex patterns for each country.
-// TODO: Let's add support for 5 countries.
-// TODO: Russia, USA, UK, Germany, Netherlands
+}
