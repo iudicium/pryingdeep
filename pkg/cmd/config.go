@@ -21,7 +21,7 @@ var configCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(configCmd)
+	RootCmd.AddCommand(configCmd)
 	configCmd.Flags().StringVarP(&configFile, "file", "f", "pryingConfig.json", "Configuration file path")
 	configCmd.Flags().BoolVarP(&wordpress, "wordpress", "w", false, "Enable WordPress support")
 	configCmd.Flags().BoolVarP(&crypto, "crypto", "c", false, "Enable crypto features")

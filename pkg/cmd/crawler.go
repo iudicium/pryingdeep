@@ -24,5 +24,5 @@ var crawlCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(crawlCmd)
+	RootCmd.AddCommand(crawlCmd)
 }
