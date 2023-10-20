@@ -22,6 +22,6 @@ services:
     command:
       - '/bin/sh'
       - '-c'
-      - '/bin/sleep 8 && ./pryingdeep'
+      - '/bin/sleep 8 && ./pryingdeep crawl'
 
     network_mode: host

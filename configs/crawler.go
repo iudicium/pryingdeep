@@ -1,11 +1,5 @@
 package configs
 
-import (
-	"encoding/json"
-	"log"
-	"os"
-)
-
 type CollyConfig struct {
 	StartingURLS         []string `json:"startingUrls"`
 	UserAgent            string   `json:"userAgent"`
@@ -23,18 +17,8 @@ type CollyConfig struct {
 	Debug                bool     `json:"debug"`
 }
 
-func LoadCrawlerConfig() {
-	log.Println("Loading crawler config...")
+func loadCrawlerConfig() {
 	var config CollyConfig
-
-	fileContent, err := os.ReadFile("crawlerConfig.json")
-	if err != nil {
-		log.Println("error during loading crawler config:", err)
-	}
-
-	err = json.Unmarshal(fileContent, &config)
-	if err != nil {
-		log.Println("error during loading crawler config:", err)
-	}
+	loadConfig("crawlerConfig.json", &config)
 	cfg.CrawlerConf = config
 }

@@ -16,12 +16,13 @@ type Model struct {
 func SetupDatabase(dbUrl string) {
 	var err error
 	db, err = gorm.Open(postgres.Open(dbUrl), &gorm.Config{})
+	db.Debug()
 
 	if err != nil {
 		logger.Fatalf("models.Setup err: %v", err)
 	}
 
-	err = db.AutoMigrate(&WebPage{}, &WordpressFootPrint{}, &Email{}, &PhoneNumber{})
+	err = db.AutoMigrate(&WebPage{}, &WordpressFootPrint{}, &Email{}, &PhoneNumber{}, &Crypto{})
 	if err != nil {
 		logger.Errorf("error during AutoMigrations", err)
 	}

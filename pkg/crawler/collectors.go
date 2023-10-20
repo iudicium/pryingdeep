@@ -27,6 +27,8 @@ func proxySetup(c *colly.Collector, tor configs.TorConfig) *colly.Collector {
 	return c
 
 }
+
+// TODO: add a command line interface/UI on web to process this
 func NewCollector(config configs.CollyConfig, torConfig configs.TorConfig) *colly.Collector {
 	maxBodySize := 1024 * 10 * 1024
 	configBodySize := config.MaxBodySize * 10 * 1024
