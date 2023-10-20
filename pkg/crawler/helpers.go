@@ -19,7 +19,7 @@ func HandleResponse(response *colly.Response, options *configs.PryingConfig) {
 	}
 
 	if options.Wordpress {
-		go processWordPress(body, url, pageId)
+		go processWordPress(body, pageId)
 	}
 
 	if options.Email {

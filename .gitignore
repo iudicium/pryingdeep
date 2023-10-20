@@ -13,6 +13,7 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+.idea
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
@@ -23,4 +24,4 @@ go.work
 logs/
 .env
 
-./crawlerConfig.json
+configs/.config/crawlerConfig.json
