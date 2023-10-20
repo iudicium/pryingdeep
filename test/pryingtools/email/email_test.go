@@ -1,42 +1,68 @@
 package tests
 
 import (
+	"fmt"
+	"github.com/r00tk3y/prying-deep/configs"
+	"github.com/r00tk3y/prying-deep/models"
+	"github.com/r00tk3y/prying-deep/pkg/logger"
 	"github.com/r00tk3y/prying-deep/pkg/pryingtools/email"
-	"os"
-	"path/filepath"
+	"github.com/stretchr/testify/assert"
+	"io"
+	"net/http"
 	"testing"
 )
 
-var filePath string
-var fileContents []byte
+var client *http.Client
+var url string
 
-func init() {
-	filePath = filepath.Join("data", "email.html")
+func TestSetup(t *testing.T) {
+	configs.SetupEnvironment()
+	cfg := configs.GetConfig().DbConf
 
-	var err error
-	fileContents, err = os.ReadFile(filePath)
+	logger.InitLogger()
+	defer logger.Logger.Sync()
+
+	dbURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.DbTestName)
+	models.SetupDatabase(dbURL)
+	client = &http.Client{}
+
+}
+
+//func TestNoEmail(t *testing.T) {
+//	filePath = filepath.Join("data", "no_email.html")
+//
+//	fileContents, _ = os.ReadFile(filePath)
+//
+//	matches := email.FindEmail(string(fileContents))
+//	if len(matches) != 0 {
+//		t.Errorf("expected array length should be 1")
+//	}
+//
+//}
+
+func TestEmailInHtml(t *testing.T) {
+	assert := assert.New(t)
+	url = "https://proton.me/support/zendesk"
+	resp, err := client.Get(url)
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+
+	matches := email.FindEmail(string(body))
+	assert.Equal(len(matches), 13)
 }
-
-func TestEmail(t *testing.T) {
-	HtmlString := string(fileContents)
-
-	matches := email.FindEmail(HtmlString)
-
-	if len(matches) != 3 {
-		t.Errorf("expected array length should be 3")
+func TestNoEmailInHtml(t *testing.T) {
+	assert := assert.New(t)
+	url = "https://example.com/"
+	resp, err := client.Get(url)
+	if err != nil {
+		t.Fatal(err)
 	}
-}
-func TestNoEmail(t *testing.T) {
-	filePath = filepath.Join("data", "no_email.html")
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
 
-	fileContents, _ = os.ReadFile(filePath)
-
-	matches := email.FindEmail(string(fileContents))
-	if len(matches) != 0 {
-		t.Errorf("expected array length should be 1")
-	}
-
+	matches := email.FindEmail(string(body))
+	assert.Equal(len(matches), 0)
 }

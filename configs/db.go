@@ -15,7 +15,7 @@ type DBConfig struct {
 	DbTestName string
 }
 
-func SetupDatabase() {
+func LoadDatabase() {
 	DBHost := os.Getenv("DB_HOST")
 	if DBHost == "" {
 		DBHost = "localhost"

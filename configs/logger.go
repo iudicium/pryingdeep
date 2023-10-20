@@ -10,7 +10,7 @@ type LoggerConfig struct {
 	Encoder string
 }
 
-func SetupLogger() {
+func setupLogger() {
 	LoggerLevel := os.Getenv("LOGGER_LEVEL")
 	if LoggerLevel == "" {
 		log.Fatal("Log Level was not specified")

@@ -32,6 +32,7 @@ func SetupNewTorClient(torProxy string) (*http.Client, error) {
 	return client, nil
 }
 
+// TODO: Rename this function to something better because it also returns a client with a tor connection
 func CheckIfTorConnectionExists(torProxy string) (*TorCheckResult, error) {
 	client, err := SetupNewTorClient(torProxy)
 	if err != nil {

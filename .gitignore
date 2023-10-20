@@ -22,5 +22,5 @@ go.work
 .vscode
 logs/
 .env
-test
+
 ./crawlerConfig.json

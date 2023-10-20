@@ -10,7 +10,7 @@ type TorConfig struct {
 	Port string
 }
 
-func SetupTor() {
+func setupTor() {
 	Socks5Port := os.Getenv("SOCKS5_PORT")
 	if Socks5Port == "" {
 		log.Fatal("Socks5 port was not specified")

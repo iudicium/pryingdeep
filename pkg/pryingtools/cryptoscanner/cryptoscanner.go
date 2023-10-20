@@ -1,0 +1,49 @@
+package cryptoscanner
+
+import (
+	"github.com/lib/pq"
+	"github.com/r00tk3y/prying-deep/models"
+	"github.com/r00tk3y/prying-deep/pkg/logger"
+	"regexp"
+	"sync"
+)
+
+type CryptoScanner struct {
+	Crypto models.Crypto
+}
+
+func New() *CryptoScanner {
+	return &CryptoScanner{}
+}
+
+func (p *CryptoScanner) searchWithPattern(html string, pattern string, cryptoField *pq.StringArray) {
+	re := regexp.MustCompile(pattern)
+	matches := re.FindAllString(html, -1)
+	if len(matches) != 0 {
+		*cryptoField = matches
+	}
+}
+
+func (p *CryptoScanner) Search(html string, pageId int) {
+	var wg sync.WaitGroup
+	wg.Add(2)
+
+	go func() {
+		defer wg.Done()
+		p.searchWithPattern(html, `(?s)-----BEGIN PGP PUBLIC KEY BLOCK-----\n(.*?)\n-----END PGP PUBLIC KEY BLOCK-----`, &p.Crypto.PGPKeys)
+	}()
+
+	go func() {
+		defer wg.Done()
+		p.searchWithPattern(html, `(?s)-----BEGIN CERTIFICATE-----\n(.*?)\n-----END CERTIFICATE-----`, &p.Crypto.Certificates)
+	}()
+
+	wg.Wait()
+	//TODO add proper error handling
+	if len(p.Crypto.PGPKeys) != 0 || len(p.Crypto.Certificates) != 0 {
+		logger.Infof("[+] Creating a crypto record...")
+		p.Crypto.WebPageId = pageId
+		models.CryptoCreate(p.Crypto)
+	}
+
+}

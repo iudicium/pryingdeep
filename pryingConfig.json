@@ -1,5 +1,6 @@
 {
-  "Email": true,
-  "WordPress": true,
-  "PhoneNumbers": ["DE", "RU"]
+  "crypto": true,
+  "email": true,
+  "phonenumbers": [],
+  "wordpress": true
 }
