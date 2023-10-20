@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"github.com/r00tk3y/prying-deep/configs"
 	"github.com/r00tk3y/prying-deep/models"
 	"github.com/r00tk3y/prying-deep/pkg/crawler"
@@ -12,6 +13,7 @@ var crawlCmd = &cobra.Command{
 	Use:   "crawl",
 	Short: "Start the crawling process",
 	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println(art())
 		configs.SetupEnvironment()
 		cfg := configs.GetConfig()
 		logger.InitLogger()

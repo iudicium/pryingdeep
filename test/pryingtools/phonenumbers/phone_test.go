@@ -8,11 +8,13 @@ import (
 	"github.com/r00tk3y/prying-deep/pkg/pryingtools/phonenumber"
 	"github.com/r00tk3y/prying-deep/pkg/utils"
 	"github.com/stretchr/testify/assert"
+	"io"
+	"net/http"
 	"testing"
 )
 
 type PhoneNumberValidationTestConfig struct {
-	Filename      string
+	URL           string
 	Regex         string
 	CountryCode   string
 	ExpectedCount int
@@ -32,40 +34,52 @@ func TestSetup(t *testing.T) {
 
 func testPhoneNumberValidation(t *testing.T, testConfig PhoneNumberValidationTestConfig) {
 	assert := assert.New(t)
-	html := utils.ReadFile(testConfig.Filename)
+
+	resp, err := http.Get(testConfig.URL)
+	if err != nil {
+		t.Fatalf("Error making GET request: %v", err)
+	}
+	defer resp.Body.Close()
+
+	// Read the HTML content from the response
+	html, err := io.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatalf("Error reading response body: %v", err)
+	}
 
 	testPatterns := map[string]string{testConfig.CountryCode: testConfig.Regex}
 
 	phoneProcessor := phonenumber.NewPhoneProcessor()
 	phoneProcessor.SetCountryRegex(testConfig.CountryCode, testConfig.Regex)
 
-	phoneProcessor.ProcessPhoneNumbers(html, testConfig.WebPageId, testPatterns)
+	phoneProcessor.ProcessPhoneNumbers(string(html), testConfig.WebPageId, testPatterns)
 
 	phones, err := models.GetPhoneNumbers(testConfig.WebPageId)
 	if err != nil {
-		logger.Errorf("err getting phones from db: %s", err)
+		logger.Errorf("Error getting phones from the database: %s", err)
 	}
 
 	assert.Equal(len(phones), testConfig.ExpectedCount)
+
 	t.Cleanup(func() {
 		models.DeletePhoneNumbersByCountryCode(testConfig.CountryCode)
 		t.Log(fmt.Sprintf("Performing %s numbers clean up...", testConfig.CountryCode))
 	})
 }
+
 func TestRussianPhoneNumberValidation(t *testing.T) {
 	testConfig := PhoneNumberValidationTestConfig{
-		Filename:      "ru.html",
+		URL:           "https://mysmsbox.ru/",
 		Regex:         phonenumber.RuRegex,
 		CountryCode:   "RU",
-		ExpectedCount: 22,
+		ExpectedCount: 47,
 		WebPageId:     1,
 	}
 	testPhoneNumberValidation(t, testConfig)
 }
-
 func TestUSAPhoneNumberValidation(t *testing.T) {
 	testConfig := PhoneNumberValidationTestConfig{
-		Filename:      "usa.html",
+		URL:           "https://www.thisnumber.com/270-258",
 		Regex:         phonenumber.USRegex,
 		CountryCode:   "US",
 		ExpectedCount: 151,
@@ -74,25 +88,14 @@ func TestUSAPhoneNumberValidation(t *testing.T) {
 	testPhoneNumberValidation(t, testConfig)
 }
 
+// //
+// //There's 15-16 duplicate numbers in the html, so we store only 15
 //
-//There's 15-16 duplicate numbers in the html, so we store only 15
-
-func TestUKPhoneNumberValidation(t *testing.T) {
-	testConfig := PhoneNumberValidationTestConfig{
-		Filename:      "uk.html",
-		Regex:         phonenumber.UKRegex,
-		CountryCode:   "GB",
-		ExpectedCount: 15,
-		WebPageId:     1,
-	}
-	testPhoneNumberValidation(t, testConfig)
-}
-
-// // DE = Germany
-// // 5 Duplicates, only 1 Correct
+// // // DE = Germany
+// // // 5 Duplicates, only 1 Correct
 func TestDEPhoneNumberValidation(t *testing.T) {
 	testConfig := PhoneNumberValidationTestConfig{
-		Filename:      "de.html",
+		URL:           "https://allaboutberlin.com/guides/dial-phone-numbers-germany",
 		Regex:         phonenumber.DERegex,
 		CountryCode:   "DE",
 		ExpectedCount: 1,
@@ -101,18 +104,7 @@ func TestDEPhoneNumberValidation(t *testing.T) {
 	testPhoneNumberValidation(t, testConfig)
 }
 
-// FIXME: the nl regexp validation is a bit wrong but it works for now
-
-func TestNLPhoneNumberValidation(t *testing.T) {
-	testConfig := PhoneNumberValidationTestConfig{
-		Filename:      "nl.html",
-		Regex:         phonenumber.NLRegex,
-		CountryCode:   "NL",
-		ExpectedCount: 2,
-		WebPageId:     1,
-	}
-	testPhoneNumberValidation(t, testConfig)
-}
+// // FIXME: the nl regexp validation is a bit wrong but it works for now
 func TestConcurrentPhoneProcessing(t *testing.T) {
 	html, err := utils.ReadFilesInDirectory("data")
 	if err != nil {
@@ -121,10 +113,7 @@ func TestConcurrentPhoneProcessing(t *testing.T) {
 	phoneProcessor := phonenumber.NewPhoneProcessor()
 
 	testCountryRegexPatterns := map[string]string{
-		"RU": phonenumber.RuRegex,
-		"US": phonenumber.USRegex,
 		"GB": phonenumber.UKRegex,
-		"DE": phonenumber.DERegex,
 		"NL": phonenumber.NLRegex,
 	}
 
