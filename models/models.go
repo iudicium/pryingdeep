@@ -1,10 +1,10 @@
 package models
 
 import (
+	"github.com/r00tk3y/prying-deep/pkg/logger"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-
-	"github.com/r00tk3y/prying-deep/pkg/logger"
+	loger "gorm.io/gorm/logger"
 )
 
 var db *gorm.DB
@@ -13,9 +13,11 @@ type Model struct {
 	ID uint `gorm:"primaryKey"`
 }
 
-func SetupDatabase(dbUrl string) {
+func SetupDatabase(dbUrl string) *gorm.DB {
 	var err error
-	db, err = gorm.Open(postgres.Open(dbUrl), &gorm.Config{})
+	db, err = gorm.Open(postgres.Open(dbUrl), &gorm.Config{
+		Logger: loger.Default.LogMode(loger.Info),
+	})
 	db.Debug()
 
 	if err != nil {
@@ -26,8 +28,5 @@ func SetupDatabase(dbUrl string) {
 	if err != nil {
 		logger.Errorf("error during AutoMigrations", err)
 	}
-
+	return db
 }
-
-// DeleteAllRecords This function is primarily needed for clearing test database,
-// but there might be support later on for clearing out all records

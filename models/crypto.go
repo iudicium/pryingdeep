@@ -7,8 +7,7 @@ import (
 
 type Crypto struct {
 	Model
-	WebPageId    int            `json:"pageId"`
-	WebPage      WebPage        `json:"page" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	WebPageID    int            `json:"pageId"`
 	PGPKeys      pq.StringArray `json:"PGPKey" gorm:"type:text[]"`
 	Certificates pq.StringArray `json:"Certificates" gorm:"type:text[]"`
 }

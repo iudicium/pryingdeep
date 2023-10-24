@@ -7,16 +7,15 @@ import (
 
 type PhoneNumber struct {
 	Model
-	WebPageId           int     `json:"pageId"`
-	WebPage             WebPage `json:"page" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
-	InternationalNumber string  `json:"internationalNumber" gorm:"uniqueIndex"`
-	NationalNumber      string  `json:"nationalNumber" gorm:"unique"`
-	CountryCode         string  `json:"countryCode"`
+	WebPageID           int    `json:"pageId"`
+	InternationalNumber string `json:"internationalNumber" gorm:"uniqueIndex"`
+	NationalNumber      string `json:"nationalNumber" gorm:"unique"`
+	CountryCode         string `json:"countryCode"`
 }
 
 func CreatePhoneNumber(webPageID int, interNum, natNum string, code string) error {
 	phoneNumber := &PhoneNumber{
-		WebPageId:           webPageID,
+		WebPageID:           webPageID,
 		InternationalNumber: interNum,
 		NationalNumber:      natNum,
 		CountryCode:         code,

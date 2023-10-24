@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-var RootCmd = &cobra.Command{
+var rootCmd = &cobra.Command{
 	Use:   "pryingdeep",
 	Short: "Pryingdeep is a dark web osint intelligence tool.",
 	Long: `Pryingdeep specializes in collecting information about dark-web/clearnet websites.
@@ -14,7 +14,7 @@ var RootCmd = &cobra.Command{
 }
 
 func Execute() {
-	if err := RootCmd.Execute(); err != nil {
+	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}

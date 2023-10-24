@@ -1,0 +1,41 @@
+{
+ "ID": 1,
+ "url": "http://test1",
+ "title": "test1",
+ "statusCode": 200,
+ "body": "Venci vindi html",
+ "headers": {
+  "key1": "value1"
+ },
+ "email": {
+  "ID": 397,
+  "pageId": 1,
+  "emails": [
+   "test1@example.com"
+  ]
+ },
+ "phoneNumbers": {
+  "ID": 298,
+  "pageId": 1,
+  "internationalNumber": "+1231231",
+  "nationalNumber": "+1231231",
+  "countryCode": "NL"
+ },
+ "crypto": {
+  "ID": 397,
+  "pageId": 1,
+  "PGPKey": [
+   "pgp_test1"
+  ],
+  "Certificates": [
+   "test_certificate"
+  ]
+ },
+ "wordpress": {
+  "ID": 397,
+  "pageId": 1,
+  "wordpressHtml": [
+   "wordpress1 test"
+  ]
+ }
+}
