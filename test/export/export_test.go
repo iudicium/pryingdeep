@@ -78,7 +78,7 @@ func TestMain(m *testing.M) {
 }
 
 func TestJsonAndPreloadDBWithOneElement(t *testing.T) {
-	tmpDir := t.TempDir()
+	tmpDir := ""
 
 	preloadedWebPage, err := models.PreloadWebPage(1)
 	if err != nil {

@@ -36,7 +36,7 @@ func CreatePage(url string, title string, statusCode int, body string, headers P
 func PreloadWebPage(webPageID int) (*WebPage, error) {
 	var webPageData WebPage
 
-	if err := db.Preload(clause.Associations).Where("ID = ?", webPageID).First(&webPageData).Error; err != nil {
+	if err := db.Preload(clause.Associations).Where("ID = ?", webPageID).Find(&webPageData).Error; err != nil {
 		return nil, err
 	}
 
