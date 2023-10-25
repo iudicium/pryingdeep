@@ -9,14 +9,14 @@ type exportOptions struct {
 }
 
 var exportCmd = &cobra.Command{
-	Use:   "export",
+	Use:   "exporters",
 	Short: "Export the crawled data to json",
 	Run:   parseExportArgs,
 }
 
 func init() {
 	exportCmd.Flags().StringP("model", "m", "", "Database model name")
-	exportCmd.Flags().IntP("rows", "r", 0, "Number of rows to export (0 for all)")
+	exportCmd.Flags().IntP("rows", "r", 0, "Number of rows to exporters (0 for all)")
 	exportCmd.Flags().StringP("condition", "c", "", "Export condition (optional)")
 	exportCmd.Flags().StringP("filename", "f", "exported_data.json", "Output filename (default: exported_data.json)")
 	exportCmd.MarkFlagRequired("rows")

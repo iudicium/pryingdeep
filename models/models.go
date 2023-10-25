@@ -1,10 +1,10 @@
 package models
 
 import (
-	"github.com/r00tk3y/prying-deep/pkg/logger"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	loger "gorm.io/gorm/logger"
+
+	"github.com/r00tk3y/prying-deep/pkg/logger"
 )
 
 var db *gorm.DB
@@ -15,9 +15,7 @@ type Model struct {
 
 func SetupDatabase(dbUrl string) *gorm.DB {
 	var err error
-	db, err = gorm.Open(postgres.Open(dbUrl), &gorm.Config{
-		Logger: loger.Default.LogMode(loger.Info),
-	})
+	db, err = gorm.Open(postgres.Open(dbUrl), &gorm.Config{})
 	db.Debug()
 
 	if err != nil {
