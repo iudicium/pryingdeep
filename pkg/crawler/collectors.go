@@ -9,6 +9,7 @@ import (
 	"github.com/r00tk3y/prying-deep/pkg/logger"
 	"github.com/r00tk3y/prying-deep/pkg/utils"
 	"go.uber.org/zap"
+	"log"
 	"time"
 )
 
@@ -30,6 +31,7 @@ func proxySetup(c *colly.Collector, tor configs.TorConfig) *colly.Collector {
 
 // TODO: add a command line interface/UI on web to process this
 func NewCollector(config configs.CollyConfig, torConfig configs.TorConfig) *colly.Collector {
+
 	maxBodySize := 1024 * 10 * 1024
 	configBodySize := config.MaxBodySize * 10 * 1024
 	c := colly.NewCollector()
@@ -78,9 +80,26 @@ func NewCollector(config configs.CollyConfig, torConfig configs.TorConfig) *coll
 	if config.Debug {
 		c.SetDebugger(&debug.LogDebugger{})
 	}
-	c.SetRequestTimeout(time.Second * 30)
+	if config.UseLimit {
+		//TODO: add support for all settings maybe
+		var rule colly.LimitRule
+		if config.LimitRule.Delay != 0 {
+			rule.Delay = time.Duration(config.LimitRule.Delay) * time.Second
+		}
 
-	fmt.Println(c)
+		if config.LimitRule.RandomDelay != 0 {
+			rule.RandomDelay = time.Duration(config.LimitRule.RandomDelay) * time.Second
+		}
+		if config.LimitRule.DomainRegexp != "" {
+			rule.DomainRegexp = config.LimitRule.DomainRegexp
+
+			err := c.Limit(&rule)
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
+	}
+
 	c = proxySetup(c, torConfig)
 	return c
 }

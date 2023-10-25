@@ -20,6 +20,7 @@ func Execute() {
 	}
 }
 
+// TODO: change the art i dont like it
 func art() string {
 	return `
 $$$$$$$\  $$$$$$$\$$\     $$\$$$$$$\ $$\   $$\  $$$$$$\  $$$$$$$\  $$$$$$$$\ $$$$$$$$\ $$$$$$$\

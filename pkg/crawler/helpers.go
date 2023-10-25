@@ -3,8 +3,9 @@ package crawler
 import (
 	"github.com/gocolly/colly/v2"
 	"github.com/r00tk3y/prying-deep/configs"
+	"github.com/r00tk3y/prying-deep/models"
 	"github.com/r00tk3y/prying-deep/pkg/logger"
-	"github.com/r00tk3y/prying-deep/pkg/parsers"
+	"github.com/r00tk3y/prying-deep/pkg/utils"
 	"regexp"
 )
 
@@ -12,7 +13,7 @@ func HandleResponse(response *colly.Response, options *configs.PryingConfig) {
 	body := string(response.Body)
 	url := response.Request.URL.String()
 	logger.Infof("Crawling url: %s", url)
-	pageId, err := parsers.ParseResponse(url, body, response)
+	pageId, err := ParseResponse(url, body, response)
 
 	if err != nil {
 		logger.Errorf("Something went wrong during parsing the response from: %s\nErr: %s ", url, err)
@@ -42,4 +43,22 @@ func ConvertURLFiltersToRegexp(filters []string) []*regexp.Regexp {
 	}
 
 	return urlFilters
+}
+
+func ParseResponse(url string, body string, response *colly.Response) (int, error) {
+	title, _ := utils.ExtractTitleFromBody(body)
+	headers := utils.CreateMapFromValues(*response.Headers)
+
+	ResId, err := models.CreatePage(
+		url,
+		title,
+		response.StatusCode,
+		body,
+		headers,
+	)
+	if err != nil {
+		return 0, err
+	}
+
+	return int(ResId), nil
 }

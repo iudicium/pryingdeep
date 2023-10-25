@@ -4,14 +4,13 @@ import "github.com/lib/pq"
 
 type Email struct {
 	Model
-	WebPageId int            `json:"pageId"`
-	WebPage   WebPage        `json:"page" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	WebPageID int            `json:"pageId"`
 	Emails    pq.StringArray `json:"emails" gorm:"type:text[]"`
 }
 
 func CreateEmails(pageId int, emails []string) *Email {
 	email := &Email{
-		WebPageId: pageId,
+		WebPageID: pageId,
 		Emails:    emails,
 	}
 
