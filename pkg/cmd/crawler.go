@@ -2,11 +2,13 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/r00tk3y/prying-deep/configs"
-	"github.com/r00tk3y/prying-deep/models"
-	"github.com/r00tk3y/prying-deep/pkg/crawler"
-	"github.com/r00tk3y/prying-deep/pkg/logger"
+
 	"github.com/spf13/cobra"
+
+	"github.com/pryingbytez/prying-deep/configs"
+	"github.com/pryingbytez/prying-deep/models"
+	"github.com/pryingbytez/prying-deep/pkg/crawler"
+	"github.com/pryingbytez/prying-deep/pkg/logger"
 )
 
 var crawlCmd = &cobra.Command{

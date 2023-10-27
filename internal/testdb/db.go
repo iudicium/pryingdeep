@@ -2,8 +2,9 @@ package testdb
 
 import (
 	"fmt"
-	"github.com/r00tk3y/prying-deep/configs"
-	"github.com/r00tk3y/prying-deep/models"
+
+	"github.com/pryingbytez/prying-deep/configs"
+	"github.com/pryingbytez/prying-deep/models"
 	"gorm.io/gorm"
 )
 

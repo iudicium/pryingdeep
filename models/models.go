@@ -4,7 +4,7 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
-	"github.com/r00tk3y/prying-deep/pkg/logger"
+	"github.com/pryingbytez/prying-deep/pkg/logger"
 )
 
 var db *gorm.DB

@@ -1,11 +1,14 @@
 package configs
 
 import (
-	"github.com/joho/godotenv"
-	"github.com/spf13/viper"
 	"log"
 	"os"
 	"regexp"
+
+	"github.com/joho/godotenv"
+	"github.com/spf13/viper"
+
+	"github.com/fatih/color"
 )
 
 const projectDirName = "pryingdeep" // change to relevant project name
@@ -36,22 +39,25 @@ func loadEnv() {
 }
 
 func loadConfig(configFile string, config interface{}) {
-	log.Printf("Loading %s config...", configFile)
+
+	errorPrinter := color.New(color.FgRed).Printf
 
 	viper.SetConfigType("json")
 	viper.AddConfigPath(".")
 	viper.SetConfigName(configFile)
 
 	if err := viper.ReadInConfig(); err != nil {
-		log.Printf("Error during loading %s config: %s", configFile, err)
+		errorPrinter("Error during loading %s config: %s\n", configFile, err)
 		return
 	}
 
 	if err := viper.Unmarshal(config); err != nil {
-		log.Printf("Error during binding %s config to struct: %s", configFile, err)
+		errorPrinter("Error during binding %s config to struct: %s\n", configFile, err)
 		return
 	}
+	color.HiMagenta(color.Green("[+]"Sucesfully loaded %s", configFile)
 }
+
 func SetupEnvironment() {
 	loadEnv()
 	setupTor()

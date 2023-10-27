@@ -2,15 +2,16 @@ package crawler
 
 import (
 	"fmt"
+	"log"
+	"time"
+
 	"github.com/gocolly/colly/v2"
 	"github.com/gocolly/colly/v2/debug"
 	"github.com/gocolly/colly/v2/proxy"
-	"github.com/r00tk3y/prying-deep/configs"
-	"github.com/r00tk3y/prying-deep/pkg/logger"
-	"github.com/r00tk3y/prying-deep/pkg/utils"
+	"github.com/pryingbytez/prying-deep/configs"
+	"github.com/pryingbytez/prying-deep/pkg/logger"
+	"github.com/pryingbytez/prying-deep/pkg/utils"
 	"go.uber.org/zap"
-	"log"
-	"time"
 )
 
 func proxySetup(c *colly.Collector, tor configs.TorConfig) *colly.Collector {

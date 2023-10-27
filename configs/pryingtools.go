@@ -9,6 +9,6 @@ type PryingConfig struct {
 
 func loadPryingConfig() {
 	var config PryingConfig
-	loadConfig("pryingConfig.json", &config)
+	loadConfig("configs/json/pryingConfig.json", &config)
 	cfg.PryingConf = config
 }

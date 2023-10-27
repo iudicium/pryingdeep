@@ -1,0 +1,11 @@
+{
+  "associations": "all",
+  "criteria": {
+    "title": "test",
+    "url": "LIKE example.com"
+  },
+  "filepath": "example.json",
+  "limit": 0,
+  "sortby": "",
+  "sortorder": "asc"
+}

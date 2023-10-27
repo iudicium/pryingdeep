@@ -1,11 +1,13 @@
 package cryptoscanner
 
 import (
-	"github.com/lib/pq"
-	"github.com/r00tk3y/prying-deep/models"
-	"github.com/r00tk3y/prying-deep/pkg/logger"
 	"regexp"
 	"sync"
+
+	"github.com/lib/pq"
+
+	"github.com/pryingbytez/prying-deep/models"
+	"github.com/pryingbytez/prying-deep/pkg/logger"
 )
 
 type CryptoScanner struct {
@@ -42,7 +44,7 @@ func (p *CryptoScanner) Search(html string, pageId int) {
 	//TODO add proper error handling
 	if len(p.Crypto.PGPKeys) != 0 || len(p.Crypto.Certificates) != 0 {
 		logger.Infof("[+] Creating a crypto record...")
-		p.Crypto.WebPageId = pageId
+		p.Crypto.WebPageID = pageId
 		models.CryptoCreate(p.Crypto)
 	}
 

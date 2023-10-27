@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/r00tk3y/prying-deep/pkg/cmd"
+	"github.com/pryingbytez/prying-deep/pkg/cmd"
 )
 
 // TODO: add more options to save the config for crawlerConfig.Json

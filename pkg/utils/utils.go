@@ -10,7 +10,7 @@ import (
 	"regexp"
 	"time"
 
-	"github.com/r00tk3y/prying-deep/models"
+	"github.com/pryingbytez/prying-deep/models"
 )
 
 const checkTor string = "https://check.torproject.org/api/ip"

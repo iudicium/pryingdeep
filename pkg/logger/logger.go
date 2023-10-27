@@ -4,7 +4,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/r00tk3y/prying-deep/configs"
+	"github.com/pryingbytez/prying-deep/configs"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )

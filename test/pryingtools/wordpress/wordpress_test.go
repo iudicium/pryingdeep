@@ -2,14 +2,15 @@ package tests
 
 import (
 	"fmt"
-	"github.com/r00tk3y/prying-deep/configs"
-	"github.com/r00tk3y/prying-deep/models"
-	"github.com/r00tk3y/prying-deep/pkg/logger"
-	"github.com/r00tk3y/prying-deep/pkg/pryingtools/wordpress"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"net/http"
 	"testing"
+
+	"github.com/pryingbytez/prying-deep/configs"
+	"github.com/pryingbytez/prying-deep/models"
+	"github.com/pryingbytez/prying-deep/pkg/logger"
+	"github.com/pryingbytez/prying-deep/pkg/pryingtools/wordpress"
+	"github.com/stretchr/testify/assert"
 )
 
 var client *http.Client

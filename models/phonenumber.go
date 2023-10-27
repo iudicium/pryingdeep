@@ -1,7 +1,7 @@
 package models
 
 import (
-	"github.com/r00tk3y/prying-deep/pkg/logger"
+	"github.com/pryingbytez/prying-deep/pkg/logger"
 	"gorm.io/gorm"
 )
 

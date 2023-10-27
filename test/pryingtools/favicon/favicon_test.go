@@ -2,10 +2,11 @@ package tests
 
 import (
 	"fmt"
-	pryingtools "github.com/r00tk3y/prying-deep/pkg/pryingtools/favicon"
 	"os"
 	"path/filepath"
 	"testing"
+
+	pryingtools "github.com/pryingbytez/prying-deep/pkg/pryingtools/favicon"
 )
 
 var filePath string
