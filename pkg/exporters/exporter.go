@@ -19,7 +19,7 @@ func NewExporter(path string) *Exporter {
 		FilePath: path,
 	}
 }
-func (e Exporter) ToJSON(data []models.WebPage) error {
+func (e Exporter) WebPageToJSON(data []models.WebPage) error {
 	preloadedJSON, err := json.MarshalIndent(data, "", " ")
 	if err != nil {
 		return err
@@ -32,6 +32,9 @@ func (e Exporter) ToJSON(data []models.WebPage) error {
 
 	logger.Infof("File saved to: %s successfully!", e.FilePath)
 	return nil
+}
+func (e Exporter) StringToJson(data string) {
+
 }
 
 //TODO: fix this funciton, later on

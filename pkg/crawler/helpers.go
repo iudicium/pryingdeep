@@ -4,6 +4,7 @@ import (
 	"regexp"
 
 	"github.com/gocolly/colly/v2"
+
 	"github.com/pryingbytez/prying-deep/configs"
 	"github.com/pryingbytez/prying-deep/models"
 	"github.com/pryingbytez/prying-deep/pkg/logger"
@@ -17,7 +18,7 @@ func HandleResponse(response *colly.Response, options *configs.PryingConfig) {
 	pageId, err := ParseResponse(url, body, response)
 
 	if err != nil {
-		logger.Errorf("Something went wrong during parsing the response from: %s\nErr: %s ", url, err)
+		logger.Errorf("Something went wrong during parsing the response from: %s Err: %s ", url, err)
 	}
 
 	if options.Wordpress {

@@ -1,17 +1,16 @@
 package configs
 
 type ExporterConfig struct {
-	WebPageCriteria map[string]interface{}
-	Associations    string
-	SortBy          string
-	SortOrder       string
-	Limit           int
-	Filepath        string
+	Criteria     map[string]interface{}
+	Associations string
+	SortBy       string
+	SortOrder    string
+	Limit        int
+	Filepath     string
 }
 
-func LoadExporterConfig() ExporterConfig {
+func LoadExporterConfig(path string) ExporterConfig {
 	var config ExporterConfig
-	loadConfig("exporterConfig.json", &config)
+	loadConfig(path, &config)
 	return config
-
 }

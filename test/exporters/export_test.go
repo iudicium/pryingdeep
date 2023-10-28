@@ -41,7 +41,7 @@ func assertJSONStructure(data map[string]interface{}, assert *assert.Assertions)
 
 func TestMain(m *testing.M) {
 	configs.SetupEnvironment()
-	logger.InitLogger()
+	logger.InitLogger(false)
 	defer logger.Logger.Sync()
 	db = testdb.InitDB()
 
@@ -134,7 +134,7 @@ func TestConvertQueryBuilderDataToJson(t *testing.T) {
 
 			result := qb.ConstructQuery(db)
 			exporter := exporters.NewExporter(tmpPath)
-			err := exporter.ToJSON(result)
+			err := exporter.WebPageToJSON(result)
 			if err != nil {
 				t.Fatal(err)
 			}

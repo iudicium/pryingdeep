@@ -1,11 +1,8 @@
 {
   "associations": "all",
-  "criteria": {
-    "title": "test",
-    "url": "LIKE example.com"
-  },
-  "filepath": "example.json",
+  "criteria": null,
+  "filepath": "data.json",
   "limit": 0,
-  "sortby": "",
+  "sortby": "status_code",
   "sortorder": "asc"
 }

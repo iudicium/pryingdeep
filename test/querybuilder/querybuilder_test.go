@@ -22,7 +22,6 @@ func constructQueryHelper(qb *querybuilder.QueryBuilder) []models.WebPage {
 	pages := qb.ConstructQuery(db)
 
 	queryJSON, err := json.Marshal(pages)
-	fmt.Println(string(queryJSON))
 	if err != nil {
 		panic(err)
 	}
@@ -36,7 +35,7 @@ func constructQueryHelper(qb *querybuilder.QueryBuilder) []models.WebPage {
 
 func TestMain(m *testing.M) {
 	configs.SetupEnvironment()
-	logger.InitLogger()
+	logger.InitLogger(false)
 	defer logger.Logger.Sync()
 
 	cfg := configs.GetConfig().DbConf
@@ -152,4 +151,47 @@ func TestQueryBuilder_ConstructQuery(t *testing.T) {
 		assert.Equal(result[0].URL, "http://test1")
 
 	})
+}
+
+func TestQueryBuilder_RawQuery(t *testing.T) {
+	tests := []struct {
+		name        string
+		filePath    string
+		contains    []string
+		notContains []string
+	}{
+		{
+			name:        "Test Crypto Select ",
+			filePath:    "data/test_select_query.sql",
+			contains:    []string{"pgp_keys", "certificates"},
+			notContains: []string{"pageData", "wordpress"},
+		},
+		{
+			name:        "Test Select all associations",
+			filePath:    "data/associations.sql",
+			contains:    []string{"pgp_keys", "certificates", "headers", "url", "web_page_id"},
+			notContains: []string{"wordpress", "pageData"},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			assert := assert.New(t)
+			qb := querybuilder.NewQueryBuilder(nil, "", "", "", 0)
+
+			err, data := qb.Raw(db, test.filePath)
+
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			for _, columnName := range test.contains {
+				assert.Contains(data[0], columnName)
+			}
+
+			for _, columnName := range test.notContains {
+				assert.NotContains(data[0], columnName)
+			}
+		})
+	}
 }

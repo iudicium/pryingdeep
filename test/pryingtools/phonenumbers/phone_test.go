@@ -6,12 +6,13 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+
 	"github.com/pryingbytez/prying-deep/configs"
 	"github.com/pryingbytez/prying-deep/models"
 	"github.com/pryingbytez/prying-deep/pkg/logger"
 	"github.com/pryingbytez/prying-deep/pkg/pryingtools/phonenumber"
 	"github.com/pryingbytez/prying-deep/pkg/utils"
-	"github.com/stretchr/testify/assert"
 )
 
 type PhoneNumberValidationTestConfig struct {
@@ -26,7 +27,7 @@ func TestSetup(t *testing.T) {
 	configs.SetupEnvironment()
 	cfg := configs.GetConfig().DbConf
 
-	logger.InitLogger()
+	logger.InitLogger(false)
 	defer logger.Logger.Sync()
 
 	dbURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.DbTestName)

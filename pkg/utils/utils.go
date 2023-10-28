@@ -26,6 +26,7 @@ func SetupNewTorClient(torProxy string) (*http.Client, error) {
 	if err != nil {
 		//logger.Infof("tor proxy url has the wrong format", err)
 	}
+	//TODO: add support for passing custom timeouts
 	torTransport := &http.Transport{Proxy: http.ProxyURL(torProxyUrl)}
 	client := &http.Client{Transport: torTransport, Timeout: time.Second * 15}
 

@@ -8,10 +8,11 @@ import (
 	"github.com/gocolly/colly/v2"
 	"github.com/gocolly/colly/v2/debug"
 	"github.com/gocolly/colly/v2/proxy"
+	"go.uber.org/zap"
+
 	"github.com/pryingbytez/prying-deep/configs"
 	"github.com/pryingbytez/prying-deep/pkg/logger"
 	"github.com/pryingbytez/prying-deep/pkg/utils"
-	"go.uber.org/zap"
 )
 
 func proxySetup(c *colly.Collector, tor configs.TorConfig) *colly.Collector {
@@ -100,7 +101,8 @@ func NewCollector(config configs.CollyConfig, torConfig configs.TorConfig) *coll
 			}
 		}
 	}
-
+	//TODO: add this option into the config
+	c.SetRequestTimeout(time.Second * 30)
 	c = proxySetup(c, torConfig)
 	return c
 }

@@ -2,6 +2,7 @@ package querybuilder
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
 	"gorm.io/gorm"
@@ -45,8 +46,13 @@ func (qb *QueryBuilder) ConstructQuery(db *gorm.DB) []models.WebPage {
 
 		}
 	}
-	if qb.SortOrder != "" || qb.SortBy != "" {
-		query.Order(qb.SortBy + "" + qb.SortOrder)
+	if qb.SortBy != "" {
+		if qb.SortOrder != "" {
+			query.Order(qb.SortBy + " " + qb.SortOrder)
+		} else {
+			query.Order(qb.SortBy)
+		}
+
 	}
 
 	if qb.Limit > 0 {
@@ -56,6 +62,27 @@ func (qb *QueryBuilder) ConstructQuery(db *gorm.DB) []models.WebPage {
 	query.Find(&pages)
 	return pages
 
+}
+
+// Raw is a helper for executing raw queries inside the database. You can define
+// Your query anywhere you want and call this method to execute custom queries
+// Note: This will not provide structured keys like ConstructQuery.
+// However, this function does give you more control on what fields you can choose from other models and export them later on.
+// This function, also does not support INSERT statements.
+func (qb *QueryBuilder) Raw(db *gorm.DB, path string) (error, []map[string]interface{}) {
+	results := make([]map[string]interface{}, 0)
+	queryBytes, err := os.ReadFile(path)
+	if err != nil {
+		return err, results
+	}
+	query := string(queryBytes)
+
+	err = db.Raw(query).Scan(&results).Error
+	if err != nil {
+		return err, results
+	}
+
+	return nil, results
 }
 
 func BuildCondition(query *gorm.DB, field string, criteria interface{}) *gorm.DB {
