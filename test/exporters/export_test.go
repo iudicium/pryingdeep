@@ -134,7 +134,7 @@ func TestConvertQueryBuilderDataToJson(t *testing.T) {
 
 			result := qb.ConstructQuery(db)
 			exporter := exporters.NewExporter(tmpPath)
-			err := exporter.WebPageToJSON(result)
+			err := exporter.ToJSON(result)
 			if err != nil {
 				t.Fatal(err)
 			}

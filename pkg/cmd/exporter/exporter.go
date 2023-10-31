@@ -7,7 +7,7 @@ import (
 )
 
 var ExporterCMD = &cobra.Command{
-	Use:   "exporter",
+	Use:   "export",
 	Short: "Configure exporterConfig.json from cmd",
 	Long:  "Export the collected data from the database into a file.",
 }

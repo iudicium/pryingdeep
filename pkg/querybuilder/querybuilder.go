@@ -3,6 +3,7 @@ package querybuilder
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"gorm.io/gorm"
@@ -69,8 +70,13 @@ func (qb *QueryBuilder) ConstructQuery(db *gorm.DB) []models.WebPage {
 // Note: This will not provide structured keys like ConstructQuery.
 // However, this function does give you more control on what fields you can choose from other models and export them later on.
 // This function, also does not support INSERT statements.
-func (qb *QueryBuilder) Raw(db *gorm.DB, path string) (error, []map[string]interface{}) {
+func (qb *QueryBuilder) Raw(db *gorm.DB, relativePath string) (error, []map[string]interface{}) {
+
 	results := make([]map[string]interface{}, 0)
+	path, err := filepath.Abs(relativePath)
+	if err != nil {
+		return err, results
+	}
 	queryBytes, err := os.ReadFile(path)
 	if err != nil {
 		return err, results

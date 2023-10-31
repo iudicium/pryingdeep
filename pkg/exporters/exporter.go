@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"os"
 
-	"github.com/pryingbytez/prying-deep/models"
 	"github.com/pryingbytez/prying-deep/pkg/logger"
 )
 
@@ -19,7 +18,7 @@ func NewExporter(path string) *Exporter {
 		FilePath: path,
 	}
 }
-func (e Exporter) WebPageToJSON(data []models.WebPage) error {
+func (e Exporter) ToJSON(data interface{}) error {
 	preloadedJSON, err := json.MarshalIndent(data, "", " ")
 	if err != nil {
 		return err
@@ -33,8 +32,10 @@ func (e Exporter) WebPageToJSON(data []models.WebPage) error {
 	logger.Infof("File saved to: %s successfully!", e.FilePath)
 	return nil
 }
-func (e Exporter) StringToJson(data string) {
 
+func ExportDataToJSON(data interface{}, path string) error {
+	exporter := NewExporter(path)
+	return exporter.ToJSON(data)
 }
 
 //TODO: fix this funciton, later on

@@ -1,1 +1,1 @@
-SELECT  * from web_pages;
+SELECT  url from web_pages;
