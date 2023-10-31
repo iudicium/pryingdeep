@@ -31,7 +31,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/pryingbytez/pryingdeep/web/static/logo.png">
-    <img src="web/static/logo.png" alt="Logo" width="400" height="150">
+    <img src="web/static/logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Best-README-Template</h3>
