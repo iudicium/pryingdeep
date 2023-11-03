@@ -6,7 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/pryingbytez/prying-deep/pkg/cmd/exporter"
+	"github.com/pryingbytez/pryingdeep/pkg/cmd/exporter"
 )
 
 var rootCmd = &cobra.Command{

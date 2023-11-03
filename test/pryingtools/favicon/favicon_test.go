@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	pryingtools "github.com/pryingbytez/prying-deep/pkg/pryingtools/favicon"
+	pryingtools "github.com/pryingbytez/pryingdeep/pkg/pryingtools/favicon"
 )
 
 var filePath string

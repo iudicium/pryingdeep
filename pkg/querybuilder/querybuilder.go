@@ -9,8 +9,8 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
-	"github.com/pryingbytez/prying-deep/models"
-	"github.com/pryingbytez/prying-deep/pkg/logger"
+	"github.com/pryingbytez/pryingdeep/models"
+	"github.com/pryingbytez/pryingdeep/pkg/logger"
 )
 
 type QueryBuilder struct {

@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/fatih/color"
 
-	"github.com/pryingbytez/prying-deep/pkg/cmd"
+	"github.com/pryingbytez/pryingdeep/pkg/cmd"
 )
 
 // TODO: add more options to save the config for crawlerConfig.Json

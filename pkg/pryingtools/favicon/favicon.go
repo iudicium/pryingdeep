@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/pryingbytez/prying-deep/pkg/utils"
+	"github.com/pryingbytez/pryingdeep/pkg/utils"
 
 	"github.com/twmb/murmur3"
 )

@@ -3,7 +3,7 @@ package exporter
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/pryingbytez/prying-deep/pkg/cmd/exporter/json"
+	"github.com/pryingbytez/pryingdeep/pkg/cmd/exporter/json"
 )
 
 var ExporterCMD = &cobra.Command{

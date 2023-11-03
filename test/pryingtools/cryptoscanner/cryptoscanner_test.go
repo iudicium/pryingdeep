@@ -6,11 +6,11 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/pryingbytez/prying-deep/configs"
-	"github.com/pryingbytez/prying-deep/models"
-	"github.com/pryingbytez/prying-deep/pkg/logger"
-	"github.com/pryingbytez/prying-deep/pkg/pryingtools/cryptoscanner"
-	"github.com/pryingbytez/prying-deep/pkg/utils"
+	"github.com/pryingbytez/pryingdeep/configs"
+	"github.com/pryingbytez/pryingdeep/models"
+	"github.com/pryingbytez/pryingdeep/pkg/logger"
+	"github.com/pryingbytez/pryingdeep/pkg/pryingtools/cryptoscanner"
+	"github.com/pryingbytez/pryingdeep/pkg/utils"
 	"github.com/stretchr/testify/assert"
 )
 

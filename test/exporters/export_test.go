@@ -9,12 +9,12 @@ import (
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
 
-	"github.com/pryingbytez/prying-deep/configs"
-	"github.com/pryingbytez/prying-deep/internal/testdb"
-	"github.com/pryingbytez/prying-deep/models"
-	"github.com/pryingbytez/prying-deep/pkg/exporters"
-	"github.com/pryingbytez/prying-deep/pkg/logger"
-	"github.com/pryingbytez/prying-deep/pkg/querybuilder"
+	"github.com/pryingbytez/pryingdeep/configs"
+	"github.com/pryingbytez/pryingdeep/internal/testdb"
+	"github.com/pryingbytez/pryingdeep/models"
+	"github.com/pryingbytez/pryingdeep/pkg/exporters"
+	"github.com/pryingbytez/pryingdeep/pkg/logger"
+	"github.com/pryingbytez/pryingdeep/pkg/querybuilder"
 )
 
 var db *gorm.DB

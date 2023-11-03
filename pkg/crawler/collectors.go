@@ -10,9 +10,9 @@ import (
 	"github.com/gocolly/colly/v2/proxy"
 	"go.uber.org/zap"
 
-	"github.com/pryingbytez/prying-deep/configs"
-	"github.com/pryingbytez/prying-deep/pkg/logger"
-	"github.com/pryingbytez/prying-deep/pkg/utils"
+	"github.com/pryingbytez/pryingdeep/configs"
+	"github.com/pryingbytez/pryingdeep/pkg/logger"
+	"github.com/pryingbytez/pryingdeep/pkg/utils"
 )
 
 func proxySetup(c *colly.Collector, tor configs.TorConfig) *colly.Collector {

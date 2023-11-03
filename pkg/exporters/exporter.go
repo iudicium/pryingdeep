@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"os"
 
-	"github.com/pryingbytez/prying-deep/pkg/logger"
+	"github.com/pryingbytez/pryingdeep/pkg/logger"
 )
 
 // Exporter is a struct for exporting data from a database in a convenient format.

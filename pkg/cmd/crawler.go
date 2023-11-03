@@ -4,10 +4,10 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"github.com/pryingbytez/prying-deep/configs"
-	"github.com/pryingbytez/prying-deep/models"
-	"github.com/pryingbytez/prying-deep/pkg/crawler"
-	"github.com/pryingbytez/prying-deep/pkg/logger"
+	"github.com/pryingbytez/pryingdeep/configs"
+	"github.com/pryingbytez/pryingdeep/models"
+	"github.com/pryingbytez/pryingdeep/pkg/crawler"
+	"github.com/pryingbytez/pryingdeep/pkg/logger"
 )
 
 var (

@@ -1,12 +1,12 @@
 package crawler
 
 import (
-	"github.com/pryingbytez/prying-deep/models"
-	"github.com/pryingbytez/prying-deep/pkg/logger"
-	"github.com/pryingbytez/prying-deep/pkg/pryingtools/cryptoscanner"
-	"github.com/pryingbytez/prying-deep/pkg/pryingtools/email"
-	"github.com/pryingbytez/prying-deep/pkg/pryingtools/phonenumber"
-	"github.com/pryingbytez/prying-deep/pkg/pryingtools/wordpress"
+	"github.com/pryingbytez/pryingdeep/models"
+	"github.com/pryingbytez/pryingdeep/pkg/logger"
+	"github.com/pryingbytez/pryingdeep/pkg/pryingtools/cryptoscanner"
+	"github.com/pryingbytez/pryingdeep/pkg/pryingtools/email"
+	"github.com/pryingbytez/pryingdeep/pkg/pryingtools/phonenumber"
+	"github.com/pryingbytez/pryingdeep/pkg/pryingtools/wordpress"
 )
 
 func processWordPress(body string, pageId int) {

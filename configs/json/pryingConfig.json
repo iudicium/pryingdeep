@@ -1,6 +1,6 @@
 {
-  "crypto": true,
-  "email": true,
+  "crypto": false,
+  "email": false,
   "phonenumbers": [],
-  "wordpress": true
+  "wordpress": false
 }
