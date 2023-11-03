@@ -3,8 +3,9 @@ package crawler
 import (
 	"github.com/gocolly/colly/v2"
 	"github.com/gocolly/colly/v2/queue"
-	"github.com/r00tk3y/prying-deep/configs"
-	"github.com/r00tk3y/prying-deep/pkg/logger"
+
+	"github.com/pryingbytez/pryingdeep/configs"
+	"github.com/pryingbytez/pryingdeep/pkg/logger"
 )
 
 func Crawl(torConf configs.TorConfig, crawlerConf configs.CollyConfig, pryingConf configs.PryingConfig) {

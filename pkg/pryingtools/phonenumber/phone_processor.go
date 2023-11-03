@@ -1,8 +1,9 @@
 package phonenumber
 
 import (
-	"github.com/r00tk3y/prying-deep/pkg/logger"
 	"sync"
+
+	"github.com/pryingbytez/pryingdeep/pkg/logger"
 )
 
 type PhoneProcessor struct {

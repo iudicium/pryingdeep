@@ -2,9 +2,11 @@ package testdb
 
 import (
 	"fmt"
-	"github.com/r00tk3y/prying-deep/configs"
-	"github.com/r00tk3y/prying-deep/models"
+
 	"gorm.io/gorm"
+
+	"github.com/pryingbytez/pryingdeep/configs"
+	"github.com/pryingbytez/pryingdeep/models"
 )
 
 // InitDB is  only meant for testing
@@ -45,7 +47,7 @@ func InitDB() *gorm.DB {
         `, i, uniqueEmails)
 
 		db.Exec(`
-            INSERT INTO wordpress_foot_prints (web_page_id, wordpress_html)
+            INSERT INTO wordpress (web_page_id, wordpress_html)
             VALUES ($1, $2)
         `, i, uniqueWordpressHtml)
 	}

@@ -2,25 +2,29 @@ package querybuilder
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 	"strings"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
-	"github.com/r00tk3y/prying-deep/models"
-	"github.com/r00tk3y/prying-deep/pkg/logger"
+	"github.com/pryingbytez/pryingdeep/models"
+	"github.com/pryingbytez/pryingdeep/pkg/logger"
 )
 
 type QueryBuilder struct {
 	WebPageCriteria map[string]interface{}
+	Associations    string
 	SortBy          string
 	SortOrder       string
 	Limit           int
 }
 
-func NewQueryBuilder(webPageCriteria map[string]interface{}, sortBy, sortOrder string, limit int) *QueryBuilder {
+func NewQueryBuilder(webPageCriteria map[string]interface{}, a, sortBy, sortOrder string, limit int) *QueryBuilder {
 	return &QueryBuilder{
 		WebPageCriteria: webPageCriteria,
+		Associations:    a,
 		SortBy:          sortBy,
 		SortOrder:       sortOrder,
 		Limit:           limit,
@@ -28,11 +32,11 @@ func NewQueryBuilder(webPageCriteria map[string]interface{}, sortBy, sortOrder s
 }
 
 // ConstructQuery (ConstructQuery) Constructs the queries based on the fields
-func (qb *QueryBuilder) ConstructQuery(db *gorm.DB, associations string) []models.WebPage {
+func (qb *QueryBuilder) ConstructQuery(db *gorm.DB) []models.WebPage {
 	var pages []models.WebPage
 	var err error
 	query := db.Model(&models.WebPage{})
-	query, err = ParseAndPreloadAssociations(db, associations)
+	query, err = ParseAndPreloadAssociations(db, qb.Associations)
 	if err != nil {
 		logger.Errorf("err during preloading associations: %s", err)
 	}
@@ -43,8 +47,13 @@ func (qb *QueryBuilder) ConstructQuery(db *gorm.DB, associations string) []model
 
 		}
 	}
-	if qb.SortOrder != "" || qb.SortBy != "" {
-		query.Order(qb.SortBy + "" + qb.SortOrder)
+	if qb.SortBy != "" {
+		if qb.SortOrder != "" {
+			query.Order(qb.SortBy + " " + qb.SortOrder)
+		} else {
+			query.Order(qb.SortBy)
+		}
+
 	}
 
 	if qb.Limit > 0 {
@@ -54,6 +63,32 @@ func (qb *QueryBuilder) ConstructQuery(db *gorm.DB, associations string) []model
 	query.Find(&pages)
 	return pages
 
+}
+
+// Raw is a helper for executing raw queries inside the database. You can define
+// Your query anywhere you want and call this method to execute custom queries
+// Note: This will not provide structured keys like ConstructQuery.
+// However, this function does give you more control on what fields you can choose from other models and export them later on.
+// This function, also does not support INSERT statements.
+func (qb *QueryBuilder) Raw(db *gorm.DB, relativePath string) (error, []map[string]interface{}) {
+
+	results := make([]map[string]interface{}, 0)
+	path, err := filepath.Abs(relativePath)
+	if err != nil {
+		return err, results
+	}
+	queryBytes, err := os.ReadFile(path)
+	if err != nil {
+		return err, results
+	}
+	query := string(queryBytes)
+
+	err = db.Raw(query).Scan(&results).Error
+	if err != nil {
+		return err, results
+	}
+
+	return nil, results
 }
 
 func BuildCondition(query *gorm.DB, field string, criteria interface{}) *gorm.DB {

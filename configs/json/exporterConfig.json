@@ -1,0 +1,8 @@
+{
+  "associations": "all",
+  "criteria": null,
+  "filepath": "data.json",
+  "limit": 0,
+  "sortby": "status_code",
+  "sortorder": "asc"
+}

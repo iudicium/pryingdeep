@@ -27,19 +27,17 @@ func CreatePage(url string, title string, statusCode int, body string, headers P
 		Body:       body,
 		Headers:    headers,
 	}
+
 	webPage := WebPage{
 		PageData: pageData,
 	}
 
-	result := db.Create(webPage)
-
-	if result.Error != nil {
-		return 0, result.Error
+	if err := db.Create(&webPage).Error; err != nil {
+		return 0, err
 	}
 
 	return webPage.ID, nil
 }
-
 func PreloadWebPage(webPageID int) (*WebPage, error) {
 	var webPageData WebPage
 

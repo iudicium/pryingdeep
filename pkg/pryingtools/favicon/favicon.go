@@ -3,10 +3,11 @@ package pryingtools
 import (
 	"encoding/base64"
 	"fmt"
-	"github.com/r00tk3y/prying-deep/pkg/utils"
 	"io"
 	"regexp"
 	"strings"
+
+	"github.com/pryingbytez/pryingdeep/pkg/utils"
 
 	"github.com/twmb/murmur3"
 )

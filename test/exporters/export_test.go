@@ -9,12 +9,12 @@ import (
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
 
-	"github.com/r00tk3y/prying-deep/configs"
-	"github.com/r00tk3y/prying-deep/internal/testdb"
-	"github.com/r00tk3y/prying-deep/models"
-	"github.com/r00tk3y/prying-deep/pkg/exporters"
-	"github.com/r00tk3y/prying-deep/pkg/logger"
-	"github.com/r00tk3y/prying-deep/pkg/querybuilder"
+	"github.com/pryingbytez/pryingdeep/configs"
+	"github.com/pryingbytez/pryingdeep/internal/testdb"
+	"github.com/pryingbytez/pryingdeep/models"
+	"github.com/pryingbytez/pryingdeep/pkg/exporters"
+	"github.com/pryingbytez/pryingdeep/pkg/logger"
+	"github.com/pryingbytez/pryingdeep/pkg/querybuilder"
 )
 
 var db *gorm.DB
@@ -41,7 +41,7 @@ func assertJSONStructure(data map[string]interface{}, assert *assert.Assertions)
 
 func TestMain(m *testing.M) {
 	configs.SetupEnvironment()
-	logger.InitLogger()
+	logger.InitLogger(false)
 	defer logger.Logger.Sync()
 	db = testdb.InitDB()
 
@@ -90,26 +90,29 @@ func TestConvertQueryBuilderDataToJson(t *testing.T) {
 		SortOrder       string
 		Limit           int
 		ItemLength      int
+		Associations    string
 	}{
 		{
 			Name: "JsonTestWithOneLimit",
 			WebPageCriteria: map[string]interface{}{
 				"URL": "LIKE test",
 			},
-			SortBy:     "url",
-			SortOrder:  "",
-			Limit:      1,
-			ItemLength: 1,
+			SortBy:       "url",
+			SortOrder:    "",
+			Limit:        1,
+			ItemLength:   1,
+			Associations: "all",
 		},
 		{
 			Name: "JsonTestWithUnlimited",
 			WebPageCriteria: map[string]interface{}{
 				"URL": "LIKE test",
 			},
-			SortBy:     "url",
-			SortOrder:  "",
-			Limit:      0,
-			ItemLength: 99,
+			SortBy:       "url",
+			SortOrder:    "",
+			Limit:        0,
+			ItemLength:   99,
+			Associations: "all",
 		},
 	}
 
@@ -121,15 +124,15 @@ func TestConvertQueryBuilderDataToJson(t *testing.T) {
 			tmpPath := filepath.Join(tmpDir, "test.json")
 			assert := assert.New(t)
 
-			associations := "all"
 			qb := querybuilder.NewQueryBuilder(
 				tc.WebPageCriteria,
+				tc.Associations,
 				tc.SortBy,
 				tc.SortOrder,
 				tc.Limit,
 			)
 
-			result := qb.ConstructQuery(db, associations)
+			result := qb.ConstructQuery(db)
 			exporter := exporters.NewExporter(tmpPath)
 			err := exporter.ToJSON(result)
 			if err != nil {

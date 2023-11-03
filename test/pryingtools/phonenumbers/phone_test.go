@@ -2,15 +2,17 @@ package tests
 
 import (
 	"fmt"
-	"github.com/r00tk3y/prying-deep/configs"
-	"github.com/r00tk3y/prying-deep/models"
-	"github.com/r00tk3y/prying-deep/pkg/logger"
-	"github.com/r00tk3y/prying-deep/pkg/pryingtools/phonenumber"
-	"github.com/r00tk3y/prying-deep/pkg/utils"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"net/http"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+
+	"github.com/pryingbytez/pryingdeep/configs"
+	"github.com/pryingbytez/pryingdeep/models"
+	"github.com/pryingbytez/pryingdeep/pkg/logger"
+	"github.com/pryingbytez/pryingdeep/pkg/pryingtools/phonenumber"
+	"github.com/pryingbytez/pryingdeep/pkg/utils"
 )
 
 type PhoneNumberValidationTestConfig struct {
@@ -25,7 +27,7 @@ func TestSetup(t *testing.T) {
 	configs.SetupEnvironment()
 	cfg := configs.GetConfig().DbConf
 
-	logger.InitLogger()
+	logger.InitLogger(false)
 	defer logger.Logger.Sync()
 
 	dbURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.DbTestName)

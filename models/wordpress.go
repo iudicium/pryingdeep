@@ -8,6 +8,9 @@ type WordpressFootPrint struct {
 	WordpressHtml pq.StringArray `json:"wordpressHtml" gorm:"type:text[]"`
 }
 
+func (WordpressFootPrint) TableName() string {
+	return "wordpress"
+}
 func CreateWordPressFootPrint(pageId int, html []string) *WordpressFootPrint {
 	wordpress := &WordpressFootPrint{
 		WebPageID:     pageId,

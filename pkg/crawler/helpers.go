@@ -1,12 +1,14 @@
 package crawler
 
 import (
-	"github.com/gocolly/colly/v2"
-	"github.com/r00tk3y/prying-deep/configs"
-	"github.com/r00tk3y/prying-deep/models"
-	"github.com/r00tk3y/prying-deep/pkg/logger"
-	"github.com/r00tk3y/prying-deep/pkg/utils"
 	"regexp"
+
+	"github.com/gocolly/colly/v2"
+
+	"github.com/pryingbytez/pryingdeep/configs"
+	"github.com/pryingbytez/pryingdeep/models"
+	"github.com/pryingbytez/pryingdeep/pkg/logger"
+	"github.com/pryingbytez/pryingdeep/pkg/utils"
 )
 
 func HandleResponse(response *colly.Response, options *configs.PryingConfig) {
@@ -16,7 +18,7 @@ func HandleResponse(response *colly.Response, options *configs.PryingConfig) {
 	pageId, err := ParseResponse(url, body, response)
 
 	if err != nil {
-		logger.Errorf("Something went wrong during parsing the response from: %s\nErr: %s ", url, err)
+		logger.Errorf("Something went wrong during parsing the response from: %s Err: %s ", url, err)
 	}
 
 	if options.Wordpress {

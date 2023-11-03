@@ -2,15 +2,16 @@ package testing
 
 import (
 	"fmt"
-	"github.com/r00tk3y/prying-deep/configs"
-	"github.com/r00tk3y/prying-deep/models"
-	"github.com/r00tk3y/prying-deep/pkg/logger"
-	"github.com/r00tk3y/prying-deep/pkg/pryingtools/cryptoscanner"
-	"github.com/r00tk3y/prying-deep/pkg/utils"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"net/http"
 	"testing"
+
+	"github.com/pryingbytez/pryingdeep/configs"
+	"github.com/pryingbytez/pryingdeep/models"
+	"github.com/pryingbytez/pryingdeep/pkg/logger"
+	"github.com/pryingbytez/pryingdeep/pkg/pryingtools/cryptoscanner"
+	"github.com/pryingbytez/pryingdeep/pkg/utils"
+	"github.com/stretchr/testify/assert"
 )
 
 var client *http.Client

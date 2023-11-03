@@ -4,70 +4,77 @@ import (
 	"os"
 	"time"
 
-	"github.com/r00tk3y/prying-deep/configs"
+	"github.com/fatih/color"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+
+	"github.com/pryingbytez/pryingdeep/configs"
 )
 
 var Logger *zap.Logger
 
-func InitLogger() {
-	config := configs.GetConfig()
+func InitLogger(silent bool) {
+	if !silent {
 
-	encoderConfig := zapcore.EncoderConfig{
-		TimeKey:        "T",
-		LevelKey:       "L",
-		NameKey:        "N",
-		CallerKey:      "C",
-		FunctionKey:    zapcore.OmitKey,
-		MessageKey:     "M",
-		StacktraceKey:  "S",
-		LineEnding:     zapcore.DefaultLineEnding,
-		EncodeLevel:    zapcore.CapitalColorLevelEncoder,
-		EncodeTime:     customEncoderTime,
-		EncodeDuration: zapcore.StringDurationEncoder,
-		EncodeCaller:   zapcore.ShortCallerEncoder,
+		config := configs.GetConfig()
+
+		encoderConfig := zapcore.EncoderConfig{
+			TimeKey:        "T",
+			LevelKey:       "L",
+			NameKey:        "N",
+			CallerKey:      "C",
+			FunctionKey:    zapcore.OmitKey,
+			MessageKey:     "M",
+			StacktraceKey:  "S",
+			LineEnding:     zapcore.DefaultLineEnding,
+			EncodeLevel:    zapcore.CapitalColorLevelEncoder,
+			EncodeTime:     customEncoderTime,
+			EncodeDuration: zapcore.StringDurationEncoder,
+			EncodeCaller:   zapcore.ShortCallerEncoder,
+		}
+
+		// default encoder
+		encoder := zapcore.NewConsoleEncoder(encoderConfig)
+
+		var level zapcore.Level
+		switch config.LoggerConf.Level {
+		case "debug":
+			level = zap.DebugLevel
+		case "info":
+			level = zap.InfoLevel
+		case "warn":
+			level = zap.WarnLevel
+		case "error":
+			level = zap.ErrorLevel
+		default:
+			level = zap.InfoLevel
+		}
+
+		//if config.LoggerConf.Encoder == "json" {
+		//	encoder = zapcore.NewJSONEncoder(encoderConfig)
+		//}
+		//TODO: fix writing to file later
+		//
+		//fileWriter := zapcore.AddSync(&lumberjack.Logger{
+		//	Filename:   fmt.Sprintf("provider-%s.log", time.Now.Format("2006-01-02")),
+		//	MaxSize:    5, // megabytes
+		//	MaxBackups: 3,
+		//	MaxAge:     28, // days
+		//})
+		//
+		//fileEncoder := zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig())
+
+		core := zapcore.NewTee(
+			zapcore.NewCore(encoder, zapcore.AddSync(os.Stderr), level),
+			//zapcore.NewCore(fileEncoder, fileWriter, level),
+		)
+
+		Logger = zap.New(core, zap.AddCaller(), zap.AddCallerSkip(1))
+	} else {
+		color.HiMagenta("Silent mode is on, no log statement will appear in terminal")
+		Logger = zap.NewNop()
 	}
-
-	// default encoder
-	encoder := zapcore.NewConsoleEncoder(encoderConfig)
-
-	var level zapcore.Level
-	switch config.LoggerConf.Level {
-	case "debug":
-		level = zap.DebugLevel
-	case "info":
-		level = zap.InfoLevel
-	case "warn":
-		level = zap.WarnLevel
-	case "error":
-		level = zap.ErrorLevel
-	default:
-		level = zap.InfoLevel
-	}
-
-	//if config.LoggerConf.Encoder == "json" {
-	//	encoder = zapcore.NewJSONEncoder(encoderConfig)
-	//}
-	//TODO: fix writing to file later
-	//
-	//fileWriter := zapcore.AddSync(&lumberjack.Logger{
-	//	Filename:   fmt.Sprintf("provider-%s.log", time.Now().Format("2006-01-02")),
-	//	MaxSize:    5, // megabytes
-	//	MaxBackups: 3,
-	//	MaxAge:     28, // days
-	//})
-	//
-	//fileEncoder := zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig())
-
-	core := zapcore.NewTee(
-		zapcore.NewCore(encoder, zapcore.AddSync(os.Stderr), level),
-		//zapcore.NewCore(fileEncoder, fileWriter, level),
-	)
-
-	Logger = zap.New(core, zap.AddCaller(), zap.AddCallerSkip(1))
 }
-
 func customEncoderTime(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
 	enc.AppendString(t.Format("2006-01-02 15:04:05"))
 }
