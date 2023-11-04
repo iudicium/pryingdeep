@@ -11,7 +11,7 @@ services:
     network_mode: host
 
 
-  api:
+  pryingdeep:
     container_name: pryingdeep
     build:
       context: .

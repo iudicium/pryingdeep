@@ -1,22 +1,4 @@
 
-
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -33,7 +15,6 @@
     <br />
     <br />
     <a href="https://github.com/pryingbytez/pryingdeep/issues">Report Bug</a>
-    -
     <a href="https://github.com/pryingbytez/pryingdeep/issues">Request Feature</a>
   </p>
 </div>
@@ -46,9 +27,6 @@
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
@@ -57,12 +35,16 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
+    <li>
+      <a href="#docker">Docker</a>
+      <ul>
+        <li><a href="#tor">Tor</a></li>
+      </ul>
+    </li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -82,19 +64,7 @@ The author of this project is not responsible for any possible harm caused by th
 ---
 Note:
  ⚠️ *PhoneNumber* module is currently not working. Please do not use it as of now.
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 ---
-
-
-### Built With
-
-* ![GO](https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white)
-* ![Docker](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
-* ![PostgresSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -109,55 +79,88 @@ Before you can use the our osint tool, please ensure you have the following depe
 
 2. **Go: (required)**
     - [Golang Installation Guide](https://go.dev/doc/install).
+3. **PostgresSQL: (required)**
+    - You will also be able to start it from docker soon
+    - [PostgreSQL Installation](https://www.postgresql.org/download/)
+
+## Configuration 
+
+| Config File          | Description                                                                                                                                                                                          | Command                          | AutoSave |
+|----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------|----------|
+| `crawlerConfig.json` | You can configure things like user agents, rate limiting, and other crawl-related parameters. There will be a dedicated section for the parameters later. Please refer to the gocolly docs for now.) | Manual Configuration             | No       |
+| `exporterConfig.json` | The exporter configuration file specifies how data collected by the crawler is exported or saved. You can define the output format, file paths, and export options here.                             | pryingdeep&nbsp;export&nbsp;json | Yes      |
+| `pryingConfig.json`   | Configure the OSINT modules here. You can specify them all via the command line. It will also automatically run the crawler with the passed on settings                                              | pryingdeep&nbsp;crawl&nbsp;-h    | Yes      |
+
+*Note:* `crawlerConfig.json` and `pryingConfig.json` are used for the `crawl` command.
 
 ### Installation
 
-1. Install the repo via go:
+1. Clone the repo: 
    ```sh
-   go install -v  https://github.com/pryingbytez/pryingdeep.git
+    git clone https://github.com/pryingbytez/pryingdeep.git     
    ```
 
-2. Configure your crawler inside 
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
+2. Adjust these settings to your needs.  They are located in `pryingdeep/configs/json`. <br>
+<u>You *will need to read*</u> [Colly Docs](https://github.com/gocolly/colly/blob/v1.2.0/colly.go). Also, refer to [Crawler Configuration](#crawler-configuration)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+3. Set the `.env` settings accoridng to your needs, the <u>SOCKS</U> is where tor's  port and host is running.
+
+4. Build the binary via 
+   - `go build` -> directory: `cmd/pryingdeep`
+   - `go build cmd/pryingdeep/pryingdeep.go` -> root directory, binary will also be there. 
+
+## Docker
+
+To start run *pryingdeep* inside a docker container use this command:
+```sh
+docker-compose up
+```
+<u>Adjust</u> the sleep value inside of docker-compose.yaml! It depends on how fast your computer can start the tor container. 
+Otherwise the program will panic.
+```sh
+ command:
+      - '/bin/sh'
+      - '-c'
+      - '/bin/sleep 8(this value) && ./pryingdeep crawl '
+```
+
+## Tor
+Read more about building and running our tor container here: 
+[Tor](./build/package/tor/README.MD#build) 
 
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+Crawler:
+   ```sh
+   ./pryingdeep crawl
+   ```
 
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Exporter:
+ ```sh
+ ./pryingdeep export
+  ```
 
 
 
 <!-- ROADMAP -->
 ## Roadmap
 
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
+- [ ] Add a folder for storing configuration files so that go install could be used.
+- [ ] Fix the phoneNumber module, get it to at least 50%
+- [ ] Add email validation
+- [ ] Add PostgreSQL to docker-compose
 
 See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
 <!-- CONTRIBUTING -->
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
 Don't forget to give the project a star! Thanks again!
@@ -175,69 +178,4 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- CONTACT -->
-## Contact
-
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
-
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [Img Shields](https://shields.io)
-* [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
-* [React Icons](https://react-icons.github.io/react-icons/search)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
-[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
-[Vue-url]: https://vuejs.org/
-[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
-[Angular-url]: https://angular.io/
-[Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
-[Svelte-url]: https://svelte.dev/
-[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
-[Laravel-url]: https://laravel.com
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
-[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com 
+Distributed under the  GPL-3.0 license . See `LICENSE` for more information.
