@@ -3,8 +3,10 @@ package crawler
 import (
 	"fmt"
 	"log"
+	"os"
 	"time"
 
+	"github.com/fatih/color"
 	"github.com/gocolly/colly/v2"
 	"github.com/gocolly/colly/v2/debug"
 	"github.com/gocolly/colly/v2/proxy"
@@ -33,7 +35,10 @@ func proxySetup(c *colly.Collector, tor configs.TorConfig) *colly.Collector {
 
 // TODO: add a command line interface/UI on web to process this
 func NewCollector(config configs.CollyConfig, torConfig configs.TorConfig) *colly.Collector {
-
+	if len(config.StartingURLS) == 0 {
+		color.Red("Exiting.. No starting urls were provided")
+		os.Exit(0)
+	}
 	maxBodySize := 1024 * 10 * 1024
 	configBodySize := config.MaxBodySize * 10 * 1024
 	c := colly.NewCollector()
