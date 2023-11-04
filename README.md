@@ -11,8 +11,6 @@
   <p align="center">
     <b>An OSINT intellegence gathering tool for the dark web
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
-    <br />
     <br />
     <a href="https://github.com/pryingbytez/pryingdeep/issues">Report Bug</a>
     <a href="https://github.com/pryingbytez/pryingdeep/issues">Request Feature</a>
@@ -171,7 +169,6 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
@@ -179,3 +176,5 @@ Don't forget to give the project a star! Thanks again!
 ## License
 
 Distributed under the  GPL-3.0 license . See `LICENSE` for more information.
+
+
