@@ -25,7 +25,6 @@ type LimitRule struct {
 	RandomDelay  int    `json:"RandomDelay"`
 }
 
-// Default is configs/json/crawlerConfig.json, chamge it to somewhere else if you need.
 func loadCrawlerConfig() {
 	var config CollyConfig
 

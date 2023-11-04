@@ -9,7 +9,7 @@
   <h3 align="center">Prying Deep</h3>
 
   <p align="center">
-    <b>An OSINT intellegence gathering tool for the dark web
+    <b>OSINT intellegence gathering tool for the dark web
     <br />
     <br />
     <a href="https://github.com/pryingbytez/pryingdeep/issues">Report Bug</a>
@@ -143,6 +143,9 @@ Exporter:
 
 
 
+
+
+
 <!-- ROADMAP -->
 ## Roadmap
 
@@ -150,9 +153,9 @@ Exporter:
 - [ ] Fix the phoneNumber module, get it to at least 50%
 - [ ] Add email validation
 - [ ] Add PostgreSQL to docker-compose
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
-
+- [ ] Add documentation.
+- [ ] Implement file identification and search
+- [ ] Add a command line argument (bool) to use tor or not
 
 
 

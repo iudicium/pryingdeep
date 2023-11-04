@@ -6,7 +6,10 @@ import (
 )
 
 func ReadFile(filename string) string {
-	filePath := filepath.Join("data", filename)
+	filePath, err := filepath.Abs(filename)
+	if err != nil {
+		panic(err)
+	}
 	fileContents, err := os.ReadFile(filePath)
 	if err != nil {
 		panic(err)

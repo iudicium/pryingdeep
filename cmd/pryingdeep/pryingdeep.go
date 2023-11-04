@@ -6,15 +6,11 @@ import (
 	"github.com/pryingbytez/pryingdeep/pkg/cmd"
 )
 
-// TODO: add more options to save the config for crawlerConfig.Json
-// TODO: add rate limiting.
-// TODO:Fix phoneNumbers module, instead of extracting with regexp maybe just look for tel:
 func main() {
 	color.HiMagenta(art())
 	cmd.Execute()
 }
 
-// view-source:http://xjfbpuj56rdazx4iolylxplbvyft2onuerjeimlcqwaihp3s6r4xebqd.onion/chatgpt-web-crawler/comment-page-1/
 func art() string {
 	return `
 $$$$$$$\  $$$$$$$\$$\     $$\$$$$$$\ $$\   $$\  $$$$$$\  $$$$$$$\  $$$$$$$$\ $$$$$$$$\ $$$$$$$\

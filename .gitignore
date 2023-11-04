@@ -24,6 +24,6 @@ go.work
 logs/
 .env
 data.json
-./pryingdeep
-./cmd/pryingdeep/pryingdeep
+pryingdeep
+cmd/pryingdeep/pryingdeep
 configs/.config/crawlerConfig.json
