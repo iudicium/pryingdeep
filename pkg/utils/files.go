@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 )
 
+// Currently used for testing, should move it into the testing folder
 func ReadFile(filename string) string {
 	filePath, err := filepath.Abs(filename)
 	if err != nil {

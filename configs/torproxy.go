@@ -6,7 +6,9 @@ import (
 )
 
 type TorConfig struct {
+	//Host is the ip adress that tor is running in. localhost is used by default
 	Host string
+	//Port is the port where tor is running. 9050 is the default
 	Port string
 }
 

@@ -11,6 +11,7 @@ func main() {
 	cmd.Execute()
 }
 
+// TODO: ugly art change it please
 func art() string {
 	return `
 $$$$$$$\  $$$$$$$\$$\     $$\$$$$$$\ $$\   $$\  $$$$$$\  $$$$$$$\  $$$$$$$$\ $$$$$$$$\ $$$$$$$\

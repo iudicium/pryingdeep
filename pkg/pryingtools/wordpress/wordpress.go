@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+// TODO: ad post processing and struct methods
 func FindWordpressPatterns(html string) ([]string, error) {
 	words := []string{
 		"wordpress",

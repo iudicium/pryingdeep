@@ -13,6 +13,9 @@ github.com/antchfx/xmlquery
 # github.com/antchfx/xpath v1.1.10
 ## explicit
 github.com/antchfx/xpath
+# github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be
+## explicit
+github.com/common-nighthawk/go-figure
 # github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
 ## explicit
 github.com/davecgh/go-spew/spew

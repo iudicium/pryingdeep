@@ -6,7 +6,9 @@ import (
 )
 
 type LoggerConfig struct {
-	Level   string
+	//Level is a simple logger level
+	Level string
+	//Encoder is the encoder that we are using for the logger. E.G json
 	Encoder string
 }
 

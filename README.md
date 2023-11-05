@@ -153,10 +153,10 @@ Exporter:
 - [ ] Fix the phoneNumber module, get it to at least 50%
 - [ ] Add email validation
 - [ ] Add PostgreSQL to docker-compose
-- [ ] Add documentation.
+- [x] Add documentation.
 - [ ] Implement file identification and search
 - [ ] Add a command line argument (bool) to use tor or not
-
+- [ ] Add redis queue checking
 
 
 <!-- CONTRIBUTING -->

@@ -2,6 +2,7 @@ package models
 
 import "gorm.io/gorm/clause"
 
+// PageData is embedded into the webPage model for structured data
 type PageData struct {
 	URL        string      `json:"url" gorm:"uniqueIndex;not null"`
 	Title      string      `json:"title" gorm:"Index"`
@@ -11,8 +12,8 @@ type PageData struct {
 }
 type WebPage struct {
 	Model
-
-	PageData     `json:"pageData"`
+	PageData `json:"pageData"`
+	//References are here for exporting structured data from the webPage model.
 	Emails       *Email              `json:"email" gorm:"foreignKey:WebPageID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	PhoneNumbers *PhoneNumber        `json:"phoneNumbers" gorm:"foreignKey:WebPageID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	Crypto       *Crypto             `json:"crypto" gorm:"foreignKey:WebPageID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
@@ -31,13 +32,15 @@ func CreatePage(url string, title string, statusCode int, body string, headers P
 	webPage := WebPage{
 		PageData: pageData,
 	}
-
+	// BUG: ERROR: invalid byte sequence for encoding "UTF8": 0xfc (SQLSTATE 22021)
 	if err := db.Create(&webPage).Error; err != nil {
 		return 0, err
 	}
 
 	return webPage.ID, nil
 }
+
+// Testing function. Should remove it.
 func PreloadWebPage(webPageID int) (*WebPage, error) {
 	var webPageData WebPage
 

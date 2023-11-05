@@ -26,6 +26,7 @@ func (p *CryptoScanner) searchWithPattern(html string, pattern string, cryptoFie
 	}
 }
 
+// Search spawns multiple goroutines to search for mulitple  crypto patterns,
 func (p *CryptoScanner) Search(html string, pageId int) {
 	var wg sync.WaitGroup
 	wg.Add(2)

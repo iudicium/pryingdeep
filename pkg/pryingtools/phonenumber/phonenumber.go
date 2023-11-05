@@ -40,7 +40,7 @@ func (c *PhoneNumberValidator) FindPhoneNumbers(html string) []string {
 	return c.regex.FindAllString(html, -1)
 }
 
-// Validates  phone numbers and returns a list of validated phone numbers with as much information as possible
+// FormatAndCreateNumbers Validates  phone numbers and returns a list of validated phone numbers with as much information as possible
 // From libphonenumbers
 // Function is not perfect and may sometimes fail
 func (p *PhoneNumberValidator) FormatAndCreateNumbers(webPageId int, phoneNumbers []string) {

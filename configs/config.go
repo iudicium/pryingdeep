@@ -11,8 +11,9 @@ import (
 	"github.com/fatih/color"
 )
 
-const projectDirName = "pryingdeep" // change to relevant project name
+const projectDirName = "pryingdeep"
 
+// Configuration holds different components for easy access.
 type Configuration struct {
 	TorConf      TorConfig
 	DbConf       DBConfig
@@ -28,7 +29,7 @@ func GetConfig() *Configuration {
 	return &cfg
 }
 
-// Load the setup dynamically, so we can use it for tests later on too
+// LoadEnv Load the setup dynamically, so we can use it for tests later on too
 func LoadEnv() {
 	projectName := regexp.MustCompile(`^(.*` + projectDirName + `)`)
 	currentWorkDirectory, _ := os.Getwd()
@@ -66,6 +67,8 @@ func SaveConfig(path string) {
 
 	color.HiMagenta("[+] Configuration saved to %s\n", path)
 }
+
+// SetupEnvironment is only used for setting up the crawler
 func SetupEnvironment() {
 	LoadEnv()
 	setupTor()

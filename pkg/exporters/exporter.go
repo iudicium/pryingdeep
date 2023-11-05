@@ -18,6 +18,8 @@ func NewExporter(path string) *Exporter {
 		FilePath: path,
 	}
 }
+
+// ToJSON converts structured data from QueryBuilder into json format.
 func (e Exporter) ToJSON(data interface{}) error {
 	preloadedJSON, err := json.MarshalIndent(data, "", " ")
 	if err != nil {

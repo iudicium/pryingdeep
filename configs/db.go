@@ -5,14 +5,15 @@ import (
 	"os"
 )
 
+// DBConfig holds the configuration details for your database connection.
 type DBConfig struct {
-	Host       string
-	Port       string
-	DbName     string
-	User       string
-	Password   string
-	DbURL      string
-	DbTestName string
+	Host       string // Database host address or IP.
+	Port       string // Database port.
+	DbName     string // Name of the database.
+	User       string // Database username.
+	Password   string // Password for the database user.
+	DbURL      string // Full database connection URL
+	DbTestName string // Name of the database used for testing.
 }
 
 func LoadDatabase() {

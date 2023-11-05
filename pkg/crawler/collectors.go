@@ -17,6 +17,7 @@ import (
 	"github.com/pryingbytez/pryingdeep/pkg/utils"
 )
 
+// proxySetup initializes a new tor connection for the crawler to be able to parse onion links
 func proxySetup(c *colly.Collector, tor configs.TorConfig) *colly.Collector {
 	torProxy := fmt.Sprintf("socks5://%s:%s", tor.Host, tor.Port)
 	rp, err := proxy.RoundRobinProxySwitcher(torProxy)
@@ -33,7 +34,7 @@ func proxySetup(c *colly.Collector, tor configs.TorConfig) *colly.Collector {
 
 }
 
-// TODO: add a command line interface/UI on web to process this
+// NewCollector initializes colly.NewCollector with the modifications needed for extravagant crawling.
 func NewCollector(config configs.CollyConfig, torConfig configs.TorConfig) *colly.Collector {
 	if len(config.StartingURLS) == 0 {
 		color.Red("Exiting.. No starting urls were provided")
@@ -60,12 +61,22 @@ func NewCollector(config configs.CollyConfig, torConfig configs.TorConfig) *coll
 	}
 
 	if len(config.DisallowedURLFilters) != 0 {
-		patterns, _ := utils.CompileRegexSlice(config.DisallowedURLFilters)
+		patterns, err := utils.CompileRegex(config.DisallowedURLFilters)
+		if err != nil {
+			color.HiRed("Error.. Please check your regexp in DissalowedURLFilters")
+			log.Fatal(err)
+		}
 		c.DisallowedURLFilters = patterns
 	}
 
 	if len(config.URLFilters) != 0 {
-		c.URLFilters = ConvertURLFiltersToRegexp(config.URLFilters)
+		filters, err := utils.CompileRegex(config.URLFilters)
+		if err != nil {
+			color.HiRed("Error.. Please check your regexp in URLFilters")
+			log.Fatal(err)
+		}
+		c.URLFilters = filters
+
 	}
 
 	if config.AllowURLRevisit {
@@ -76,6 +87,7 @@ func NewCollector(config configs.CollyConfig, torConfig configs.TorConfig) *coll
 		c.MaxBodySize = configBodySize
 	}
 
+	//I'm not sure if this works for now
 	if config.CacheDir != "" {
 		c.CacheDir = config.CacheDir
 	}
@@ -88,7 +100,6 @@ func NewCollector(config configs.CollyConfig, torConfig configs.TorConfig) *coll
 		c.SetDebugger(&debug.LogDebugger{})
 	}
 	if config.UseLimit {
-		//TODO: add support for all settings maybe
 		var rule colly.LimitRule
 		if config.LimitRule.Delay != 0 {
 			rule.Delay = time.Duration(config.LimitRule.Delay) * time.Second
@@ -106,6 +117,7 @@ func NewCollector(config configs.CollyConfig, torConfig configs.TorConfig) *coll
 			}
 		}
 	}
+	c.DetectCharset = true
 	//TODO: add this option into the config
 	c.SetRequestTimeout(time.Second * 30)
 	c = proxySetup(c, torConfig)

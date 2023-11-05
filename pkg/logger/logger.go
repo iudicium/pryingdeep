@@ -71,7 +71,7 @@ func InitLogger(silent bool) {
 
 		Logger = zap.New(core, zap.AddCaller(), zap.AddCallerSkip(1))
 	} else {
-		color.HiMagenta("Silent mode is on, no log statement will appear in terminal")
+		color.Yellow("[!] Silent mode is on - no logging  will appear in terminal")
 		Logger = zap.NewNop()
 	}
 }

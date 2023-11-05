@@ -1,12 +1,15 @@
 package models
 
 import (
-	"github.com/pryingbytez/pryingdeep/pkg/logger"
 	"gorm.io/gorm"
+
+	"github.com/pryingbytez/pryingdeep/pkg/logger"
 )
 
 type PhoneNumber struct {
 	Model
+
+	//WebPageID is the serves as a foreign key to web_pages
 	WebPageID           int    `json:"pageId"`
 	InternationalNumber string `json:"internationalNumber" gorm:"uniqueIndex"`
 	NationalNumber      string `json:"nationalNumber" gorm:"unique"`

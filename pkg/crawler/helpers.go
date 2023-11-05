@@ -1,52 +1,13 @@
 package crawler
 
 import (
-	"regexp"
-
 	"github.com/gocolly/colly/v2"
 
-	"github.com/pryingbytez/pryingdeep/configs"
 	"github.com/pryingbytez/pryingdeep/models"
-	"github.com/pryingbytez/pryingdeep/pkg/logger"
 	"github.com/pryingbytez/pryingdeep/pkg/utils"
 )
 
-func HandleResponse(response *colly.Response, options *configs.PryingConfig) {
-	body := string(response.Body)
-	url := response.Request.URL.String()
-	logger.Infof("Crawling url: %s", url)
-	pageId, err := ParseResponse(url, body, response)
-
-	if err != nil {
-		logger.Errorf("Something went wrong during parsing the response from: %s Err: %s ", url, err)
-	}
-
-	if options.Wordpress {
-		go processWordPress(body, pageId)
-	}
-
-	if options.Email {
-		go processEmail(body, pageId)
-	}
-	if options.Crypto {
-		go processCrypto(body, pageId)
-	}
-	if len(options.PhoneNumbers) != 0 {
-		go processPhones(body, pageId, options.PhoneNumbers)
-	}
-
-}
-func ConvertURLFiltersToRegexp(filters []string) []*regexp.Regexp {
-	var urlFilters []*regexp.Regexp
-
-	for _, filter := range filters {
-		regex := regexp.MustCompile(filter)
-		urlFilters = append(urlFilters, regex)
-	}
-
-	return urlFilters
-}
-
+// ParseResponse creates a record in the database for web_pages
 func ParseResponse(url string, body string, response *colly.Response) (int, error) {
 	title, _ := utils.ExtractTitleFromBody(body)
 	headers := utils.CreateMapFromValues(*response.Headers)

@@ -20,12 +20,16 @@ type TorCheckResult struct {
 	Client *http.Client // Include the HTTP client
 }
 
+// SetupNewTorCLient  allows us to pass custom transport, used for checking
+// If our tor connection actually works.
+// TODO: change it to colly.Request
 func SetupNewTorClient(torProxy string) (*http.Client, error) {
 	torProxyUrl, err := url.Parse(torProxy)
 
 	if err != nil {
-		//logger.Infof("tor proxy url has the wrong format", err)
+		return nil, err
 	}
+
 	//TODO: add support for passing custom timeouts
 	torTransport := &http.Transport{Proxy: http.ProxyURL(torProxyUrl)}
 	client := &http.Client{Transport: torTransport, Timeout: time.Second * 15}
@@ -34,6 +38,7 @@ func SetupNewTorClient(torProxy string) (*http.Client, error) {
 }
 
 // TODO: Rename this function to something better because it also returns a client with a tor connection
+
 func CheckIfTorConnectionExists(torProxy string) (*TorCheckResult, error) {
 	client, err := SetupNewTorClient(torProxy)
 	if err != nil {
@@ -66,6 +71,8 @@ func CheckIfTorConnectionExists(torProxy string) (*TorCheckResult, error) {
 	return result, nil
 }
 
+// CreateMapFromValues is used to convert a map into a PropertyMap which is
+// JSONB in postgres
 func CreateMapFromValues(data map[string][]string) models.PropertyMap {
 	resultMap := make(models.PropertyMap)
 
@@ -80,7 +87,8 @@ func CreateMapFromValues(data map[string][]string) models.PropertyMap {
 	return resultMap
 }
 
-func CompileRegexSlice(patterns []string) ([]*regexp.Regexp, error) {
+// CompileRegex - compiles various Collly filters such as URLFIlters, DomainFilters, etc.
+func CompileRegex(patterns []string) ([]*regexp.Regexp, error) {
 	regexSlice := make([]*regexp.Regexp, len(patterns))
 	for i, pattern := range patterns {
 		regex, err := regexp.Compile(pattern)
@@ -92,6 +100,8 @@ func CompileRegexSlice(patterns []string) ([]*regexp.Regexp, error) {
 	return regexSlice, nil
 }
 
+// ExtractTitleFromBody is there because I could not parse it with Colly so
+// There's a nice regexp, it works.
 func ExtractTitleFromBody(body string) (string, error) {
 	titleRegex := regexp.MustCompile(`(?i)<title[^>]*>([^<]+)</title>`)
 	matches := titleRegex.FindStringSubmatch(body)

@@ -1,6 +1,10 @@
 package cmd
 
 import (
+	"errors"
+
+	"github.com/fatih/color"
+	"github.com/gocolly/colly/v2"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
@@ -35,7 +39,15 @@ var crawlCmd = &cobra.Command{
 		defer logger.Logger.Sync()
 
 		models.SetupDatabase(cfg.DbConf.DbURL)
-		crawler.Crawl(cfg.TorConf, cfg.CrawlerConf, cfg.PryingConf)
+		crawler := crawler.NewCrawler(cfg.TorConf, cfg.CrawlerConf, cfg.PryingConf)
+		if err := crawler.Crawl(); err != nil {
+			if errors.Is(err, colly.ErrQueueFull) {
+				color.HiRed("\nQueue max size has been reached! Exiting.")
+			} else {
+				logger.Errorf("Crawl error: %s", err)
+			}
+		}
+
 	},
 }
 
@@ -45,5 +57,5 @@ func init() {
 	crawlCmd.Flags().BoolVarP(&wordpress, "wordpress", "w", false, "Enable WordPress support")
 	crawlCmd.Flags().BoolVarP(&crypto, "crypto", "c", false, "Enable crypto features")
 	crawlCmd.Flags().BoolVarP(&email, "email", "e", false, "Enable email notifications")
-	crawlCmd.Flags().StringSliceVarP(&phone, "phone", "p", []string{}, "Phone numbers for notifications")
+	crawlCmd.Flags().StringSliceVarP(&phone, "phone", "p", []string{}, "List of countries. RU,NL,DE,GB,US. You can specify multiple or just one.")
 }

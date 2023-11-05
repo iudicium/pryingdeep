@@ -9,6 +9,8 @@ import (
 	"github.com/pryingbytez/pryingdeep/pkg/pryingtools/wordpress"
 )
 
+//This file is used primarily for our prying modules, so that we can create new goroutines based on the specified options!
+
 func processWordPress(body string, pageId int) {
 	wordpressMatches, _ := wordpress.FindWordpressPatterns(body)
 	if len(wordpressMatches) != 0 {

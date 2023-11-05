@@ -3,6 +3,7 @@ module github.com/pryingbytez/pryingdeep
 go 1.20
 
 require (
+	github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be
 	github.com/fatih/color v1.14.1
 	github.com/gocolly/colly/v2 v2.1.0
 	github.com/joho/godotenv v1.5.1

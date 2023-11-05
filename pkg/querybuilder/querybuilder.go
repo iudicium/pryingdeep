@@ -13,12 +13,18 @@ import (
 	"github.com/pryingbytez/pryingdeep/pkg/logger"
 )
 
+// QueryBuilder  stores SQL parameters that are used for performing gorm SQL statements.
 type QueryBuilder struct {
+	//WebPageCriteria is a map that accept different fields.
+	//It takes in key value pairs. You can also specify the LIKE keyword like this:
+	//title: LIKE example
 	WebPageCriteria map[string]interface{}
-	Associations    string
-	SortBy          string
-	SortOrder       string
-	Limit           int
+	//Associations - pryingtools shortened
+	Associations string
+
+	SortBy    string
+	SortOrder string
+	Limit     int
 }
 
 func NewQueryBuilder(webPageCriteria map[string]interface{}, a, sortBy, sortOrder string, limit int) *QueryBuilder {
@@ -91,6 +97,8 @@ func (qb *QueryBuilder) Raw(db *gorm.DB, relativePath string) (error, []map[stri
 	return nil, results
 }
 
+// BuildCondition is the builder for the provided WebPageCriteria, it also supports the usage
+// of LIKE statements without needing the extra %
 func BuildCondition(query *gorm.DB, field string, criteria interface{}) *gorm.DB {
 	var pattern string
 

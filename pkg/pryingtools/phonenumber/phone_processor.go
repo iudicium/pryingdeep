@@ -20,6 +20,7 @@ func (p *PhoneProcessor) SetCountryRegex(countryCode, regexPattern string) {
 	p.regexPatterns[countryCode] = regexPattern
 }
 
+// ProcessPhoneNumbers processes phone numbers in HTML content using specified patterns for different countries.
 func (p *PhoneProcessor) ProcessPhoneNumbers(html string, webPageID int, patterns map[string]string) {
 	var wg sync.WaitGroup
 
@@ -30,11 +31,13 @@ func (p *PhoneProcessor) ProcessPhoneNumbers(html string, webPageID int, pattern
 
 			validator, err := NewPhoneNumberValidator(regexPattern, countryCode)
 			if err != nil {
-				logger.Errorf("establishing NewPhoneValidator has gone wrong: %s", err)
+				logger.Errorf("Establishing NewPhoneNumberValidator has encountered an error: %s", err)
 			}
+
 			phones := validator.FindPhoneNumbers(html)
+
 			if len(phones) != 0 {
-				logger.Infof("Found %d phone numbers for counryCode: %s", len(phones), countryCode)
+				logger.Infof("Found %d phone numbers for countryCode: %s", len(phones), countryCode)
 				validator.FormatAndCreateNumbers(webPageID, phones)
 			}
 		}(countryCode, regexPattern)

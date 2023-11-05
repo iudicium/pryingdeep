@@ -1,7 +1,6 @@
 package phonenumber
 
-import "fmt"
-
+// MapCouuntryCodeToRegex maps each countryCode to the speciifc regexp
 func MapCountryCodeToRegex(countryCodes []string) map[string]string {
 	countryMap := make(map[string]string)
 	for _, code := range countryCodes {
@@ -19,6 +18,5 @@ func MapCountryCodeToRegex(countryCodes []string) map[string]string {
 
 		}
 	}
-	fmt.Println(countryMap)
 	return countryMap
 }
