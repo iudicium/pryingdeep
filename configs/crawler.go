@@ -3,71 +3,61 @@ package configs
 // Detailed documentation for different options is here.
 // https://github.com/gocolly/colly/blob/3c987f1982edbb5ba8876eef56dd35e1ff05932a/colly.go#L55C24-L55C24
 
-type CollyConfig struct {
+type Crawler struct {
 	// StartingURLS is the entry point urls
-	StartingURLS []string `json:"startingUrls"`
+	StartingURLS []string `mapstructure:"starting-urls"`
 	// UserAgent is the User-Agent string used by HTTP requests
-	UserAgent string `json:"userAgent"`
+	UserAgent string `mapstructure:"user-Agent"`
 	// MaxDepth limits the recursion depth of visited URLs.
 	// Set it to 0 for infinite recursion (default).
-	MaxDepth int `json:"maxDepth"`
-	//AllowedDomains is a domain whitelist
-	AllowedDomains []string `json:"allowedDomains"`
-	// DisallowedDomains  is a domain blacklist
-	DisallowedDomains []string `json:"disallowedDomains"`
+	MaxDepth int `mapstructure:"max-depth"`
+	// AllowedDomains is a domain whitelist
+	AllowedDomains []string `mapstructure:"allowed-domains"`
+	// DisallowedDomains is a domain blacklist
+	DisallowedDomains []string `mapstructure:"disallowed-domains"`
 	// DisallowedURLFilters is a list of regular expressions which restricts
 	// visiting URLs. If any of the rules matches to a URL the
 	// request will be stopped. DisallowedURLFilters will
 	// be evaluated before URLFilters
 	// Leave it blank to allow any URLs to be visited
-	DisallowedURLFilters []string `json:"disallowedURLFilters"`
+	DisallowedURLFilters []string `mapstructure:"disallowed-url-filters"`
 	// URLFilters is a list of regular expressions which restricts
 	// visiting URLs. If any of the rules matches to a URL the
 	// request won't be stopped. DisallowedURLFilters will
 	// be evaluated before URLFilters
-
 	// Leave it blank to allow any URLs to be visited
-	URLFilters []string `json:"urlFilters"`
+	URLFilters []string `mapstructure:"url-filters"`
 	// AllowURLRevisit allows multiple downloads of the same URL
-
-	AllowURLRevisit bool `json:"allowURLRevisit"`
+	AllowURLRevisit bool `mapstructure:"allow-url-revisit"`
 	// MaxBodySize is the limit of the retrieved response body in bytes.
 	// 0 means unlimited.
 	// The default value for MaxBodySize is 10MB (10 * 1024 * 1024 bytes).
-
-	MaxBodySize int `json:"maxBodySize"`
+	MaxBodySize int `mapstructure:"body-size"`
 	// CacheDir specifies a location where GET requests are cached as files.
 	// When it's not defined, caching is disabled.
-
-	CacheDir string `json:"cacheDir"`
+	CacheDir string `mapstructure:"cache-dir"`
 	// IgnoreRobotsTxt allows the Collector to ignore any restrictions set by
-	// the target host's robots.txt file.  See http://www.robotstxt.org/ for more
+	// the target host's robots.txt file. See http://www.robotstxt.org/ for more
 	// information.
-
-	IgnoreRobotsTxt bool `json:"ignoreRobotsTxt"`
-
-	//QueueThreads defines the number of consumer threads
-	QueueThreads int `json:"queueThreads"`
-	//QueueMaxSize  defines the capacity of the queue.
+	IgnoreRobotsTxt bool `mapstructure:"ignore-robots-txt"`
+	// QueueThreads defines the number of consumer threads
+	QueueThreads int `mapstructure:"queue-threads"`
+	// QueueMaxSize defines the capacity of the queue.
 	// New requests are discarded if the queue size reaches MaxSize
-	QueueMaxSize int `json:"queueMaxSize"`
-
-	Debug bool `json:"debug"`
-	//UseLimit tells the crawler wherether to use LimitRule or not
-	UseLimit  bool      `json:"useLimit"`
-	LimitRule LimitRule `json:"limitRule"`
+	QueueMaxSize int  `mapstructure:"queue-max-size"`
+	Debug        bool `mapstructure:"debug"`
+	// UseLimit tells the crawler whether to use LimitRule or not
+	UseLimit  bool      `mapstructure:"use-Limit"`
+	LimitRule LimitRule `mapstructure:"limit"`
 }
-
 type LimitRule struct {
-	DomainRegexp string `json:"DomainRegexp"`
-	Delay        int    `json:"Delay"`
-	RandomDelay  int    `json:"RandomDelay"`
+	DomainRegexp string `mapstructure:"domain-regexp"`
+	Delay        int    `mapstructure:"delay"`
+	RandomDelay  int    `mapstructure:"random-delay"`
 }
 
-// loadCrawlerConfig is used to load the configs from json and apply them to the Config struct
 func loadCrawlerConfig() {
-	var config CollyConfig
-	//Probably best to not hard code the values
-	loadConfig("configs/json/crawlerConfig.json", &config)
-	cfg.CrawlerConf = config
+	var config Crawler
+	loadConfig("crawler", &config)
+	cfg.Crawler = config
 }

@@ -151,12 +151,12 @@ Exporter:
 
 - [ ] Add a folder for storing configuration files so that go install could be used.
 - [ ] Fix the phoneNumber module, get it to at least 50%
-- [ ] Add email validation
 - [ ] Add PostgreSQL to docker-compose
 - [x] Add documentation.
 - [ ] Implement file identification and search
 - [ ] Add a command line argument (bool) to use tor or not
 - [ ] Add redis queue checking
+- [ ] Add proper testing mechanisms
 
 
 <!-- CONTRIBUTING -->

@@ -1,17 +1,17 @@
 package configs
 
-// PryingConfig is the modules that the user specifies during crawling.
-type PryingConfig struct {
-	Email     bool `json:"email"`
-	Crypto    bool `json:"crypto"`
-	Wordpress bool `json:"wordpress"`
+// PryingOptions is the modules that the user specifies during crawling.
+type PryingOptions struct {
+	Email     bool `mapstructure:"email"`
+	Crypto    bool `mapstructure:"crypto"`
+	Wordpress bool `mapstructure:"wordpress"`
 	//PhoneNumbers List of countries. RU,NL,DE,GB,US. You can specify multiple or just one.
 	//Default is blank
-	PhoneNumbers []string `json:"phoneNumbers"`
+	PhoneNumbers []string `mapstructure:"phone-numbers"`
 }
 
 func loadPryingConfig() {
-	var config PryingConfig
-	loadConfig("configs/json/pryingConfig.json", &config)
-	cfg.PryingConf = config
+	var config PryingOptions
+	loadConfig("prying", &config)
+	cfg.PryingOptions = config
 }

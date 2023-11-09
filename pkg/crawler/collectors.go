@@ -35,7 +35,7 @@ func proxySetup(c *colly.Collector, tor configs.TorConfig) *colly.Collector {
 }
 
 // NewCollector initializes colly.NewCollector with the modifications needed for extravagant crawling.
-func NewCollector(config configs.CollyConfig, torConfig configs.TorConfig) *colly.Collector {
+func NewCollector(config configs.Crawler, torConfig configs.TorConfig) *colly.Collector {
 	if len(config.StartingURLS) == 0 {
 		color.Red("Exiting.. No starting urls were provided")
 		os.Exit(0)

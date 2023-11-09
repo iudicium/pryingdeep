@@ -2,25 +2,23 @@ package configs
 
 import (
 	"log"
-	"os"
-	"regexp"
 
-	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
+	"gopkg.in/yaml.v3"
 
-	"github.com/fatih/color"
+	"github.com/pryingbytez/pryingdeep/pkg/fsutils"
 )
 
 const projectDirName = "pryingdeep"
 
 // Configuration holds different components for easy access.
 type Configuration struct {
-	TorConf      TorConfig
-	DbConf       DBConfig
-	LoggerConf   LoggerConfig
-	CrawlerConf  CollyConfig
-	PryingConf   PryingConfig
-	ExporterConf ExporterConfig
+	Tor           TorConfig
+	DB            Database
+	Logger        LoggerConfig
+	Crawler       Crawler
+	Exporter      Exporter
+	PryingOptions PryingOptions
 }
 
 var cfg Configuration
@@ -29,48 +27,37 @@ func GetConfig() *Configuration {
 	return &cfg
 }
 
-// LoadEnv Load the setup dynamically, so we can use it for tests later on too
-func LoadEnv() {
-	projectName := regexp.MustCompile(`^(.*` + projectDirName + `)`)
-	currentWorkDirectory, _ := os.Getwd()
-	rootPath := projectName.Find([]byte(currentWorkDirectory))
-	err := godotenv.Load(string(rootPath) + `/.env`)
-	if err != nil {
-		log.Fatalf("Error loading .env file")
-	}
-}
-
-func loadConfig(configFile string, config interface{}) {
-
-	viper.SetConfigType("json")
-	viper.AddConfigPath(".")
-	viper.SetConfigName(configFile)
-
+func loadConfig(key string, config interface{}) {
 	if err := viper.ReadInConfig(); err != nil {
-		log.Printf("Error during loading %s config: %s\n", configFile, err)
-		return
+		log.Fatal(err)
+	}
+	if err := viper.UnmarshalKey(key, config); err != nil {
+		log.Fatal(err)
 	}
 
-	if err := viper.Unmarshal(config); err != nil {
-		log.Printf("Error during binding %s config to struct: %s\n", configFile, err)
-		return
-	}
-	color.HiMagenta("\n[+] Successfully loaded %s", configFile)
 }
 
-func SaveConfig(path string) {
-
-	viper.SetConfigFile(path)
-	if err := viper.WriteConfig(); err != nil {
-		log.Fatalf("Error writing configuration file: %s", err)
+func Save(ignoredkeys ...string) error {
+	file := viper.ConfigFileUsed()
+	if len(file) == 0 {
+		file = "./pryingdeep.yaml"
 	}
 
-	color.HiMagenta("[+] Configuration saved to %s\n", path)
+	configMap := viper.AllSettings()
+	for _, key := range ignoredkeys {
+		delete(configMap, key)
+	}
+	content, err := yaml.Marshal(configMap)
+	if err != nil {
+		return err
+	}
+
+	fsutils.WriteTextFile(file, string(content))
+
+	return nil
 }
 
-// SetupEnvironment is only used for setting up the crawler
 func SetupEnvironment() {
-	LoadEnv()
 	setupTor()
 	setupLogger()
 	loadCrawlerConfig()

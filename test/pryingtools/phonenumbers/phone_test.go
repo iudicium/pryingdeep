@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -21,6 +23,28 @@ type PhoneNumberValidationTestConfig struct {
 	CountryCode   string
 	ExpectedCount int
 	WebPageId     int
+}
+
+func ReadFilesInDirectory(directoryPath string) (string, error) {
+	files, err := os.ReadDir(directoryPath)
+	if err != nil {
+		return "", err
+	}
+
+	var result string
+
+	for _, file := range files {
+		if !file.IsDir() {
+			filePath := filepath.Join(directoryPath, file.Name())
+			content, err := os.ReadFile(filePath)
+			if err != nil {
+				return "", err
+			}
+			result += string(content)
+		}
+	}
+
+	return result, nil
 }
 
 func TestSetup(t *testing.T) {

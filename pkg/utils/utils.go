@@ -3,12 +3,13 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
-	//"github.com/r00tk3y/prying-deep/pkg/logger"
 	"io"
 	"net/http"
 	"net/url"
 	"regexp"
 	"time"
+
+	"github.com/fatih/color"
 
 	"github.com/pryingbytez/pryingdeep/models"
 )
@@ -63,6 +64,7 @@ func CheckIfTorConnectionExists(torProxy string) (*TorCheckResult, error) {
 		return nil, err
 	}
 
+	fmt.Println(color.GreenString("[+]"), "Connected to Tor IP:", color.RedString(data.IP))
 	result := &TorCheckResult{
 		IsTor:  data.IsTor,
 		Client: client,

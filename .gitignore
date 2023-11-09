@@ -26,4 +26,4 @@ logs/
 data.json
 pryingdeep
 cmd/pryingdeep/pryingdeep
-configs/.config/crawlerConfig.json
+./pryingdeep.yaml

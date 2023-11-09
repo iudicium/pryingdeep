@@ -12,11 +12,11 @@ import (
 type Crawler struct {
 	collector *colly.Collector
 	queue     *queue.Queue
-	config    configs.PryingConfig
+	config    configs.PryingOptions
 }
 
 // NewCrawler initializes a new crawler and adds urls to the queue
-func NewCrawler(torConf configs.TorConfig, crawlerConf configs.CollyConfig, pryingConf configs.PryingConfig) *Crawler {
+func NewCrawler(torConf configs.TorConfig, crawlerConf configs.Crawler, pryingConf configs.PryingOptions) *Crawler {
 	q, _ := queue.New(
 		crawlerConf.QueueThreads,
 		&queue.InMemoryQueueStorage{MaxSize: crawlerConf.QueueMaxSize},
@@ -70,7 +70,7 @@ func (c *Crawler) Crawl() error {
 
 // handleResponse processes the HTTP response, creates database records, and spawns goroutines
 // for each corresponding module specified by the pryingConfig.json configuration
-func (c *Crawler) handleResponse(response *colly.Response, options *configs.PryingConfig) {
+func (c *Crawler) handleResponse(response *colly.Response, options *configs.PryingOptions) {
 	body := string(response.Body)
 	url := response.Request.URL.String()
 	logger.Infof("Crawling url: %s", url)

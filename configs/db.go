@@ -2,54 +2,36 @@ package configs
 
 import (
 	"fmt"
-	"os"
 )
 
-// DBConfig holds the configuration details for your database connection.
-type DBConfig struct {
-	Host       string // Database host address or IP.
-	Port       string // Database port.
-	DbName     string // Name of the database.
-	User       string // Database username.
-	Password   string // Password for the database user.
-	DbURL      string // Full database connection URL
-	DbTestName string // Name of the database used for testing.
+type Database struct {
+	Host     string `mapstructure:"host"`
+	Port     string `mapstructure:"port"`
+	Name     string `mapstructure:"name"`
+	User     string `mapstructure:"user"`
+	Password string `mapstructure:"pass"`
+	TestName string `mapstructure:"testing_name"`
+	URL      string
 }
 
 func LoadDatabase() {
-	DBHost := os.Getenv("DB_HOST")
-	if DBHost == "" {
-		DBHost = "localhost"
+	var db Database
+	loadConfig("database", &db)
+
+	if db.Port == "" {
+		db.Port = "5432"
+	}
+	if db.Host == "" {
+		db.Host = "localhost"
+	}
+	if db.Name == "" {
+		db.Name = "postgres"
+	}
+	if db.User == "" {
+		db.User = "postgres"
 	}
 
-	DBPort := os.Getenv("DB_PORT")
-	if DBPort == "" {
-		DBPort = "5432"
-	}
-
-	DbName := os.Getenv("DB_NAME")
-	if DbName == "" {
-		DbName = "postgres"
-	}
-
-	DBUser := os.Getenv("DB_USER")
-	if DBUser == "" {
-		DBUser = "postgres"
-	}
-
-	DBPass := os.Getenv("DB_PASS")
-
-	DBTestingName := os.Getenv("DB_TESTING_NAME")
-
-	dbURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", DBUser, DBPass, DBHost, DBPort, DbName)
-
-	cfg.DbConf = DBConfig{
-		Host:       DBHost,
-		Port:       DBPort,
-		DbName:     DbName,
-		User:       DBUser,
-		Password:   DBPass,
-		DbURL:      dbURL,
-		DbTestName: DBTestingName,
-	}
+	dbURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", db.User, db.Password, db.Host, db.Port, db.Name)
+	db.URL = dbURL
+	cfg.DB = db
 }

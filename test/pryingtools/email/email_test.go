@@ -6,21 +6,21 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+
 	"github.com/pryingbytez/pryingdeep/configs"
 	"github.com/pryingbytez/pryingdeep/models"
 	"github.com/pryingbytez/pryingdeep/pkg/logger"
 	"github.com/pryingbytez/pryingdeep/pkg/pryingtools/email"
-	"github.com/stretchr/testify/assert"
 )
 
 var client *http.Client
-var url string
 
 func TestSetup(t *testing.T) {
 	configs.SetupEnvironment()
 	cfg := configs.GetConfig().DbConf
 
-	logger.InitLogger()
+	logger.InitLogger(false)
 	defer logger.Logger.Sync()
 
 	dbURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.DbTestName)
@@ -29,41 +29,38 @@ func TestSetup(t *testing.T) {
 
 }
 
-//func TestNoEmail(t *testing.T) {
-//	filePath = filepath.Join("data", "no_email.html")
-//
-//	fileContents, _ = os.ReadFile(filePath)
-//
-//	matches := email.FindEmail(string(fileContents))
-//	if len(matches) != 0 {
-//		t.Errorf("expected array length should be 1")
-//	}
-//
-//}
-
 func TestEmailInHtml(t *testing.T) {
-	assert := assert.New(t)
-	url = "https://proton.me/support/zendesk"
-	resp, err := client.Get(url)
-	if err != nil {
-		t.Fatal(err)
+	emailFinder := email.NewEmailFinder()
+	testCases := []struct {
+		url         string
+		expected    int
+		description string
+	}{
+		{
+			url:         "https://proton.me/support/zendesk",
+			expected:    13,
+			description: "Valid HTML with email addresses",
+		},
+		{
+			url:         "https://example.com/",
+			expected:    0,
+			description: "Valid HTML with no email addresses",
+		},
 	}
-	defer resp.Body.Close()
-	body, err := io.ReadAll(resp.Body)
 
-	matches := email.FindEmail(string(body))
-	assert.Equal(len(matches), 13)
-}
-func TestNoEmailInHtml(t *testing.T) {
-	assert := assert.New(t)
-	url = "https://example.com/"
-	resp, err := client.Get(url)
-	if err != nil {
-		t.Fatal(err)
+	for _, tc := range testCases {
+		t.Run(tc.description, func(t *testing.T) {
+			assert := assert.New(t)
+
+			resp, err := http.Get(tc.url)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer resp.Body.Close()
+			body, err := io.ReadAll(resp.Body)
+
+			matches := emailFinder.FindEmails(string(body))
+			assert.Equal(len(matches), tc.expected)
+		})
 	}
-	defer resp.Body.Close()
-	body, err := io.ReadAll(resp.Body)
-
-	matches := email.FindEmail(string(body))
-	assert.Equal(len(matches), 0)
 }

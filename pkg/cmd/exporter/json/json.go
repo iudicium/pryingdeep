@@ -17,20 +17,13 @@ import (
 var JSONCmd = &cobra.Command{
 	Use:   "json",
 	Short: "Export the crawled data to json",
-	PreRun: func(cmd *cobra.Command, args []string) {
-		if rawSQL {
-			cmd.MarkFlagRequired(rawFilePath)
-		}
-	},
-	Run: ExportJSON,
+	Run:   ExportJSON,
 }
 
 var (
-	silent       = false
 	rawSQL       = false
 	rawFilePath  = "pkg/querybuilder/queries/select.sql"
 	criteria     map[string]string
-	config       = "configs/json/exporterConfig.json"
 	associations = "all"
 	sortBy       = "status_code"
 	sortOrder    = "asc"
@@ -40,43 +33,34 @@ var (
 
 func init() {
 
-	JSONCmd.PersistentFlags().BoolVarP(&silent, "silent", "s", silent, "-s to disable logging and run silently")
-	JSONCmd.Flags().StringVarP(&config, "config", "c", config, "Config filepath -c myfilepath")
 	JSONCmd.Flags().BoolVarP(&rawSQL, "rawSQL", "r", rawSQL, "--raw to use raw sql queries that you provide. All other flags except silent, rawFilePath and filepath will not matter.")
 	JSONCmd.Flags().StringVarP(&rawFilePath, "rawSQLFilePath", "p", rawFilePath, "-rp to specify the file path to the sql file. Only use this flag if you specify -raw")
 	JSONCmd.Flags().StringToStringVarP(&criteria, "criteria", "q", criteria, "JSON-formatted criteria, e.g., -c 'title=test,\"url=LIKE example.com\"'")
 	JSONCmd.Flags().StringVarP(&associations, "associations", "a", associations, "-a WP,E,P,C")
-	JSONCmd.Flags().StringVarP(&sortBy, "sortBy", "b", sortBy, "SortBy e.g -> -b title")
-	JSONCmd.Flags().StringVarP(&sortOrder, "sortOrder", "o", sortOrder, "SortOrder e.g -> -o ASC || -b DESC. Only use this flag if you use SortBy")
+	JSONCmd.Flags().StringVarP(&sortBy, "sort-by", "b", sortBy, "SortBy e.g -> -b title")
+	JSONCmd.Flags().StringVarP(&sortOrder, "sort-order", "o", sortOrder, "SortOrder e.g -> -o ASC || -b DESC. Only use this flag if you use SortBy")
 	JSONCmd.Flags().IntVarP(&limit, "limit", "l", limit, "Limit e.g -> -l 100 -> 100 items will be taken from the database. Default limit will acquire all results from the database")
-	JSONCmd.Flags().StringVarP(&filePath, "filePath", "f", filePath, "FilePath -f myfilepath")
+	JSONCmd.Flags().StringVarP(&filePath, "filepath", "f", filePath, "FilePath -f myfilepath")
+	JSONCmd.MarkFlagsRequiredTogether("rawSQL", "rawSQLFilePath")
 
+	cli := configs.NewCLIConfig()
+	JSONCmd.Flags().VisitAll(cli.ConfigureViper("exporter"))
 }
 
 func ExportJSON(cmd *cobra.Command, args []string) {
 	var data interface{}
 	var err error
-	configs.LoadEnv()
+
+	silent := viper.GetBool("silent")
 	configs.LoadDatabase()
 	logger.InitLogger(silent)
 	defer logger.Logger.Sync()
 
 	cfg := configs.GetConfig()
-	db := models.SetupDatabase(cfg.DbConf.DbURL)
+	db := models.SetupDatabase(cfg.DB.URL)
 
-	if !rawSQL {
-		viper.Set("Associations", associations)
-		viper.Set("SortBy", sortBy)
-		viper.Set("SortOrder", sortOrder)
-		viper.Set("Limit", limit)
-		viper.Set("FilePath", filePath)
-		viper.Set("Criteria", criteria)
-
-		configs.SaveConfig(config)
-
-	}
-
-	exporterConfig := configs.LoadExporterConfig(config)
+	exporterConfig := configs.LoadExporterConfig()
+	setExportOptions(&exporterConfig)
 
 	if !rawSQL {
 		color.HiMagenta("[+] Constructing query...")
@@ -100,4 +84,33 @@ func ExportJSON(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func setExportOptions(eC *configs.Exporter) {
+	if len(criteria) != 0 {
+		eC.Criteria = make(map[string]interface{})
+		for key, value := range criteria {
+			eC.Criteria[key] = value
+		}
+	}
+	if associations != "" {
+		eC.Associations = associations
+	}
+
+	if sortBy != "" {
+		eC.SortBy = sortBy
+	}
+
+	if sortOrder != "" {
+		eC.SortOrder = sortOrder
+	}
+
+	if limit >= 0 {
+		eC.Limit = limit
+	}
+
+	if filePath != "" {
+		eC.Filepath = filePath
+	}
+
 }

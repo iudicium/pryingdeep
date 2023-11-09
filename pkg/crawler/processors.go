@@ -20,7 +20,9 @@ func processWordPress(body string, pageId int) {
 }
 
 func processEmail(body string, pageId int) {
-	emailMatches := email.FindEmail(body)
+	emailFinder := email.NewEmailFinder()
+
+	emailMatches := emailFinder.FindEmails(body)
 	if len(emailMatches) != 0 {
 		logger.Infof("Email matches: %s", emailMatches)
 		models.CreateEmails(pageId, emailMatches)

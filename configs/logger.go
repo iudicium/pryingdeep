@@ -1,26 +1,14 @@
 package configs
 
-import (
-	"log"
-	"os"
-)
-
 type LoggerConfig struct {
 	//Level is a simple logger level
-	Level string
+	Level string `mapstructure:"level"`
 	//Encoder is the encoder that we are using for the logger. E.G json
-	Encoder string
+	Encoder string `mapstructure:"encoder"`
 }
 
 func setupLogger() {
-	LoggerLevel := os.Getenv("LOGGER_LEVEL")
-	if LoggerLevel == "" {
-		log.Fatal("Log Level was not specified")
-	}
-	Encoder := os.Getenv("LOGGER_ENCODER")
-
-	cfg.LoggerConf = LoggerConfig{
-		Level:   LoggerLevel,
-		Encoder: Encoder,
-	}
+	var config LoggerConfig
+	loadConfig("logger", &config)
+	cfg.Logger = config
 }

@@ -37,7 +37,7 @@ func InitLogger(silent bool) {
 		encoder := zapcore.NewConsoleEncoder(encoderConfig)
 
 		var level zapcore.Level
-		switch config.LoggerConf.Level {
+		switch config.Logger.Level {
 		case "debug":
 			level = zap.DebugLevel
 		case "info":
@@ -50,7 +50,7 @@ func InitLogger(silent bool) {
 			level = zap.InfoLevel
 		}
 
-		//if config.LoggerConf.Encoder == "json" {
+		//if config.Logger.Encoder == "json" {
 		//	encoder = zapcore.NewJSONEncoder(encoderConfig)
 		//}
 		//TODO: fix writing to file later
