@@ -51,7 +51,8 @@ func (c *Crawler) Crawl() error {
 	var crawlErr error
 	c.collector.OnHTML("a[href]", func(e *colly.HTMLElement) {
 		url := e.Attr("href")
-		err := c.queue.AddURL(url)
+		absoluteUrl := e.Request.AbsoluteURL(url)
+		err := c.queue.AddURL(absoluteUrl)
 		if err != nil {
 			crawlErr = err
 		}

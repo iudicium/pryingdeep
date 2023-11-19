@@ -9,7 +9,7 @@
   <h3 align="center">Prying Deep</h3>
 
   <p align="center">
-    <b>OSINT intellegence gathering tool for the dark web
+    <b>OSINT intellegence gathering tool for the dark/clear web
     <br />
     <br />
     <a href="https://github.com/pryingbytez/pryingdeep/issues">Report Bug</a>
@@ -140,11 +140,6 @@ Exporter:
  ```sh
  ./pryingdeep export
   ```
-
-
-
-
-
 
 <!-- ROADMAP -->
 ## Roadmap

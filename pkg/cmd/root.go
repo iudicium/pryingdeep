@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -61,6 +62,7 @@ func initializeConfig(cmd *cobra.Command, args []string) error {
 	viper.SetConfigType("yaml")
 	if path != "" {
 		viper.SetConfigFile(path)
+		fmt.Println("test", path)
 	}
 
 	viper.AddConfigPath(".")
@@ -69,8 +71,11 @@ func initializeConfig(cmd *cobra.Command, args []string) error {
 	if err := viper.ReadInConfig(); err != nil {
 		var configFileNotFoundError viper.ConfigFileNotFoundError
 		if !errors.As(err, &configFileNotFoundError) {
-			return err
+			color.Red("Config file has not been found. " +
+				"Please download it from our github and place it inside $HOME/.pryingdeep")
 		}
+		os.Exit(1)
+
 	}
 
 	viper.SetEnvPrefix("DEEP")

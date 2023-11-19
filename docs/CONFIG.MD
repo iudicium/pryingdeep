@@ -169,7 +169,7 @@ The following sections explain each setting in the `crawler` configuration:
   - ***Source:*** [useragents.me](https://www.useragents.me/)
 </details>
 
-
+---
 
 # Exporter
 <!-- associations -->
