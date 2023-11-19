@@ -185,9 +185,8 @@ Don't forget to give the project a star! Thanks again!
 Distributed under the  GPL-3.0 license . See `LICENSE` for more information.
 
 
-
+---
 ## Preview
 
 ![Preview](./web/static/preview.png)
-*PryingDeep welcome home screen.*
 
