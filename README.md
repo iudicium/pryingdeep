@@ -161,7 +161,7 @@ Exporter:
 - [ ] Add PostgreSQL to docker-compose
 - [ ] Implement file identification and search
 - [x] Fix the config module and add various parameters
-- [ ] Issue with configs, you cannot have different structs otherwise it will not parse the configs properly. Fix by 19/11/2023
+- [x] Issue with configs, you cannot have different structs otherwise it will not parse the configs properly. Fix by 19/11/2023
 
 
 <!-- CONTRIBUTING -->
