@@ -29,3 +29,6 @@ func SetupDatabase(dbUrl string) *gorm.DB {
 	}
 	return db
 }
+func GetDB() *gorm.DB {
+	return db
+}

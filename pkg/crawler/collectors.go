@@ -52,16 +52,16 @@ func NewCollector(config configs.Crawler, torConfig configs.TorConfig) *colly.Co
 		c.MaxDepth = config.MaxDepth
 	}
 
-	if len(config.AllowedDomains) != 0 {
-		c.AllowedDomains = config.AllowedDomains
+	if len(config.Permissions.AllowedDomains) != 0 {
+		c.AllowedDomains = config.Permissions.AllowedDomains
 	}
 
-	if len(config.DisallowedDomains) != 0 {
-		c.DisallowedDomains = config.DisallowedDomains
+	if len(config.Permissions.DisallowedDomains) != 0 {
+		c.DisallowedDomains = config.Permissions.DisallowedDomains
 	}
 
-	if len(config.DisallowedURLFilters) != 0 {
-		patterns, err := utils.CompileRegex(config.DisallowedURLFilters)
+	if len(config.Permissions.DisallowedURLFilters) != 0 {
+		patterns, err := utils.CompileRegex(config.Permissions.DisallowedURLFilters)
 		if err != nil {
 			color.HiRed("Error.. Please check your regexp in DissalowedURLFilters")
 			log.Fatal(err)
@@ -69,8 +69,8 @@ func NewCollector(config configs.Crawler, torConfig configs.TorConfig) *colly.Co
 		c.DisallowedURLFilters = patterns
 	}
 
-	if len(config.URLFilters) != 0 {
-		filters, err := utils.CompileRegex(config.URLFilters)
+	if len(config.Permissions.URLFilters) != 0 {
+		filters, err := utils.CompileRegex(config.Permissions.URLFilters)
 		if err != nil {
 			color.HiRed("Error.. Please check your regexp in URLFilters")
 			log.Fatal(err)
@@ -79,8 +79,8 @@ func NewCollector(config configs.Crawler, torConfig configs.TorConfig) *colly.Co
 
 	}
 
-	if config.AllowURLRevisit {
-		c.AllowURLRevisit = config.AllowURLRevisit
+	if config.Permissions.AllowURLRevisit {
+		c.AllowURLRevisit = config.Permissions.AllowURLRevisit
 	}
 
 	if maxBodySize != configBodySize {
@@ -99,27 +99,25 @@ func NewCollector(config configs.Crawler, torConfig configs.TorConfig) *colly.Co
 	if config.Debug {
 		c.SetDebugger(&debug.LogDebugger{})
 	}
-	if config.UseLimit {
-		var rule colly.LimitRule
-		if config.LimitRule.Delay != 0 {
-			rule.Delay = time.Duration(config.LimitRule.Delay) * time.Second
+
+	if config.LimitRule.Delay > 0 || config.LimitRule.RandomDelay != 0 {
+		rule := colly.LimitRule{
+			Delay:       time.Duration(config.LimitRule.Delay) * time.Second,
+			RandomDelay: time.Duration(config.LimitRule.RandomDelay) * time.Second,
 		}
 
-		if config.LimitRule.RandomDelay != 0 {
-			rule.RandomDelay = time.Duration(config.LimitRule.RandomDelay) * time.Second
-		}
-		if config.LimitRule.DomainRegexp != "" {
-			rule.DomainRegexp = config.LimitRule.DomainRegexp
-
-			err := c.Limit(&rule)
-			if err != nil {
-				log.Fatal(err)
-			}
+		err := c.Limit(&rule)
+		if err != nil {
+			log.Fatal(err)
 		}
 	}
+
 	c.DetectCharset = true
 	//TODO: add this option into the config
 	c.SetRequestTimeout(time.Second * 30)
-	c = proxySetup(c, torConfig)
+	if config.Tor {
+		c = proxySetup(c, torConfig)
+	}
+
 	return c
 }

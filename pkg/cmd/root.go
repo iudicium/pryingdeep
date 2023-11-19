@@ -11,9 +11,10 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/pryingbytez/pryingdeep/configs"
+	"github.com/pryingbytez/pryingdeep/models"
 	"github.com/pryingbytez/pryingdeep/pkg/cmd/crawler"
-
 	"github.com/pryingbytez/pryingdeep/pkg/cmd/exporter"
+	"github.com/pryingbytez/pryingdeep/pkg/logger"
 )
 
 var (
@@ -28,8 +29,14 @@ var rootCmd = &cobra.Command{
 	Long: `Pryingdeep specializes in collecting information about dark-web/clearnet websites.
 		This tool was specifically built to extract as much information as possible from a .onion website`,
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+		err := initializeConfig(cmd, args)
+		configs.LoadDatabase()
+		logger.InitLogger(silent)
+		defer logger.Logger.Sync()
 
-		return initializeConfig(cmd, args)
+		cfg := configs.GetConfig()
+		models.SetupDatabase(cfg.DB.URL)
+		return err
 	},
 }
 
@@ -85,31 +92,12 @@ func initializeConfig(cmd *cobra.Command, args []string) error {
 func bindFlags(cmd *cobra.Command) {
 	call := func(f *pflag.Flag) {
 		configName := f.Name
-		fmt.Println(configName)
-		//prefixedName := MatchViperKey(settings, f)
 		if !f.Changed && viper.IsSet(configName) {
 			val := viper.Get(configName)
 			cmd.Flags().Set(f.Name, fmt.Sprintf("%v", val))
 
 		}
 
-		//if prefixedName != "" {
-		//	viper.BindPFlag(prefixedName, f)
-		//}
 	}
 	cmd.Flags().VisitAll(call)
 }
-
-//func MatchViperKey(settings map[string]interface{}, flag *pflag.Flag) string {
-//	for key, value := range settings {
-//		if nestedMap, ok := value.(map[string]interface{}); ok {
-//			fmt.Println(flag)
-//			if _, exists := nestedMap[flag.Name]; exists {
-//				// Return key.value
-//				return fmt.Sprintf("%s.%s", key, flag.Name)
-//			}
-//
-//		}
-//	}
-//	return ""
-//}

@@ -106,3 +106,12 @@ func WriteTextFile(path string, content string, args ...interface{}) error {
 
 	return os.WriteFile(path, []byte(content), perm)
 }
+
+func ReadTextFile(path string) (string, error) {
+	data, err := os.ReadFile(Abs(path))
+	if err != nil {
+		return "", err
+	}
+
+	return string(data), nil
+}

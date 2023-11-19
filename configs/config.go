@@ -9,16 +9,13 @@ import (
 	"github.com/pryingbytez/pryingdeep/pkg/fsutils"
 )
 
-const projectDirName = "pryingdeep"
-
 // Configuration holds different components for easy access.
 type Configuration struct {
-	Tor           TorConfig
-	DB            Database
-	Logger        LoggerConfig
-	Crawler       Crawler
-	Exporter      Exporter
-	PryingOptions PryingOptions
+	Tor      TorConfig
+	DB       Database
+	Logger   LoggerConfig
+	Crawler  Crawler
+	Exporter Exporter
 }
 
 var cfg Configuration
@@ -28,9 +25,6 @@ func GetConfig() *Configuration {
 }
 
 func loadConfig(key string, config interface{}) {
-	if err := viper.ReadInConfig(); err != nil {
-		log.Fatal(err)
-	}
 	if err := viper.UnmarshalKey(key, config); err != nil {
 		log.Fatal(err)
 	}
@@ -61,7 +55,5 @@ func SetupEnvironment() {
 	setupTor()
 	setupLogger()
 	loadCrawlerConfig()
-	loadPryingConfig()
 	LoadDatabase()
-
 }

@@ -12,11 +12,10 @@ import (
 type Crawler struct {
 	collector *colly.Collector
 	queue     *queue.Queue
-	config    configs.PryingOptions
 }
 
 // NewCrawler initializes a new crawler and adds urls to the queue
-func NewCrawler(torConf configs.TorConfig, crawlerConf configs.Crawler, pryingConf configs.PryingOptions) *Crawler {
+func NewCrawler(torConf configs.TorConfig, crawlerConf configs.Crawler) *Crawler {
 	q, _ := queue.New(
 		crawlerConf.QueueThreads,
 		&queue.InMemoryQueueStorage{MaxSize: crawlerConf.QueueMaxSize},
@@ -24,7 +23,6 @@ func NewCrawler(torConf configs.TorConfig, crawlerConf configs.Crawler, pryingCo
 	c := &Crawler{
 		collector: NewCollector(crawlerConf, torConf),
 		queue:     q,
-		config:    pryingConf,
 	}
 
 	c.collector.OnError(func(r *colly.Response, err error) {
@@ -33,7 +31,7 @@ func NewCrawler(torConf configs.TorConfig, crawlerConf configs.Crawler, pryingCo
 	})
 
 	c.collector.OnResponse(func(response *colly.Response) {
-		c.handleResponse(response, &c.config)
+		c.handleResponse(response, &crawlerConf.PryingOptions)
 	})
 
 	for i, url := range crawlerConf.StartingURLS {
@@ -43,7 +41,6 @@ func NewCrawler(torConf configs.TorConfig, crawlerConf configs.Crawler, pryingCo
 			color.HiMagenta("Queue MaxSize has been reached. Exiting..")
 		}
 	}
-
 	return c
 }
 
@@ -52,7 +49,6 @@ func NewCrawler(torConf configs.TorConfig, crawlerConf configs.Crawler, pryingCo
 // Errors here, we return them and exit application
 func (c *Crawler) Crawl() error {
 	var crawlErr error
-
 	c.collector.OnHTML("a[href]", func(e *colly.HTMLElement) {
 		url := e.Attr("href")
 		err := c.queue.AddURL(url)
@@ -64,7 +60,6 @@ func (c *Crawler) Crawl() error {
 	if err := c.queue.Run(c.collector); err != nil {
 		return err
 	}
-
 	return crawlErr
 }
 

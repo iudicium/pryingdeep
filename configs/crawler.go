@@ -5,12 +5,41 @@ package configs
 
 type Crawler struct {
 	// StartingURLS is the entry point urls
-	StartingURLS []string `mapstructure:"starting-urls"`
+	StartingURLS []string `mapstructure:"urls"`
+	Tor          bool     `mapstructure:"tor"`
 	// UserAgent is the User-Agent string used by HTTP requests
-	UserAgent string `mapstructure:"user-Agent"`
+	UserAgent string `mapstructure:"user-agent"`
 	// MaxDepth limits the recursion depth of visited URLs.
 	// Set it to 0 for infinite recursion (default).
-	MaxDepth int `mapstructure:"max-depth"`
+	MaxDepth    int                `mapstructure:"max-depth"`
+	Permissions CrawlerPermissions `mapstructure:"permissions"`
+	// MaxBodySize is the limit of the retrieved response body in bytes.
+	// 0 means unlimited.
+	// The default value for MaxBodySize is 10MB (10 * 1024 * 1024 bytes).
+	MaxBodySize int `mapstructure:"body-size"`
+	// CacheDir specifies a location where GET requests are cached as files.
+	// When it's not defined, caching is disabled.
+	CacheDir string `mapstructure:"cache-dir"`
+	// IgnoreRobotsTxt allows the Collector to ignore any restrictions set by
+	// the target host's robots.txt file. See http://www.robotstxt.org/ for more
+	// information.
+	IgnoreRobotsTxt bool `mapstructure:"ignore-robots-txt"`
+	// QueueThreads defines the number of consumer threads
+	QueueThreads int `mapstructure:"queue-threads"`
+	// QueueMaxSize defines the capacity of the queue.
+	// New requests are discarded if the queue size reaches MaxSize
+	QueueMaxSize int  `mapstructure:"queue-max-size"`
+	Debug        bool `mapstructure:"debug"`
+	// LimitRule is an embedded version  of random-delay and Delay
+	LimitRule     LimitRule     `mapstructure:"limit-rule"`
+	PryingOptions PryingOptions `mapstructure:"prying-options"`
+}
+type LimitRule struct {
+	Delay       int `mapstructure:"delay"`
+	RandomDelay int `mapstructure:"random-delay"`
+}
+
+type CrawlerPermissions struct {
 	// AllowedDomains is a domain whitelist
 	AllowedDomains []string `mapstructure:"allowed-domains"`
 	// DisallowedDomains is a domain blacklist
@@ -29,31 +58,15 @@ type Crawler struct {
 	URLFilters []string `mapstructure:"url-filters"`
 	// AllowURLRevisit allows multiple downloads of the same URL
 	AllowURLRevisit bool `mapstructure:"allow-url-revisit"`
-	// MaxBodySize is the limit of the retrieved response body in bytes.
-	// 0 means unlimited.
-	// The default value for MaxBodySize is 10MB (10 * 1024 * 1024 bytes).
-	MaxBodySize int `mapstructure:"body-size"`
-	// CacheDir specifies a location where GET requests are cached as files.
-	// When it's not defined, caching is disabled.
-	CacheDir string `mapstructure:"cache-dir"`
-	// IgnoreRobotsTxt allows the Collector to ignore any restrictions set by
-	// the target host's robots.txt file. See http://www.robotstxt.org/ for more
-	// information.
-	IgnoreRobotsTxt bool `mapstructure:"ignore-robots-txt"`
-	// QueueThreads defines the number of consumer threads
-	QueueThreads int `mapstructure:"queue-threads"`
-	// QueueMaxSize defines the capacity of the queue.
-	// New requests are discarded if the queue size reaches MaxSize
-	QueueMaxSize int  `mapstructure:"queue-max-size"`
-	Debug        bool `mapstructure:"debug"`
-	// UseLimit tells the crawler whether to use LimitRule or not
-	UseLimit  bool      `mapstructure:"use-Limit"`
-	LimitRule LimitRule `mapstructure:"limit"`
 }
-type LimitRule struct {
-	DomainRegexp string `mapstructure:"domain-regexp"`
-	Delay        int    `mapstructure:"delay"`
-	RandomDelay  int    `mapstructure:"random-delay"`
+
+type PryingOptions struct {
+	Email     bool `mapstructure:"email"`
+	Crypto    bool `mapstructure:"crypto"`
+	Wordpress bool `mapstructure:"wordpress"`
+	//PhoneNumbers List of countries. RU,NL,DE,GB,US. You can specify multiple or just one.
+	//Default is blank
+	PhoneNumbers []string `mapstructure:"phone-numbers"`
 }
 
 func loadCrawlerConfig() {

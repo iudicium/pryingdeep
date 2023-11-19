@@ -17,7 +17,6 @@ type Database struct {
 func LoadDatabase() {
 	var db Database
 	loadConfig("database", &db)
-
 	if db.Port == "" {
 		db.Port = "5432"
 	}

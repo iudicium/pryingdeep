@@ -1,28 +1,26 @@
 crawler:
-    allow-url-revisit: false
     allowed-domains: []
-    associations: all
     body-size: 5048
     cache-dir: ""
+    crypto: true
     debug: false
     disallowed-domains: []
     disallowed-url-filters: []
+    email: true
     ignore-robots-txt: true
-    limit-rule:
-        delay: 5
-        domain-regexp: ""
-        random-delay: 5
-    max-depth: 0
+    limit-delay: 1
+    limit-random-delay: 0
+    max-depth: 20
+    phone: []
     queue-max-size: 500000
     queue-threads: 16
-    silent: false
-    sort-order: asc
-    starting-urls:
-        - http://6nhmgdpnyoljh5uzr5kwlatx2u3diou4ldeommfxjz3wkhalzgjqxzqd.onion/
-    url-filters:
-        - ""
-    use-limit: false
-    user-agent: ""
+    tor: false
+    url-filters: []
+    url-revisit: false
+    urls:
+        - https://example.com
+    user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0
+    wordpress: true
 database:
     host: localhost
     name: deep
@@ -31,23 +29,17 @@ database:
     testing_name: testing
     user: admin
 exporter:
-    associations: E
+    associations: ALL
     criteria: {}
     filepath: test.json
-    limit: 0
-    rawsql: false
-    rawsqlfilepath: pkg/querybuilder/queries/select.sql
-    sort-by: status_code
-    sort-order: asc
+    limit: 1
+    raw-sql: false
+    raw-sql-filepath: pkg/querybuilder/queries/select.sql
+    sort-by: url
+    sort-order: DESC
 logger:
     encoder: json
     level: debug
-prying:
-    crypto: true
-    emails: false
-    filepath: test.json
-    phone-numbers: []
-    wordpress: false
 tor:
     host: localhost
     port: 9050

@@ -9,11 +9,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-type ConfigSaver interface {
-	ConfigureViper(*pflag.Flag)
-	SaveConfig()
-}
-
 // CLIConfig is a struct to store configuration parameters.
 type CLIConfig struct {
 	Silent     bool
