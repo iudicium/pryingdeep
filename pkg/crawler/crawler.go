@@ -5,8 +5,8 @@ import (
 	"github.com/gocolly/colly/v2"
 	"github.com/gocolly/colly/v2/queue"
 
-	"github.com/pryingbytez/pryingdeep/configs"
-	"github.com/pryingbytez/pryingdeep/pkg/logger"
+	"github.com/iudicium/pryingdeep/configs"
+	"github.com/iudicium/pryingdeep/pkg/logger"
 )
 
 type Crawler struct {

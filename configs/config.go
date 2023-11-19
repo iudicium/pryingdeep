@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/viper"
 	"gopkg.in/yaml.v3"
 
-	"github.com/pryingbytez/pryingdeep/pkg/fsutils"
+	"github.com/iudicium/pryingdeep/pkg/fsutils"
 )
 
 // Configuration holds different components for easy access.

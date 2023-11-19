@@ -1,4 +1,4 @@
-module github.com/pryingbytez/pryingdeep
+module github.com/iudicium/pryingdeep
 
 go 1.20
 

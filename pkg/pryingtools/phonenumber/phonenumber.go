@@ -3,8 +3,8 @@ package phonenumber
 import (
 	"regexp"
 
-	"github.com/pryingbytez/pryingdeep/models"
-	"github.com/pryingbytez/pryingdeep/pkg/logger"
+	"github.com/iudicium/pryingdeep/models"
+	"github.com/iudicium/pryingdeep/pkg/logger"
 
 	"github.com/nyaruka/phonenumbers"
 )

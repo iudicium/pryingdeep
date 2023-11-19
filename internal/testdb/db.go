@@ -5,8 +5,8 @@ import (
 
 	"gorm.io/gorm"
 
-	"github.com/pryingbytez/pryingdeep/configs"
-	"github.com/pryingbytez/pryingdeep/models"
+	"github.com/iudicium/pryingdeep/configs"
+	"github.com/iudicium/pryingdeep/models"
 )
 
 // InitDB is  only meant for testing

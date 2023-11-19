@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/pryingbytez/pryingdeep/configs"
-	"github.com/pryingbytez/pryingdeep/models"
-	"github.com/pryingbytez/pryingdeep/pkg/logger"
-	"github.com/pryingbytez/pryingdeep/pkg/pryingtools/wordpress"
+	"github.com/iudicium/pryingdeep/configs"
+	"github.com/iudicium/pryingdeep/models"
+	"github.com/iudicium/pryingdeep/pkg/logger"
+	"github.com/iudicium/pryingdeep/pkg/pryingtools/wordpress"
 	"github.com/stretchr/testify/assert"
 )
 

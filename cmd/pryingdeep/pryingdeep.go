@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/pryingbytez/pryingdeep/pkg/cmd"
+	"github.com/iudicium/pryingdeep/pkg/cmd"
 )
 
 func main() {

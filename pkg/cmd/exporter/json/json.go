@@ -4,10 +4,10 @@ import (
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 
-	"github.com/pryingbytez/pryingdeep/configs"
-	"github.com/pryingbytez/pryingdeep/models"
-	"github.com/pryingbytez/pryingdeep/pkg/exporters"
-	"github.com/pryingbytez/pryingdeep/pkg/querybuilder"
+	"github.com/iudicium/pryingdeep/configs"
+	"github.com/iudicium/pryingdeep/models"
+	"github.com/iudicium/pryingdeep/pkg/exporters"
+	"github.com/iudicium/pryingdeep/pkg/querybuilder"
 )
 
 var JSONCmd = &cobra.Command{

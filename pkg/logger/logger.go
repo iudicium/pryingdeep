@@ -8,7 +8,7 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
-	"github.com/pryingbytez/pryingdeep/configs"
+	"github.com/iudicium/pryingdeep/configs"
 )
 
 var Logger *zap.Logger

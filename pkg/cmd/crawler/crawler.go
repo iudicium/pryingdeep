@@ -7,9 +7,9 @@ import (
 	"github.com/gocolly/colly/v2"
 	"github.com/spf13/cobra"
 
-	"github.com/pryingbytez/pryingdeep/configs"
-	"github.com/pryingbytez/pryingdeep/pkg/crawler"
-	"github.com/pryingbytez/pryingdeep/pkg/logger"
+	"github.com/iudicium/pryingdeep/configs"
+	"github.com/iudicium/pryingdeep/pkg/crawler"
+	"github.com/iudicium/pryingdeep/pkg/logger"
 )
 
 var (

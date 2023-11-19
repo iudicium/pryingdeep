@@ -11,7 +11,7 @@ import (
 
 	"github.com/fatih/color"
 
-	"github.com/pryingbytez/pryingdeep/models"
+	"github.com/iudicium/pryingdeep/models"
 )
 
 const checkTor string = "https://check.torproject.org/api/ip"

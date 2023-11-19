@@ -11,11 +11,11 @@ import (
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 
-	"github.com/pryingbytez/pryingdeep/configs"
-	"github.com/pryingbytez/pryingdeep/models"
-	"github.com/pryingbytez/pryingdeep/pkg/cmd/crawler"
-	"github.com/pryingbytez/pryingdeep/pkg/cmd/exporter"
-	"github.com/pryingbytez/pryingdeep/pkg/logger"
+	"github.com/iudicium/pryingdeep/configs"
+	"github.com/iudicium/pryingdeep/models"
+	"github.com/iudicium/pryingdeep/pkg/cmd/crawler"
+	"github.com/iudicium/pryingdeep/pkg/cmd/exporter"
+	"github.com/iudicium/pryingdeep/pkg/logger"
 )
 
 var (

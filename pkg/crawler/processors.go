@@ -1,12 +1,12 @@
 package crawler
 
 import (
-	"github.com/pryingbytez/pryingdeep/models"
-	"github.com/pryingbytez/pryingdeep/pkg/logger"
-	"github.com/pryingbytez/pryingdeep/pkg/pryingtools/cryptoscanner"
-	"github.com/pryingbytez/pryingdeep/pkg/pryingtools/email"
-	"github.com/pryingbytez/pryingdeep/pkg/pryingtools/phonenumber"
-	"github.com/pryingbytez/pryingdeep/pkg/pryingtools/wordpress"
+	"github.com/iudicium/pryingdeep/models"
+	"github.com/iudicium/pryingdeep/pkg/logger"
+	"github.com/iudicium/pryingdeep/pkg/pryingtools/cryptoscanner"
+	"github.com/iudicium/pryingdeep/pkg/pryingtools/email"
+	"github.com/iudicium/pryingdeep/pkg/pryingtools/phonenumber"
+	"github.com/iudicium/pryingdeep/pkg/pryingtools/wordpress"
 )
 
 //This file is used primarily for our prying modules, so that we can create new goroutines based on the specified options!

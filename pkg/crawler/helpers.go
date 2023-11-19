@@ -3,8 +3,8 @@ package crawler
 import (
 	"github.com/gocolly/colly/v2"
 
-	"github.com/pryingbytez/pryingdeep/models"
-	"github.com/pryingbytez/pryingdeep/pkg/utils"
+	"github.com/iudicium/pryingdeep/models"
+	"github.com/iudicium/pryingdeep/pkg/utils"
 )
 
 // ParseResponse creates a record in the database for web_pages

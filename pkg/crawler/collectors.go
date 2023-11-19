@@ -12,9 +12,9 @@ import (
 	"github.com/gocolly/colly/v2/proxy"
 	"go.uber.org/zap"
 
-	"github.com/pryingbytez/pryingdeep/configs"
-	"github.com/pryingbytez/pryingdeep/pkg/logger"
-	"github.com/pryingbytez/pryingdeep/pkg/utils"
+	"github.com/iudicium/pryingdeep/configs"
+	"github.com/iudicium/pryingdeep/pkg/logger"
+	"github.com/iudicium/pryingdeep/pkg/utils"
 )
 
 // proxySetup initializes a new tor connection for the crawler to be able to parse onion links
