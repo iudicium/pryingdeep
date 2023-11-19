@@ -50,7 +50,7 @@ func ExportJSON(cmd *cobra.Command, args []string) error {
 
 	db := models.GetDB()
 	exporterConfig := configs.LoadExporterConfig()
-	setExportOptions(&exporterConfig)
+	setExportOptions(&exporterConfig, cmd)
 
 	if !rawSQL {
 		color.HiMagenta("[+] Constructing query...")
@@ -77,29 +77,29 @@ func ExportJSON(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func setExportOptions(eC *configs.Exporter) {
-	if len(criteria) != 0 {
+func setExportOptions(eC *configs.Exporter, cmd *cobra.Command) {
+	if cmd.Flags().Changed("criteria") && len(criteria) != 0 {
 		eC.Criteria = make(map[string]interface{})
 		for key, value := range criteria {
 			eC.Criteria[key] = value
 		}
 	}
-	if associations != "" {
+	if cmd.Flags().Changed("associations") && associations != "" {
 		eC.Associations = associations
 	}
-	if sortBy != "" {
+	if cmd.Flags().Changed("sort-by") && sortBy != "" {
 		eC.SortBy = sortBy
 	}
 
-	if sortOrder != "" {
+	if cmd.Flags().Changed("sort-order") && sortOrder != "" {
 		eC.SortOrder = sortOrder
 	}
 
-	if limit >= 0 {
+	if cmd.Flags().Changed("limit") && limit >= 0 {
 		eC.Limit = limit
 	}
 
-	if filePath != "" {
+	if cmd.Flags().Changed("filepath") && filePath != "" {
 		eC.Filepath = filePath
 	}
 

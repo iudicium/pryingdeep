@@ -27,3 +27,4 @@ data.json
 pryingdeep
 cmd/pryingdeep/pryingdeep
 ./pryingdeep.yaml
+pryingdeep.yaml.bak

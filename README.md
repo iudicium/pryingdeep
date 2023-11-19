@@ -30,7 +30,8 @@
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
+        <li><a href="#manual-installation">Manual Installation</a></li>'
+        <li><a href="#binary-installation">Binary Installation</a></li>
       </ul>
     </li>
     <li>
@@ -56,7 +57,7 @@ I've seen multiple projects out there in Github, that are crawlers for the deep 
 
 This tool serves as a reminder that best practices of OPSEC should always be followed in the deep web.
 
-The author of this project is not responsible for any possible harm caused by the usage of this tool.
+*The author of this project is not responsible for any possible harm caused by the usage of this tool.*
 
 
 ---
@@ -82,24 +83,35 @@ Before you can use the our osint tool, please ensure you have the following depe
     - You will also be able to start it from docker soon
     - [PostgreSQL Installation](https://www.postgresql.org/download/)
 
-## Configuration 
 
-*Note:* `crawlerConfig.json` and `pryingConfig.json` are used for the `crawl` command.
+### Binary Installation
 
-### Installation
+1. Install the binary via:
+
+```sh
+go install -v github.com/iudicium/pryingdeep/cmd/pryingdeep@latest
+```
+
+2. Grab the default .yaml configuration and place it inside the `$HOME/.pryingdeep` folder
+```sh
+wget https://raw.githubusercontent.com/iudicium/pryingdeep/main/pryingdeep.yaml
+```
+3. Adjust the values inside the config folder to your needs.
+
+### Manual Installation
 
 1. Clone the repo: 
    ```sh
     git clone https://github.com/pryingbytez/pryingdeep.git     
    ```
 
-2. Adjust these settings to your needs.  They are located in `pryingdeep/configs/json`. <br>
+2. Adjust the values in the .yaml configuration either through flags or manually.
+   Database, logger, tor all require manual configuration
+``. <br>
 <u>You *will need to read*</u> [Colly Docs](https://github.com/gocolly/colly/blob/v1.2.0/colly.go). Also, refer to [Crawler Configuration](#crawler-configuration)
 
 
-3. Set the `.env` settings accoridng to your needs, the <u>SOCKS</U> is where tor's  port and host is running.
-
-4. Build the binary via 
+3. Build the binary via
    - `go build` -> directory: `cmd/pryingdeep`
    - `go build cmd/pryingdeep/pryingdeep.go` -> root directory, binary will also be there. 
 

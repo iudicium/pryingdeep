@@ -300,3 +300,42 @@ The following sections explain each setting in the `crawler` configuration:
     </li>
   </ul>
 </details>
+
+
+# Global Flags
+
+<details>
+  <summary><strong>-s, --silent</strong></summary>
+  <ul>
+    <li>
+      <strong>Default:</strong> `false`
+    </li>
+    <li>
+      <strong>Description:</strong> Use this flag to disable logging and run silently.
+    </li>
+  </ul>
+</details>
+
+<details>
+  <summary><strong>-z, --save-config</strong></summary>
+  <ul>
+    <li>
+      <strong>Default:</strong> `false`
+    </li>
+    <li>
+      <strong>Description:</strong> Use this flag to save chosen options to your .yaml configuration.
+    </li>
+  </ul>
+</details>
+
+<details>
+  <summary><strong>-c, --config &lt;path&gt;</strong></summary>
+  <ul>
+    <li>
+      <strong>Value:</strong> The path to the .yaml configuration file. Please also keep the name of `pryingdeep`, otherwise the program will break.
+    </li>
+    <li>
+      <strong>Description:</strong> Use this flag to specify the path to the .yaml configuration.
+    </li>
+  </ul>
+</details>

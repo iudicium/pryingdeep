@@ -59,10 +59,11 @@ func init() {
 }
 
 func initializeConfig(cmd *cobra.Command, args []string) error {
+	viper.SetConfigName("pryingdeep")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(".")
 	viper.AddConfigPath("$HOME/.pryingdeep")
-	if path != "" {
+	if path != "" && path != "pryingdeep.yaml" {
 		viper.SetConfigFile(path)
 	}
 
@@ -71,11 +72,10 @@ func initializeConfig(cmd *cobra.Command, args []string) error {
 		if !errors.As(err, &configFileNotFoundError) {
 			color.Red("Config file has not been found. " +
 				"Please download it from our github and place it inside $HOME/.pryingdeep")
+			os.Exit(1)
 		}
-		os.Exit(1)
 
 	}
-
 	viper.SetEnvPrefix("DEEP")
 	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
 	viper.AutomaticEnv()
@@ -86,7 +86,7 @@ func initializeConfig(cmd *cobra.Command, args []string) error {
 	if saveConfig {
 		cliConfig.StoreConfig()
 	}
-
+	fmt.Println(viper.ConfigFileUsed())
 	return nil
 
 }
