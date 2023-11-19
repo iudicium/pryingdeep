@@ -30,7 +30,7 @@
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#manual-installation">Manual Installation</a></li>'
+        <li><a href="#manual-installation">Manual Installation</a></li>
         <li><a href="#binary-installation">Binary Installation</a></li>
       </ul>
     </li>
