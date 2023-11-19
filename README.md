@@ -64,6 +64,7 @@ Note:
  ⚠️ *PhoneNumber* module is currently not working. Please do not use it as of now.
 ---
 
+
 <!-- GETTING STARTED -->
 ## Getting Started
 
@@ -82,12 +83,6 @@ Before you can use the our osint tool, please ensure you have the following depe
     - [PostgreSQL Installation](https://www.postgresql.org/download/)
 
 ## Configuration 
-
-| Config File          | Description                                                                                                                                                                                          | Command                          | AutoSave |
-|----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------|----------|
-| `crawlerConfig.json` | You can configure things like user agents, rate limiting, and other crawl-related parameters. There will be a dedicated section for the parameters later. Please refer to the gocolly docs for now.) | Manual Configuration             | No       |
-| `exporterConfig.json` | The exporter configuration file specifies how data collected by the crawler is exported or saved. You can define the output format, file paths, and export options here.                             | pryingdeep&nbsp;export&nbsp;json | Yes      |
-| `pryingConfig.json`   | Configure the OSINT modules here. You can specify them all via the command line. It will also automatically run the crawler with the passed on settings                                              | pryingdeep&nbsp;crawl&nbsp;-h    | Yes      |
 
 *Note:* `crawlerConfig.json` and `pryingConfig.json` are used for the `crawl` command.
 
@@ -123,9 +118,14 @@ Otherwise the program will panic.
       - '/bin/sleep 8(this value) && ./pryingdeep crawl '
 ```
 
+## Config
+Read more each parameter here:
+[config](./docs/CONFIG.MD#table-of-contents)
+
+
 ## Tor
-Read more about building and running our tor container here: 
-[Tor](./build/package/tor/README.MD#build) 
+Read more about building and running our tor container here:
+[Tor](./build/package/tor/README.MD#build)
 
 
 <!-- USAGE EXAMPLES -->
@@ -152,11 +152,8 @@ Exporter:
 - [ ] Add a folder for storing configuration files so that go install could be used.
 - [ ] Fix the phoneNumber module, get it to at least 50%
 - [ ] Add PostgreSQL to docker-compose
-- [x] Add documentation.
 - [ ] Implement file identification and search
-- [ ] Add a command line argument (bool) to use tor or not
-- [ ] Add redis queue checking
-- [ ] Add proper testing mechanisms
+- [x] Fix the config module and add various parameters
 
 
 <!-- CONTRIBUTING -->

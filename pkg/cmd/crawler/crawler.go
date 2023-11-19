@@ -61,15 +61,15 @@ func Crawl(cmd *cobra.Command, args []string) {
 
 func init() {
 	CrawlCmd.Flags().StringSliceVarP(&urls, "urls", "u", nil, "Entry point URLs")
-	CrawlCmd.Flags().BoolVarP(&tor, "tor", "t", false, "Turn off connecting to tor and crawl with your IP on the clearweb. -t=false")
+	CrawlCmd.Flags().BoolVarP(&tor, "tor", "t", false, "Turn on/off connecting to Tor.")
 	CrawlCmd.Flags().StringVar(&userAgent, "user-agent", userAgent, "Specify any user agents for the crawler to use.")
 	CrawlCmd.Flags().IntVar(&maxDepth, "max-depth", 0, "Maximum recursion depth")
 	CrawlCmd.Flags().IntVar(&maxBodySize, "body-size", 0, "Max body size in bytes (0 for unlimited)")
 	CrawlCmd.Flags().StringVar(&cacheDir, "cache-dir", "", "Cache directory")
 	CrawlCmd.Flags().BoolVar(&ignoreRobotsTxt, "ignore-robots-txt", false, "Ignore robots.txt")
 	CrawlCmd.Flags().BoolVar(&debug, "debug", false, "Enable debug mode")
-	CrawlCmd.Flags().IntVar(&queueThreads, "queue-threads", 0, "Number of queue threads")
-	CrawlCmd.Flags().IntVar(&queueMaxSize, "queue-max-size", 0, "Queue max size")
+	CrawlCmd.Flags().IntVar(&queueThreads, "queue-threads", 4, "Number of queue threads")
+	CrawlCmd.Flags().IntVar(&queueMaxSize, "queue-max-size", 50000, "Queue max size")
 
 	CrawlCmd.Flags().StringSliceVar(&allowedDomains, "allowed-domains", nil, "Allowed domains")
 	CrawlCmd.Flags().StringSliceVar(&disallowedDomains, "disallowed-domains", nil, "Disallowed domains")

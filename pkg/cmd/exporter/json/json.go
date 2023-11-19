@@ -30,15 +30,15 @@ var (
 )
 
 func init() {
-	JSONCmd.Flags().BoolVarP(&rawSQL, "raw-sql", "r", rawSQL, "--raw to use raw sql queries that you provide. All other flags except silent, rawFilePath and filepath will not matter.")
+	JSONCmd.Flags().BoolVarP(&rawSQL, "raw", "r", rawSQL, "--raw to use raw sql queries that you provide. All other flags except silent, rawFilePath and filepath will not matter.")
 	JSONCmd.Flags().StringVarP(&rawFilePath, "raw-sql-filepath", "p", rawFilePath, "-rp to specify the file path to the sql file. Only use this flag if you specify -raw")
-	JSONCmd.Flags().StringToStringVarP(&criteria, "criteria", "q", criteria, "JSON-formatted criteria, e.g., -c 'title=test,\"url=LIKE example.com\"'")
+	JSONCmd.Flags().StringToStringVarP(&criteria, "criteria", "q", criteria, "JSON-formatted criteria, e.g., -q 'title=test,\"url=LIKE example.com\"'")
 	JSONCmd.Flags().StringVarP(&associations, "associations", "a", associations, "-a WP,E,P,C")
 	JSONCmd.Flags().StringVarP(&sortBy, "sort-by", "b", sortBy, "SortBy e.g -> -b title")
 	JSONCmd.Flags().StringVarP(&sortOrder, "sort-order", "o", sortOrder, "SortOrder e.g -> -o ASC || -b DESC. Only use this flag if you use SortBy")
 	JSONCmd.Flags().IntVarP(&limit, "limit", "l", limit, "Limit e.g -> -l 100 -> 100 items will be taken from the database. Default limit will acquire all results from the database")
 	JSONCmd.Flags().StringVarP(&filePath, "filepath", "f", filePath, "FilePath -f myfilepath")
-	JSONCmd.MarkFlagsRequiredTogether("raw-sql", "raw-sql-filepath")
+	JSONCmd.MarkFlagsRequiredTogether("raw", "raw-sql-filepath")
 
 	cli := configs.NewCLIConfig()
 	JSONCmd.Flags().VisitAll(cli.ConfigureViper("exporter"))
