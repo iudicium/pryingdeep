@@ -308,7 +308,7 @@ The following sections explain each setting in the `crawler` configuration:
   <summary><strong>-s, --silent</strong></summary>
   <ul>
     <li>
-      <strong>Default:</strong> `false`
+      <strong>Default:</strong> <code>false</code>
     </li>
     <li>
       <strong>Description:</strong> Use this flag to disable logging and run silently.
@@ -320,7 +320,7 @@ The following sections explain each setting in the `crawler` configuration:
   <summary><strong>-z, --save-config</strong></summary>
   <ul>
     <li>
-      <strong>Default:</strong> `false`
+      <strong>Default:</strong> <code>false</code>
     </li>
     <li>
       <strong>Description:</strong> Use this flag to save chosen options to your .yaml configuration.
@@ -332,7 +332,7 @@ The following sections explain each setting in the `crawler` configuration:
   <summary><strong>-c, --config &lt;path&gt;</strong></summary>
   <ul>
     <li>
-      <strong>Value:</strong> The path to the .yaml configuration file. Please also keep the name of `pryingdeep`, otherwise the program will break.
+      <strong>Value:</strong> The path to the .yaml configuration file. Please also keep the filename as  <code>pryingdeep</code>, otherwise the program will break.
     </li>
     <li>
       <strong>Description:</strong> Use this flag to specify the path to the .yaml configuration.
