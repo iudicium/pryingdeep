@@ -1,26 +1,26 @@
 crawler:
     allowed-domains: []
-    body-size: 5048
+    body-size: 0
     cache-dir: ""
-    crypto: true
+    crypto: false
     debug: false
     disallowed-domains: []
     disallowed-url-filters: []
-    email: true
-    ignore-robots-txt: true
-    limit-delay: 1
+    email: false
+    ignore-robots-txt: false
+    limit-delay: 0
     limit-random-delay: 0
-    max-depth: 20
+    max-depth: 0
     phone: []
     queue-max-size: 500000
-    queue-threads: 16
+    queue-threads: 4
     tor: false
     url-filters: []
     url-revisit: false
     urls:
         - https://example.com
     user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0
-    wordpress: true
+    wordpress: false
 database:
     host: localhost
     name: deep
@@ -31,7 +31,7 @@ database:
 exporter:
     associations: ALL
     criteria: {}
-    filepath: test.json
+    filepath: data.json
     limit: 1
     raw-sql: false
     raw-sql-filepath: pkg/querybuilder/queries/select.sql
