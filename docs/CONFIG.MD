@@ -140,7 +140,7 @@ The following sections explain each setting in the `crawler` configuration:
 
   - **Description:** List of regular expressions to filter URLs.
   - **Default Value:** `[]` (empty list)
-  - ***Example:*** `http://httpbin\.org/h.+`
+  - ***Example:*** `http://httpbin\.org/h.+` `(?:https?://)?(?:www)?(\\S*?\\.onion)\\b` -> will limit to .onion domains only
 </details>
 
 <details>

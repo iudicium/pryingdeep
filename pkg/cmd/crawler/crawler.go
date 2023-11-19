@@ -157,4 +157,6 @@ func setCrawlerOptions(c *configs.Crawler, cmd *cobra.Command) {
 	if cmd.Flags().Changed("phone") && phone != nil {
 		c.PryingOptions.PhoneNumbers = phone
 	}
+
+	logger.Infof("Wordpress: %t, Crypto: %t, Email: %t, Phone: %s", wordpress, crypto, email, phone)
 }

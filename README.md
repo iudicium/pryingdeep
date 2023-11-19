@@ -108,7 +108,7 @@ wget https://raw.githubusercontent.com/iudicium/pryingdeep/main/pryingdeep.yaml
 2. Adjust the values in the .yaml configuration either through flags or manually.
    Database, logger, tor all require manual configuration
 ``. <br>
-<u>You *will need to read*</u> [Colly Docs](https://github.com/gocolly/colly/blob/v1.2.0/colly.go). Also, refer to [Crawler Configuration](#crawler-configuration)
+<u>You *will need to read*</u> [Colly Docs](https://github.com/gocolly/colly/blob/v1.2.0/colly.go). Also, refer to [Config Explanation](./docs/CONFIG.MD#table-of-contents)
 
 
 3. Build the binary via
