@@ -7,6 +7,9 @@
     <li>
       <a href="#exporter">Exporter</a>
     </li>
+    <li>
+      <a href="#global-flags">Global flags</a>
+    </li>
   </ol>
 </details>
 
