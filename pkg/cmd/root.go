@@ -86,7 +86,6 @@ func initializeConfig(cmd *cobra.Command, args []string) error {
 	if saveConfig {
 		cliConfig.StoreConfig()
 	}
-	fmt.Println(viper.ConfigFileUsed())
 	return nil
 
 }

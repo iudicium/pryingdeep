@@ -156,7 +156,7 @@ Exporter:
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Add a folder for storing configuration files so that go install could be used.
+- [x] Add a folder for storing configuration files so that go install could be used.
 - [ ] Fix the phoneNumber module, get it to at least 50%
 - [ ] Add PostgreSQL to docker-compose
 - [ ] Implement file identification and search
@@ -184,4 +184,10 @@ Don't forget to give the project a star! Thanks again!
 
 Distributed under the  GPL-3.0 license . See `LICENSE` for more information.
 
+
+
+## Preview
+
+![Preview](./web/static/preview.png)
+*PryingDeep welcome home screen.*
 
