@@ -11,11 +11,33 @@ type Crawler struct {
 	UserAgent string `mapstructure:"user-agent"`
 	// MaxDepth limits the recursion depth of visited URLs.
 	// Set it to 0 for infinite recursion (default).
-	MaxDepth    int                `mapstructure:"max-depth"`
-	Permissions CrawlerPermissions `mapstructure:"permissions"`
+	MaxDepth int `mapstructure:"max-depth"`
+
+	// AllowedDomains is a domain whitelist
+	AllowedDomains []string `mapstructure:"allowed-domains"`
+
+	// DisallowedDomains is a domain blacklist
+	DisallowedDomains []string `mapstructure:"disallowed-domains"`
+
+	// DisallowedURLFilters is a list of regular expressions which restricts
+	// visiting URLs. If any of the rules matches to a URL the
+	// request will be stopped. DisallowedURLFilters will
+	// be evaluated before URLFilters
+	// Leave it blank to allow any URLs to be visited
+	DisallowedURLFilters []string `mapstructure:"disallowed-url-filters"`
+
+	// URLFilters is a list of regular expressions which restricts
+	// visiting URLs. If any of the rules matches to a URL the
+	// request won't be stopped. DisallowedURLFilters will
+	// be evaluated before URLFilters
+	// Leave it blank to allow any URLs to be visited
+	URLFilters []string `mapstructure:"url-filters"`
+
+	// AllowURLRevisit allows multiple downloads of the same URL
+	AllowURLRevisit bool `mapstructure:"allow-url-revisit"`
 	// MaxBodySize is the limit of the retrieved response body in bytes.
 	// 0 means unlimited.
-	// The default value for MaxBodySize is 10MB (10 * 1024 * 1024 bytes).
+	// The default value for MaxBodySize is 10MB (10 * 1024 * 1024 bytes)
 	MaxBodySize int `mapstructure:"body-size"`
 	// CacheDir specifies a location where GET requests are cached as files.
 	// When it's not defined, caching is disabled.
@@ -30,43 +52,18 @@ type Crawler struct {
 	// New requests are discarded if the queue size reaches MaxSize
 	QueueMaxSize int  `mapstructure:"queue-max-size"`
 	Debug        bool `mapstructure:"debug"`
-	// LimitRule is an embedded version  of random-delay and Delay
-	LimitRule     LimitRule     `mapstructure:"limit-rule"`
-	PryingOptions PryingOptions `mapstructure:"prying-options"`
-}
-type LimitRule struct {
+
 	Delay       int `mapstructure:"delay"`
 	RandomDelay int `mapstructure:"random-delay"`
-}
 
-type CrawlerPermissions struct {
-	// AllowedDomains is a domain whitelist
-	AllowedDomains []string `mapstructure:"allowed-domains"`
-	// DisallowedDomains is a domain blacklist
-	DisallowedDomains []string `mapstructure:"disallowed-domains"`
-	// DisallowedURLFilters is a list of regular expressions which restricts
-	// visiting URLs. If any of the rules matches to a URL the
-	// request will be stopped. DisallowedURLFilters will
-	// be evaluated before URLFilters
-	// Leave it blank to allow any URLs to be visited
-	DisallowedURLFilters []string `mapstructure:"disallowed-url-filters"`
-	// URLFilters is a list of regular expressions which restricts
-	// visiting URLs. If any of the rules matches to a URL the
-	// request won't be stopped. DisallowedURLFilters will
-	// be evaluated before URLFilters
-	// Leave it blank to allow any URLs to be visited
-	URLFilters []string `mapstructure:"url-filters"`
-	// AllowURLRevisit allows multiple downloads of the same URL
-	AllowURLRevisit bool `mapstructure:"allow-url-revisit"`
-}
-
-type PryingOptions struct {
-	Email     bool `mapstructure:"email"`
-	Crypto    bool `mapstructure:"crypto"`
-	Wordpress bool `mapstructure:"wordpress"`
 	//PhoneNumbers List of countries. RU,NL,DE,GB,US. You can specify multiple or just one.
 	//Default is blank
 	PhoneNumbers []string `mapstructure:"phone-numbers"`
+	Email        bool     `mapstructure:"email"`
+	Crypto       bool     `mapstructure:"crypto"`
+	Wordpress    bool     `mapstructure:"wordpress"`
+}
+type LimitRule struct {
 }
 
 func loadCrawlerConfig() {

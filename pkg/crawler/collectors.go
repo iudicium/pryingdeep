@@ -10,7 +10,6 @@ import (
 	"github.com/gocolly/colly/v2"
 	"github.com/gocolly/colly/v2/debug"
 	"github.com/gocolly/colly/v2/proxy"
-	"go.uber.org/zap"
 
 	"github.com/iudicium/pryingdeep/configs"
 	"github.com/iudicium/pryingdeep/pkg/logger"
@@ -28,7 +27,7 @@ func proxySetup(c *colly.Collector, tor configs.TorConfig) *colly.Collector {
 
 	checkTorConnection, err := utils.CheckIfTorConnectionExists(torProxy)
 	if !checkTorConnection.IsTor {
-		logger.Fatal("Killing session. Can't connect to Tor.\nError:  ", zap.Error(err))
+		logger.Fatalf("\nError:  ", err)
 	}
 	return c
 
@@ -52,16 +51,16 @@ func NewCollector(config configs.Crawler, torConfig configs.TorConfig) *colly.Co
 		c.MaxDepth = config.MaxDepth
 	}
 
-	if len(config.Permissions.AllowedDomains) != 0 {
-		c.AllowedDomains = config.Permissions.AllowedDomains
+	if len(config.AllowedDomains) != 0 {
+		c.AllowedDomains = config.AllowedDomains
 	}
 
-	if len(config.Permissions.DisallowedDomains) != 0 {
-		c.DisallowedDomains = config.Permissions.DisallowedDomains
+	if len(config.DisallowedDomains) != 0 {
+		c.DisallowedDomains = config.DisallowedDomains
 	}
 
-	if len(config.Permissions.DisallowedURLFilters) != 0 {
-		patterns, err := utils.CompileRegex(config.Permissions.DisallowedURLFilters)
+	if len(config.DisallowedURLFilters) != 0 {
+		patterns, err := utils.CompileRegex(config.DisallowedURLFilters)
 		if err != nil {
 			color.HiRed("Error.. Please check your regexp in DissalowedURLFilters")
 			log.Fatal(err)
@@ -69,8 +68,8 @@ func NewCollector(config configs.Crawler, torConfig configs.TorConfig) *colly.Co
 		c.DisallowedURLFilters = patterns
 	}
 
-	if len(config.Permissions.URLFilters) != 0 {
-		filters, err := utils.CompileRegex(config.Permissions.URLFilters)
+	if len(config.URLFilters) != 0 {
+		filters, err := utils.CompileRegex(config.URLFilters)
 		if err != nil {
 			color.HiRed("Error.. Please check your regexp in URLFilters")
 			log.Fatal(err)
@@ -79,8 +78,8 @@ func NewCollector(config configs.Crawler, torConfig configs.TorConfig) *colly.Co
 
 	}
 
-	if config.Permissions.AllowURLRevisit {
-		c.AllowURLRevisit = config.Permissions.AllowURLRevisit
+	if config.AllowURLRevisit {
+		c.AllowURLRevisit = config.AllowURLRevisit
 	}
 
 	if maxBodySize != configBodySize {
@@ -100,10 +99,10 @@ func NewCollector(config configs.Crawler, torConfig configs.TorConfig) *colly.Co
 		c.SetDebugger(&debug.LogDebugger{})
 	}
 
-	if config.LimitRule.Delay > 0 || config.LimitRule.RandomDelay != 0 {
+	if config.Delay > 0 || config.RandomDelay != 0 {
 		rule := colly.LimitRule{
-			Delay:       time.Duration(config.LimitRule.Delay) * time.Second,
-			RandomDelay: time.Duration(config.LimitRule.RandomDelay) * time.Second,
+			Delay:       time.Duration(config.Delay) * time.Second,
+			RandomDelay: time.Duration(config.RandomDelay) * time.Second,
 		}
 
 		err := c.Limit(&rule)

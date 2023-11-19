@@ -12,6 +12,7 @@ import (
 	"github.com/fatih/color"
 
 	"github.com/iudicium/pryingdeep/models"
+	"github.com/iudicium/pryingdeep/pkg/logger"
 )
 
 const checkTor string = "https://check.torproject.org/api/ip"
@@ -23,7 +24,6 @@ type TorCheckResult struct {
 
 // SetupNewTorCLient  allows us to pass custom transport, used for checking
 // If our tor connection actually works.
-// TODO: change it to colly.Request
 func SetupNewTorClient(torProxy string) (*http.Client, error) {
 	torProxyUrl, err := url.Parse(torProxy)
 
@@ -46,15 +46,16 @@ func CheckIfTorConnectionExists(torProxy string) (*TorCheckResult, error) {
 		return nil, err
 	}
 
-	resp, _ := client.Get(checkTor)
+	resp, err := client.Get(checkTor)
+	if err != nil {
+		logger.Fatalf("Failed to connect to Tor proxy. Please ensure that Tor is running and check your network connection. Error: %s", err.Error())
 
+	}
 	defer resp.Body.Close()
-
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
-
 	var data struct {
 		IsTor bool `json:"IsTor"`
 		IP    string

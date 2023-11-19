@@ -94,7 +94,7 @@ func setCrawlerOptions(c *configs.Crawler, cmd *cobra.Command) {
 		c.Tor = tor
 	}
 	if cmd.Flags().Changed("url-revisit") {
-		c.Permissions.AllowURLRevisit = allowURLRevisit
+		c.AllowURLRevisit = allowURLRevisit
 	}
 	if cmd.Flags().Changed("ignore-robots-txt") {
 		c.IgnoreRobotsTxt = ignoreRobotsTxt
@@ -103,60 +103,60 @@ func setCrawlerOptions(c *configs.Crawler, cmd *cobra.Command) {
 		c.Debug = debug
 	}
 	if cmd.Flags().Changed("wordpress") {
-		c.PryingOptions.Wordpress = wordpress
+		c.Wordpress = wordpress
 	}
 	if cmd.Flags().Changed("email") {
-		c.PryingOptions.Email = email
+		c.Email = email
 	}
 	if cmd.Flags().Changed("crypto") {
-		c.PryingOptions.Crypto = crypto
+		c.Crypto = crypto
 	}
 
-	if cmd.Flags().Changed("urls") && urls != nil {
+	if cmd.Flags().Changed("urls") {
 		c.StartingURLS = urls
 	}
-	if cmd.Flags().Changed("max-depth") && maxDepth != 0 {
+	if cmd.Flags().Changed("max-depth") {
 		c.MaxDepth = maxDepth
 	}
-	if cmd.Flags().Changed("bod-size") && maxBodySize != 0 {
+	if cmd.Flags().Changed("body-size") {
 		c.MaxBodySize = maxBodySize
 	}
-	if cmd.Flags().Changed("cache-dir") && cacheDir != "" {
+	if cmd.Flags().Changed("cache-dir") {
 		c.CacheDir = cacheDir
 	}
 
-	if cmd.Flags().Changed("queue-threads") && queueThreads != 0 {
+	if cmd.Flags().Changed("queue-threads") {
 		c.QueueThreads = queueThreads
 	}
 
-	if cmd.Flags().Changed("queue-max-size") && queueMaxSize != 0 {
+	if cmd.Flags().Changed("queue-max-size") {
 		c.QueueMaxSize = queueMaxSize
 	}
 
-	if cmd.Flags().Changed("allowed-domains") && allowedDomains != nil {
-		c.Permissions.AllowedDomains = allowedDomains
+	if cmd.Flags().Changed("allowed-domains") {
+		c.AllowedDomains = allowedDomains
 	}
 
-	if cmd.Flags().Changed("disallowed-url-filters") && disallowedURLFilters != nil {
-		c.Permissions.DisallowedURLFilters = disallowedURLFilters
+	if cmd.Flags().Changed("disallowed-url-filters") {
+		c.DisallowedURLFilters = disallowedURLFilters
 	}
-	if cmd.Flags().Changed("disallowed-domains") && disallowedDomains != nil {
-		c.Permissions.DisallowedDomains = disallowedDomains
+	if cmd.Flags().Changed("disallowed-domains") {
+		c.DisallowedDomains = disallowedDomains
 	}
-	if cmd.Flags().Changed("url-filters") && urlFilters != nil {
-		c.Permissions.URLFilters = urlFilters
-	}
-
-	if cmd.Flags().Changed("limit-delay") && delay != 0 {
-		c.LimitRule.Delay = delay
+	if cmd.Flags().Changed("url-filters") {
+		c.URLFilters = urlFilters
 	}
 
-	if cmd.Flags().Changed("limit-random-delay") && randomDelay != 0 {
-		c.LimitRule.RandomDelay = randomDelay
-	}
-	if cmd.Flags().Changed("phone") && phone != nil {
-		c.PryingOptions.PhoneNumbers = phone
+	if cmd.Flags().Changed("limit-delay") {
+		c.Delay = delay
 	}
 
-	logger.Infof("Wordpress: %t, Crypto: %t, Email: %t, Phone: %s", wordpress, crypto, email, phone)
+	if cmd.Flags().Changed("limit-random-delay") {
+		c.RandomDelay = randomDelay
+	}
+	if cmd.Flags().Changed("phone") {
+		c.PhoneNumbers = phone
+	}
+	logger.Infof("Wordpress: %t, Crypto: %t, Email: %t, Phone: %s", c.Wordpress, c.Crypto, c.Email, c.PhoneNumbers)
+
 }

@@ -31,7 +31,7 @@ func NewCrawler(torConf configs.TorConfig, crawlerConf configs.Crawler) *Crawler
 	})
 
 	c.collector.OnResponse(func(response *colly.Response) {
-		c.handleResponse(response, &crawlerConf.PryingOptions)
+		c.handleResponse(response, &crawlerConf)
 	})
 
 	for i, url := range crawlerConf.StartingURLS {
@@ -66,7 +66,7 @@ func (c *Crawler) Crawl() error {
 
 // handleResponse processes the HTTP response, creates database records, and spawns goroutines
 // for each corresponding module specified by the pryingConfig.json configuration
-func (c *Crawler) handleResponse(response *colly.Response, options *configs.PryingOptions) {
+func (c *Crawler) handleResponse(response *colly.Response, options *configs.Crawler) {
 	body := string(response.Body)
 	url := response.Request.URL.String()
 	logger.Infof("Crawling url: %s", url)
