@@ -60,13 +60,11 @@ func init() {
 
 func initializeConfig(cmd *cobra.Command, args []string) error {
 	viper.SetConfigType("yaml")
-	if path != "" {
-		viper.SetConfigFile(path)
-		fmt.Println("test", path)
-	}
-
 	viper.AddConfigPath(".")
 	viper.AddConfigPath("$HOME/.pryingdeep")
+	if path != "" {
+		viper.SetConfigFile(path)
+	}
 
 	if err := viper.ReadInConfig(); err != nil {
 		var configFileNotFoundError viper.ConfigFileNotFoundError
