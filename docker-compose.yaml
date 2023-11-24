@@ -6,10 +6,12 @@ services:
     build:
       context: ./build/package/tor
     restart: always
-
-   
     network_mode: host
-
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sS --socks5-hostname localhost:9050 https://check.torproject.org/api/ip | grep '\"IsTor\": *true'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   pryingdeep:
     container_name: pryingdeep
@@ -17,11 +19,12 @@ services:
       context: .
       dockerfile: ./Dockerfile
 
-
-    # Adjust the sleep value depending on how fast your computer starts tor. B
     command:
       - '/bin/sh'
       - '-c'
-      - '/bin/sleep 8 && ./pryingdeep crawl '
+      - './pryingdeep crawl'
 
     network_mode: host
+    depends_on:
+      tor:
+        condition: service_healthy
