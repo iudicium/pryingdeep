@@ -25,5 +25,3 @@ services:
       - '/bin/sleep 8 && ./pryingdeep crawl '
 
     network_mode: host
-
-

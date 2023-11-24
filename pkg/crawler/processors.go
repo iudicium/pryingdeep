@@ -36,6 +36,6 @@ func processPhones(body string, pageId int, countryCodes []string) {
 }
 
 func processCrypto(body string, pageId int) {
-	crypto := cryptoscanner.New()
+	crypto := cryptoscanner.NewCryptoScanner()
 	crypto.Search(body, pageId)
 }

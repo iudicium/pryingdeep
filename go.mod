@@ -3,6 +3,7 @@ module github.com/iudicium/pryingdeep
 go 1.20
 
 require (
+	github.com/deckarep/golang-set/v2 v2.4.0
 	github.com/fatih/color v1.14.1
 	github.com/gocolly/colly/v2 v2.1.0
 	github.com/lib/pq v1.10.9

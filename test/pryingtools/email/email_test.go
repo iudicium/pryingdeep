@@ -18,12 +18,12 @@ var client *http.Client
 
 func TestSetup(t *testing.T) {
 	configs.SetupEnvironment()
-	cfg := configs.GetConfig().DbConf
+	cfg := configs.GetConfig().DB
 
 	logger.InitLogger(false)
 	defer logger.Logger.Sync()
 
-	dbURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.DbTestName)
+	dbURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.TestName)
 	models.SetupDatabase(dbURL)
 	client = &http.Client{}
 
