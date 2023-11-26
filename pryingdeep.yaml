@@ -14,7 +14,7 @@ crawler:
     phone: []
     queue-max-size: 500000
     queue-threads: 4
-    tor: true
+    tor: false
     url-filters: []
     url-revisit: false
     urls:
