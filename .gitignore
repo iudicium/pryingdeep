@@ -28,3 +28,4 @@ pryingdeep
 cmd/pryingdeep/pryingdeep
 ./pryingdeep.yaml
 pryingdeep.yaml.bak
+pgdata

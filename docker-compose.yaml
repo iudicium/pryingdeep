@@ -6,12 +6,16 @@ services:
     build:
       context: ./build/package/tor
     restart: always
-    network_mode: host
     healthcheck:
       test: ["CMD-SHELL", "curl -sS --socks5-hostname localhost:9050 https://check.torproject.org/api/ip | grep '\"IsTor\": *true'"]
       interval: 10s
       timeout: 5s
       retries: 5
+    depends_on:
+      database:
+        condition: service_healthy
+    network_mode: host
+
 
   pryingdeep:
     container_name: pryingdeep
@@ -24,7 +28,49 @@ services:
       - '-c'
       - './pryingdeep crawl'
 
-    network_mode: host
+
     depends_on:
       tor:
         condition: service_healthy
+
+    network_mode: host
+
+  database:
+      container_name: database
+      image: postgres:15.4-alpine
+      ports:
+        - "5432:5432"
+
+      environment:
+      - POSTGRES_HOST=localhost
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_TESTING_NAME=testing
+      - POSTGRES_USER=postgres
+
+      command:
+        - "postgres"
+        - "-c"
+        - "log_destination=stderr"
+        - "-c"
+        - "logging_collector=on"
+        - "-c"
+        - "log_directory=/var/lib/postgresql/data/pg_log"
+        - "-c"
+        - "work_mem=1024MB"
+        - "-c"
+        - "maintenance_work_mem=1024MB"
+      volumes:
+        - ./pgdata:/var/lib/postgresql/data
+
+      healthcheck:
+        test: [ "CMD-SHELL", "pg_isready", -U postgres ]
+        interval: 30s
+        timeout: 60s
+        retries: 5
+      restart: always
+
+
+
+
