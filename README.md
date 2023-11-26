@@ -52,17 +52,20 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-I've seen multiple projects out there in Github, that are crawlers for the deep web, but most of them did not meet *my* standards of OSINT on the deep web. So I decided to create my own deep web OSINT tool.
+I've seen multiple projects out there in GitHub, that are crawlers for the deep web,
+but most of them did not meet *my* standards of OSINT on the deep web.
+So I decided to create my own deep web OSINT tool.
 
 
-This tool serves as a reminder that best practices of OPSEC should always be followed in the deep web.
+This tool serves as a reminder that the best practices of OPSEC should always be followed in the deep web.
 
 *The author of this project is not responsible for any possible harm caused by the usage of this tool.*
 
 
----
+—
 Note:
- ⚠️ *PhoneNumber* module is currently not working. Please do not use it as of now.
+ ⚠️ *PhoneNumber* module is currently not working.
+Please do not use it as of now.
 ---
 
 
@@ -72,10 +75,13 @@ Note:
 
 ### Prerequisites
 
-Before you can use the our osint tool, please ensure you have the following dependencies installed:
+Before you can use our OSINT tool, please ensure you have the following dependencies installed:
 
 1. **Docker: (optional)**
-    - You can download and install Docker by following the official installation instructions for your specific operating system: [Docker Installation Guide](https://docs.docker.com/get-docker/).
+    -
+You can download and install Docker
+by following the official installation instructions for your specific operating system:
+    - [Docker Installation Guide](https://docs.docker.com/get-docker/).
 
 2. **Go: (required)**
     - [Golang Installation Guide](https://go.dev/doc/install).
@@ -89,7 +95,7 @@ Before you can use the our osint tool, please ensure you have the following depe
 
 1. Install the binary via:
 
-```sh
+```Sh
 go install -v github.com/iudicium/pryingdeep/cmd/pryingdeep@latest
 ```
 
@@ -107,7 +113,7 @@ wget https://raw.githubusercontent.com/iudicium/pryingdeep/main/pryingdeep.yaml
    ```
 
 2. Adjust the values in the .yaml configuration either through flags or manually.
-   Database, logger, tor all require manual configuration
+   `Database`, `logger`, `tor` all require manual configuration
 ``. <br>
 <u>You *will need to read*</u> [Colly Docs](https://github.com/gocolly/colly/blob/v1.2.0/colly.go). Also, refer to [Config Explanation](./docs/CONFIG.MD#table-of-contents)
 
@@ -177,7 +183,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the  GPL-3.0 license . See `LICENSE` for more information.
+Distributed under the GPL-3.0 license. See `LICENSE` for more information.
 
 
 ## Preview

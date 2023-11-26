@@ -14,25 +14,26 @@ crawler:
     phone: []
     queue-max-size: 500000
     queue-threads: 4
-    tor: false
+    tor: true
     url-filters: []
     url-revisit: false
     urls:
-        - https://example.com
+        - https://example.com/
     user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0
     wordpress: false
 database:
     host: localhost
-    name: deep
-    pass: admin
+    name: postgres
+    pass: postgres
     port: 5432
     testing_name: testing
-    user: admin
+    user: postgres
 exporter:
     associations: ALL
     criteria: {}
     filepath: data.json
-    limit: 1
+    limit: 0
+    raw: false
     raw-sql: false
     raw-sql-filepath: pkg/querybuilder/queries/select.sql
     sort-by: url
