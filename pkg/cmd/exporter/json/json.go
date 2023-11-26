@@ -27,6 +27,7 @@ var (
 	sortOrder    = "asc"
 	limit        = 0
 	filePath     = "data.json"
+	offset       = 0
 )
 
 func init() {
@@ -35,8 +36,9 @@ func init() {
 	JSONCmd.Flags().StringToStringVarP(&criteria, "criteria", "q", criteria, "JSON-formatted criteria, e.g., -q 'title=test,\"url=LIKE example.com\"'")
 	JSONCmd.Flags().StringVarP(&associations, "associations", "a", associations, "-a WP,E,P,C")
 	JSONCmd.Flags().StringVarP(&sortBy, "sort-by", "b", sortBy, "SortBy e.g -> -b title")
-	JSONCmd.Flags().StringVarP(&sortOrder, "sort-order", "o", sortOrder, "SortOrder e.g -> -o ASC || -b DESC. Only use this flag if you use SortBy")
+	JSONCmd.Flags().StringVarP(&sortOrder, "sort-order", "", sortOrder, "SortOrder e.g -> -o ASC || -b DESC. Only use this flag if you use SortBy")
 	JSONCmd.Flags().IntVarP(&limit, "limit", "l", limit, "Limit e.g -> -l 100 -> 100 items will be taken from the database. Default limit will acquire all results from the database")
+	JSONCmd.Flags().IntVarP(&offset, "offset", "o", offset, "Offset is the number of records that get skipped during export.")
 	JSONCmd.Flags().StringVarP(&filePath, "filepath", "f", filePath, "FilePath -f myfilepath")
 	JSONCmd.MarkFlagsRequiredTogether("raw", "raw-sql-filepath")
 
@@ -60,11 +62,12 @@ func ExportJSON(cmd *cobra.Command, args []string) error {
 			exporterConfig.SortBy,
 			exporterConfig.SortOrder,
 			exporterConfig.Limit,
+			exporterConfig.Offset,
 		)
 		data = qb.ConstructQuery(db)
 	} else {
 		color.HiRed("[+] Reading raw query...")
-		qb := querybuilder.NewQueryBuilder(nil, "", "", "", 0)
+		qb := querybuilder.NewQueryBuilder(nil, "", "", "", 0, 0)
 		err, data = qb.Raw(db, rawFilePath)
 		if err != nil {
 			return err

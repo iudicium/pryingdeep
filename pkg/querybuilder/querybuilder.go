@@ -13,27 +13,30 @@ import (
 	"github.com/iudicium/pryingdeep/pkg/logger"
 )
 
-// QueryBuilder  stores SQL parameters that are used for performing gorm SQL statements.
+// QueryBuilder stores SQL parameters that are used for performing gorm SQL statements.
 type QueryBuilder struct {
-	//WebPageCriteria is a map that accept different fields.
+	// WebPageCriteria is a map that accepts different fields.
 	//It takes in key value pairs. You can also specify the LIKE keyword like this:
 	//title: LIKE example
 	WebPageCriteria map[string]interface{}
-	//Associations - pryingtools shortened
+	// Associations - pryingtools shortened
 	Associations string
 
 	SortBy    string
 	SortOrder string
 	Limit     int
+	// Offset represents the number of records that get skipped during export.
+	Offset int
 }
 
-func NewQueryBuilder(webPageCriteria map[string]interface{}, a, sortBy, sortOrder string, limit int) *QueryBuilder {
+func NewQueryBuilder(webPageCriteria map[string]interface{}, a, sortBy, sortOrder string, limit int, offset int) *QueryBuilder {
 	return &QueryBuilder{
 		WebPageCriteria: webPageCriteria,
 		Associations:    a,
 		SortBy:          sortBy,
 		SortOrder:       sortOrder,
 		Limit:           limit,
+		Offset:          offset,
 	}
 }
 
@@ -62,6 +65,9 @@ func (qb *QueryBuilder) ConstructQuery(db *gorm.DB) []models.WebPage {
 
 	}
 
+	if qb.Offset > 0 {
+		query.Offset(qb.Offset).Order("id ASC")
+	}
 	if qb.Limit > 0 {
 		query.Limit(qb.Limit)
 	}
@@ -75,7 +81,7 @@ func (qb *QueryBuilder) ConstructQuery(db *gorm.DB) []models.WebPage {
 // Your query anywhere you want and call this method to execute custom queries
 // Note: This will not provide structured keys like ConstructQuery.
 // However, this function does give you more control on what fields you can choose from other models and export them later on.
-// This function, also does not support INSERT statements.
+// This function also does not support INSERT statements.
 func (qb *QueryBuilder) Raw(db *gorm.DB, relativePath string) (error, []map[string]interface{}) {
 
 	results := make([]map[string]interface{}, 0)

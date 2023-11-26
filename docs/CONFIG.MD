@@ -305,6 +305,22 @@ The following sections explain each setting in the `crawler` configuration:
 </details>
 
 
+<details>
+  <summary><strong>offset</strong></summary>
+  <ul>
+    <li>
+      <strong>Value:</strong> <code>0</code>
+    </li>
+    <li>
+      <strong>Description:</strong> Number of records to skip during export.
+      Keep in mind if you want to the id to start from 1, set `sort-by` to `id` and `sort-order` to `asc`
+      Otherwise, the filtering might be weird, and you will get records starting from 50 when you asked
+      for offset from 1.
+    </li>
+  </ul>
+</details>
+
+
 # Global Flags
 
 <details>

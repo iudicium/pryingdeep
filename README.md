@@ -62,7 +62,8 @@ This tool serves as a reminder that the best practices of OPSEC should always be
 *The author of this project is not responsible for any possible harm caused by the usage of this tool.*
 
 
-—
+---
+
 Note:
  ⚠️ *PhoneNumber* module is currently not working.
 Please do not use it as of now.
@@ -189,4 +190,6 @@ Distributed under the GPL-3.0 license. See `LICENSE` for more information.
 ## Preview
 
 ![Preview](./web/static/preview.png)
+![Data Preview](./web/static/data_preview.png)
+![Data Preview 2](./web/static/data_preview2.png)
 

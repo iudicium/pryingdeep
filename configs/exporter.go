@@ -13,6 +13,8 @@ type Exporter struct {
 	SortOrder string `mapstructure:"sort-order"`
 	// Limit is the number of rows that you want to export
 	Limit int `mapstructure:"limit"`
+
+	Offset int `mapstructure:"offset"`
 	// Filepath is where you would like to save your .json exporter data.
 	// Default is data.json in the current directory.
 	Filepath string `mapstructure:"filepath"`
