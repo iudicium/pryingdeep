@@ -79,9 +79,8 @@ Before you can use the our osint tool, please ensure you have the following depe
 
 2. **Go: (required)**
     - [Golang Installation Guide](https://go.dev/doc/install).
-3. **PostgresSQL: (required)**
-    - You will also be able to start it from docker soon
-    - [PostgreSQL Installation](https://www.postgresql.org/download/)
+
+3. **PostgresSQL: (required if you don't use docker)**— Make sure your .yaml environment variables matcht the environment in `docker-compose.yaml`— [PostgreSQL Installation](https://www.postgresql.org/download/)
 
 
 ### Binary Installation
@@ -121,14 +120,7 @@ To start run *pryingdeep* inside a docker container use this command:
 ```sh
 docker-compose up
 ```
-<u>Adjust</u> the sleep value inside of docker-compose.yaml! It depends on how fast your computer can start the tor container. 
-Otherwise the program will panic.
-```sh
- command:
-      - '/bin/sh'
-      - '-c'
-      - '/bin/sleep 8(this value) && ./pryingdeep crawl '
-```
+
 
 ## Config
 Read more each parameter here:
@@ -158,7 +150,7 @@ Exporter:
 
 - [x] Add a folder for storing configuration files so that go install could be used.
 - [ ] Fix the phoneNumber module, get it to at least 50%
-- [ ] Add PostgreSQL to docker-compose
+- [x] Add PostgreSQL to docker-compose
 - [ ] Implement file identification and search
 - [x] Fix the config module and add various parameters
 - [x] Issue with configs, you cannot have different structs otherwise it will not parse the configs properly. Fix by 19/11/2023
