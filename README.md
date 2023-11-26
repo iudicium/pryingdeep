@@ -66,9 +66,7 @@ This tool serves as a reminder that the best practices of OPSEC should always be
 ---
 ## What does it do?
 
-Prying Deep crawls dark/clear net platforms and extracts as much intelligence as possible effectively.
-
----
+*Prying Deep crawls dark/clear net platforms and extracts as much intelligence as possible effectively.*
 
 
 ---
