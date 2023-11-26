@@ -59,7 +59,16 @@ So I decided to create my own deep web OSINT tool.
 
 This tool serves as a reminder that the best practices of OPSEC should always be followed in the deep web.
 
-*The author of this project is not responsible for any possible harm caused by the usage of this tool.*
+<u>The author of this project is not responsible for any possible harm caused by the usage of this tool.</u>
+
+
+
+---
+## What does it do?
+
+Prying Deep crawls dark/clear net platforms and extracts as much intelligence as possible effectively.
+
+---
 
 
 ---
@@ -157,13 +166,9 @@ Exporter:
 <!-- ROADMAP -->
 ## Roadmap
 
-- [x] Add a folder for storing configuration files so that go install could be used.
 - [ ] Fix the phoneNumber module, get it to at least 50%
-- [x] Add PostgreSQL to docker-compose
 - [ ] Implement file identification and search
-- [x] Fix the config module and add various parameters
-- [x] Issue with configs, you cannot have different structs otherwise it will not parse the configs properly. Fix by 19/11/2023
-
+- [ ] Add an `install` module which will automatically grab the config and place it in the specified directory.
 
 <!-- CONTRIBUTING -->
 ## Contributing
