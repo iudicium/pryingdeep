@@ -189,8 +189,9 @@ Distributed under the GPL-3.0 license. See `LICENSE` for more information.
 
 ## Video Preview
 
-<iframe title="vimeo-player" src="https://player.vimeo.com/video/889927706?h=efc9ed190d" width="640" height="360" frameborder="0"    allowfullscreen></iframe>
----
+![Preview](https://vimeo.com/889927706)
+
+
 ## Preview
 
 ![Preview](./web/static/preview.png)
