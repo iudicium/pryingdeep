@@ -164,7 +164,7 @@ Exporter:
 
 - [ ] Fix the phoneNumber module, get it to at least 50%
 - [ ] Implement file identification and search
-- [ ] Add an `install` module which will automatically grab the config and place it in the specified directory.
+- [x] Add an `install` module which will automatically grab the config and place it in the specified directory.
 - [ ] Add a video preview.
 <!-- CONTRIBUTING -->
 ## Contributing
