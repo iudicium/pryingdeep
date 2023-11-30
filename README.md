@@ -189,7 +189,7 @@ Distributed under the GPL-3.0 license. See `LICENSE` for more information.
 
 ## Video Preview
 
-![Preview](https://vimeo.com/889927706)
+[Click here](https://vimeo.com/889927706)
 
 
 ## Preview
