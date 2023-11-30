@@ -119,8 +119,8 @@ pryingdeep install
    ```
 
 2. Adjust the values in the .yaml configuration either through flags or manually.
-   `Database`, `logger`, `tor` all require manual configuration
-``. <br>
+   `Database`, `logger`, `tor` all require manual configuration. <br>
+
 <u>You *will need to read*</u> [Colly Docs](https://github.com/gocolly/colly/blob/v1.2.0/colly.go). Also, refer to [Config Explanation](./docs/CONFIG.MD#table-of-contents)
 
 
@@ -187,7 +187,10 @@ Don't forget to give the project a star! Thanks again!
 
 Distributed under the GPL-3.0 license. See `LICENSE` for more information.
 
+## Video Preview
 
+<iframe title="vimeo-player" src="https://player.vimeo.com/video/889927706?h=efc9ed190d" width="640" height="360" frameborder="0"    allowfullscreen></iframe>
+---
 ## Preview
 
 ![Preview](./web/static/preview.png)
