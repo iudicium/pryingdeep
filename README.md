@@ -79,7 +79,7 @@ Please do not use it as of now.
 
 <!-- GETTING STARTED -->
 ## Getting Started
-d
+
 
 ### Prerequisites
 

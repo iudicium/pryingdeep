@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"net/http"
@@ -21,9 +22,15 @@ const (
 )
 
 var installCmd = &cobra.Command{
+
 	Use:   "install",
 	Short: "Installation of config files",
-	RunE:  install,
+	//This is needed to override the root.go PersitentPreRunE and not initialize the config,
+	//since it doesn't exist yet
+	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+		return nil
+	},
+	RunE: install,
 }
 
 func install(cmd *cobra.Command, args []string) error {
@@ -49,13 +56,15 @@ func install(cmd *cobra.Command, args []string) error {
 	}
 
 	fmt.Println(color.GreenString("Config downloaded successfully!"))
+	ctx := context.WithValue(context.Background(), "init", true)
+	cmd.SetContext(ctx)
 	return nil
 }
 
 func downloadConfigAndWriteConfig(filePath string) error {
 	_ = fsutils.Touch(filePath)
 
-	client := &http.Client{Timeout: 10 * time.Second} // Customize HTTP client settings
+	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Get(configURL)
 	if err != nil {
 		return fmt.Errorf("Error making HTTP request: %s", err)
