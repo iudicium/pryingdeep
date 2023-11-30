@@ -21,7 +21,7 @@ import (
 var (
 	saveConfig = false
 	silent     = false
-	path       = "pryingdeep.yaml"
+	cfg        = "pryingdeep.yaml"
 )
 
 var rootCmd = &cobra.Command{
@@ -51,9 +51,10 @@ func Execute() {
 func init() {
 	rootCmd.PersistentFlags().BoolVarP(&silent, "silent", "s", silent, "-s to disable logging and run silently")
 	rootCmd.PersistentFlags().BoolVarP(&saveConfig, "save-config", "z", saveConfig, "Save chosen options to your .yaml configuration")
-	rootCmd.PersistentFlags().StringVarP(&path, "config", "c", path, "Path to the .yaml configuration.")
+	rootCmd.PersistentFlags().StringVarP(&cfg, "config", "c", cfg, "Path to the .yaml configuration.")
 	rootCmd.AddCommand(exporter.ExporterCMD)
 	rootCmd.AddCommand(crawler.CrawlCmd)
+	rootCmd.AddCommand(installCmd)
 	viper.BindPFlags(rootCmd.PersistentFlags())
 
 }
@@ -63,8 +64,8 @@ func initializeConfig(cmd *cobra.Command, args []string) error {
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(".")
 	viper.AddConfigPath("$HOME/.pryingdeep")
-	if path != "" && path != "pryingdeep.yaml" {
-		viper.SetConfigFile(path)
+	if cfg != "" && cfg != "pryingdeep.yaml" {
+		viper.SetConfigFile(cfg)
 	}
 
 	if err := viper.ReadInConfig(); err != nil {

@@ -94,6 +94,22 @@ func Exists(path string) bool {
 	}
 
 	return true
+
+}
+
+// IsDirectory determines whether the specified path
+// represents a directory.
+func IsDirectory(path string) bool {
+	if !Exists(path) {
+		return false
+	}
+
+	stat, err := os.Stat(path)
+	if err != nil {
+		return false
+	}
+
+	return stat.IsDir()
 }
 
 func WriteTextFile(path string, content string, args ...interface{}) error {

@@ -79,16 +79,14 @@ Please do not use it as of now.
 
 <!-- GETTING STARTED -->
 ## Getting Started
-
+d
 
 ### Prerequisites
 
 Before you can use our OSINT tool, please ensure you have the following dependencies installed:
 
 1. **Docker: (optional)**
-    -
-You can download and install Docker
-by following the official installation instructions for your specific operating system:
+    - You can download and install Docker by following the official installation instructions for your specific operating system:
     - [Docker Installation Guide](https://docs.docker.com/get-docker/).
 
 2. **Go: (required)**
@@ -107,9 +105,9 @@ by following the official installation instructions for your specific operating 
 go install -v github.com/iudicium/pryingdeep/cmd/pryingdeep@latest
 ```
 
-2. Grab the default .yaml configuration and place it inside the `$HOME/.pryingdeep` folder
+2. Run the following command:
 ```sh
-wget https://raw.githubusercontent.com/iudicium/pryingdeep/main/pryingdeep.yaml
+pryingdeep install
 ```
 3. Adjust the values inside the config folder to your needs.
 
@@ -167,7 +165,7 @@ Exporter:
 - [ ] Fix the phoneNumber module, get it to at least 50%
 - [ ] Implement file identification and search
 - [ ] Add an `install` module which will automatically grab the config and place it in the specified directory.
-
+- [ ] Add a video preview.
 <!-- CONTRIBUTING -->
 ## Contributing
 
