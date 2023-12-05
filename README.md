@@ -164,8 +164,6 @@ Exporter:
 
 - [ ] Fix the phoneNumber module, get it to at least 50%
 - [ ] Implement file identification and search
-- [x] Add an `install` module which will automatically grab the config and place it in the specified directory.
-- [ ] Add a video preview.
 <!-- CONTRIBUTING -->
 ## Contributing
 
@@ -187,9 +185,7 @@ Don't forget to give the project a star! Thanks again!
 
 Distributed under the GPL-3.0 license. See `LICENSE` for more information.
 
-## Video Preview
 
-[Click here](https://vimeo.com/889927706)
 
 
 ## Preview
