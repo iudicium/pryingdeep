@@ -93,7 +93,7 @@ Before you can use our OSINT tool, please ensure you have the following dependen
     - [Golang Installation Guide](https://go.dev/doc/install).
 
 3. **PostgresSQL: (required if you don't use docker)**
-    - Make sure your .yaml environment variables matcht the environment in `docker-compose.yaml`
+    - Make sure your .yaml environment variables match the environment in `docker-compose.yaml`
     - [PostgreSQL Installation](https://www.postgresql.org/download/)
 
 
