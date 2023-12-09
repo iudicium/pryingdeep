@@ -61,9 +61,6 @@ This tool serves as a reminder that the best practices of OPSEC should always be
 
 <u>The author of this project is not responsible for any possible harm caused by the usage of this tool.</u>
 
-
-
----
 ## What does it do?
 
 *Prying Deep crawls dark/clear net platforms and extracts as much intelligence as possible effectively.*
