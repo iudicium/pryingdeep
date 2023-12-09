@@ -186,11 +186,14 @@ Don't forget to give the project a star! Thanks again!
 Distributed under the GPL-3.0 license. See `LICENSE` for more information.
 
 
+## Video Preview
 
+[![Video Title](https://img.youtube.com/vi/TvRT_lvixI0/maxresdefault.jpg)](https://www.youtube.com/watch?v=TvRT_lvixI0)
+
+---
 
 ## Preview
 
-[![Video Title](https://img.youtube.com/vi/TvRT_lvixI0/maxresdefault.jpg)](https://www.youtube.com/watch?v=TvRT_lvixI0)
 ![Preview](./web/static/preview.png)
 ![Data Preview](./web/static/data_preview.png)
 ![Data Preview 2](./web/static/data_preview2.png)
