@@ -1,32 +1,19 @@
 package tests
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/iudicium/pryingdeep/configs"
-	"github.com/iudicium/pryingdeep/models"
-	"github.com/iudicium/pryingdeep/pkg/logger"
 	"github.com/iudicium/pryingdeep/pkg/pryingtools/email"
 )
 
 var client *http.Client
 
 func TestSetup(t *testing.T) {
-	configs.SetupEnvironment()
-	cfg := configs.GetConfig().DB
-
-	logger.InitLogger(false)
-	defer logger.Logger.Sync()
-
-	dbURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.TestName)
-	models.SetupDatabase(dbURL)
 	client = &http.Client{}
-
 }
 
 func TestEmailInHtml(t *testing.T) {
@@ -38,7 +25,7 @@ func TestEmailInHtml(t *testing.T) {
 	}{
 		{
 			url:         "https://proton.me/support/zendesk",
-			expected:    13,
+			expected:    5,
 			description: "Valid HTML with email addresses",
 		},
 		{

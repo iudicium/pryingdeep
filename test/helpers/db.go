@@ -1,4 +1,4 @@
-package testdb
+package helpers
 
 import (
 	"fmt"
@@ -9,10 +9,10 @@ import (
 	"github.com/iudicium/pryingdeep/models"
 )
 
-// InitDB is  only meant for testing
+// InitDB is only meant for testing
 func InitDB() *gorm.DB {
-	cfg := configs.GetConfig().DbConf
-	dbURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.DbTestName)
+	cfg := configs.GetConfig().DB
+	dbURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.TestName)
 	db := models.SetupDatabase(dbURL)
 
 	db.Exec(fmt.Sprintf("ALTER SEQUENCE %s_id_seq RESTART WITH 1", "web_pages"))

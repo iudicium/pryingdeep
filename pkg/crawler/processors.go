@@ -12,7 +12,9 @@ import (
 //This file is used primarily for our prying modules, so that we can create new goroutines based on the specified options!
 
 func processWordPress(body string, pageId int) {
-	wordpressMatches, _ := wordpress.FindWordpressPatterns(body)
+	wpFinder := wordpress.NewWordpressPatternFinder()
+
+	wordpressMatches := wpFinder.Find(body)
 	if len(wordpressMatches) != 0 {
 		logger.Infof("Number of WordPress matches: %d", len(wordpressMatches))
 		models.CreateWordPressFootPrint(pageId, wordpressMatches)

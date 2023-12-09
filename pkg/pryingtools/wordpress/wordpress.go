@@ -1,13 +1,20 @@
 package wordpress
 
 import (
-	"fmt"
 	"regexp"
 	"strings"
 )
 
-// TODO ad post processing and struct methods
-func FindWordpressPatterns(html string) ([]string, error) {
+// WordpressFinder is a type for finding related WordPress patterns in the given HTML.
+type WordpressFinder struct {
+	// Words is a list of words that identify WordPress patterns. These could be plugins, urls, etc.
+	Words []string
+	// Regex is the combined Words but with a regex pattern for searching
+	Regex *regexp.Regexp
+}
+
+// NewWordpressPatternFinder creates a new WordpressPatternFinder instance with default configuration.
+func NewWordpressPatternFinder() *WordpressFinder {
 	words := []string{
 		"wordpress",
 		"wp-content",
@@ -19,13 +26,16 @@ func FindWordpressPatterns(html string) ([]string, error) {
 
 	pattern := `((?:<[^>]*>)?.*?)\b(` + strings.Join(words, "|") + `)\b((?:</[^>]*>)?.*?)`
 
-	regex, err := regexp.Compile(pattern)
-	if err != nil {
-		fmt.Println("Error compiling regex:", err)
-		return nil, err
+	regex := regexp.MustCompile(pattern)
+
+	return &WordpressFinder{
+		Words: words,
+		Regex: regex,
 	}
+}
 
-	matches := regex.FindAllString(html, -1)
-
-	return matches, nil
+// Find returns a list of matched HTML that contains the WordPress identifiers.
+func (wpf *WordpressFinder) Find(html string) []string {
+	matches := wpf.Regex.FindAllString(html, -1)
+	return matches
 }

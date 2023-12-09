@@ -10,11 +10,11 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/iudicium/pryingdeep/configs"
-	"github.com/iudicium/pryingdeep/internal/testdb"
 	"github.com/iudicium/pryingdeep/models"
 	"github.com/iudicium/pryingdeep/pkg/exporters"
 	"github.com/iudicium/pryingdeep/pkg/logger"
 	"github.com/iudicium/pryingdeep/pkg/querybuilder"
+	"github.com/iudicium/pryingdeep/test/helpers"
 )
 
 var db *gorm.DB
@@ -43,11 +43,11 @@ func TestMain(m *testing.M) {
 	configs.SetupEnvironment()
 	logger.InitLogger(false)
 	defer logger.Logger.Sync()
-	db = testdb.InitDB()
+	db = helpers.InitDB()
 
 	exitCode := m.Run()
 
-	testdb.CleanUpDB(db)
+	helpers.CleanUpDB(db)
 	os.Exit(exitCode)
 }
 
@@ -91,6 +91,7 @@ func TestConvertQueryBuilderDataToJson(t *testing.T) {
 		Limit           int
 		ItemLength      int
 		Associations    string
+		Offset          int
 	}{
 		{
 			Name: "JsonTestWithOneLimit",
@@ -102,6 +103,7 @@ func TestConvertQueryBuilderDataToJson(t *testing.T) {
 			Limit:        1,
 			ItemLength:   1,
 			Associations: "all",
+			Offset:       0,
 		},
 		{
 			Name: "JsonTestWithUnlimited",
@@ -113,6 +115,7 @@ func TestConvertQueryBuilderDataToJson(t *testing.T) {
 			Limit:        0,
 			ItemLength:   99,
 			Associations: "all",
+			Offset:       0,
 		},
 	}
 
@@ -130,6 +133,7 @@ func TestConvertQueryBuilderDataToJson(t *testing.T) {
 				tc.SortBy,
 				tc.SortOrder,
 				tc.Limit,
+				tc.Offset,
 			)
 
 			result := qb.ConstructQuery(db)
@@ -152,6 +156,6 @@ func TestConvertQueryBuilderDataToJson(t *testing.T) {
 	}
 }
 
-func TestConvertQueryBuilderToCSV(t *testing.T) {
-
-}
+//func TestConvertQueryBuilderToCSV(t *testing.T) {
+//
+//}

@@ -1,31 +1,22 @@
 package tests
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 	"testing"
 
-	"github.com/iudicium/pryingdeep/configs"
-	"github.com/iudicium/pryingdeep/models"
-	"github.com/iudicium/pryingdeep/pkg/logger"
-	"github.com/iudicium/pryingdeep/pkg/pryingtools/wordpress"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/iudicium/pryingdeep/pkg/pryingtools/wordpress"
 )
 
 var client *http.Client
 var url string
+var wpFinder *wordpress.WordpressFinder
 
 func TestSetup(t *testing.T) {
-	configs.SetupEnvironment()
-	cfg := configs.GetConfig().DbConf
-
-	logger.InitLogger()
-	defer logger.Logger.Sync()
-
-	dbURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.DbTestName)
-	models.SetupDatabase(dbURL)
 	client = &http.Client{}
+	wpFinder = wordpress.NewWordpressPatternFinder()
 
 }
 func TestWordpressPatternsInHtml(t *testing.T) {
@@ -38,10 +29,7 @@ func TestWordpressPatternsInHtml(t *testing.T) {
 	defer resp.Body.Close()
 	body, err := io.ReadAll(resp.Body)
 
-	matches, err := wordpress.FindWordpressPatterns(string(body))
-	if err != nil {
-		t.Error("something went wrong during test of wordpress", err)
-	}
+	matches := wpFinder.Find(string(body))
 
 	assert.Equal(len(matches), 127)
 }
@@ -56,10 +44,7 @@ func TestNoWordpressPatternsInHtml(t *testing.T) {
 	defer resp.Body.Close()
 	body, err := io.ReadAll(resp.Body)
 
-	matches, err := wordpress.FindWordpressPatterns(string(body))
-	if err != nil {
-		t.Error("something went wrong during test of wordpress", err)
-	}
+	matches := wpFinder.Find(string(body))
 
 	assert.Equal(len(matches), 0)
 }

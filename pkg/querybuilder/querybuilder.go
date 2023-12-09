@@ -19,7 +19,8 @@ type QueryBuilder struct {
 	//It takes in key value pairs. You can also specify the LIKE keyword like this:
 	//title: LIKE example
 	WebPageCriteria map[string]interface{}
-	// Associations - pryingtools shortened
+	// Associations - pryingtools, Email, Crypto, etc.
+	// E.G only email if only email is specified, there will be no crypto records, they will be set to null.
 	Associations string
 
 	SortBy    string
@@ -29,10 +30,11 @@ type QueryBuilder struct {
 	Offset int
 }
 
-func NewQueryBuilder(webPageCriteria map[string]interface{}, a, sortBy, sortOrder string, limit int, offset int) *QueryBuilder {
+// NewQueryBuilder returns a pointer to the QueryBuilder struct
+func NewQueryBuilder(webPageCriteria map[string]interface{}, associations, sortBy, sortOrder string, limit int, offset int) *QueryBuilder {
 	return &QueryBuilder{
 		WebPageCriteria: webPageCriteria,
-		Associations:    a,
+		Associations:    associations,
 		SortBy:          sortBy,
 		SortOrder:       sortOrder,
 		Limit:           limit,
@@ -120,7 +122,7 @@ func BuildCondition(query *gorm.DB, field string, criteria interface{}) *gorm.DB
 	return query.Where(fmt.Sprintf("%s = ?", field), criteria)
 }
 
-// ParseAndPreloadAssociations  is there as a helper to preload specific tables that the user
+// ParseAndPreloadAssociations is there as a helper to preload specific tables that the user
 // Would like to be exported. If the "all" parameter is specified, it will exporters all the models
 func ParseAndPreloadAssociations(query *gorm.DB, associations string) (*gorm.DB, error) {
 	if associations == "" {

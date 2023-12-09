@@ -13,7 +13,7 @@ type Model struct {
 	ID uint `gorm:"primaryKey"`
 }
 
-// SetupDatabase  also auto migrates the models if there are any changes
+// SetupDatabase also auto migrates the models if there are any changes
 func SetupDatabase(dbUrl string) *gorm.DB {
 	var err error
 	db, err = gorm.Open(postgres.Open(dbUrl), &gorm.Config{})

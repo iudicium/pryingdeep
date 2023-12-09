@@ -2,18 +2,15 @@ package tests
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
 
-	"github.com/iudicium/pryingdeep/configs"
-	"github.com/iudicium/pryingdeep/internal/testdb"
 	"github.com/iudicium/pryingdeep/models"
-	"github.com/iudicium/pryingdeep/pkg/logger"
 	"github.com/iudicium/pryingdeep/pkg/querybuilder"
+	"github.com/iudicium/pryingdeep/test/helpers"
 )
 
 var db *gorm.DB
@@ -34,19 +31,11 @@ func constructQueryHelper(qb *querybuilder.QueryBuilder) []models.WebPage {
 }
 
 func TestMain(m *testing.M) {
-	configs.SetupEnvironment()
-	logger.InitLogger(false)
-	defer logger.Logger.Sync()
-
-	cfg := configs.GetConfig().DbConf
-	dbURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.DbTestName)
-	db = models.SetupDatabase(dbURL)
-
-	db = testdb.InitDB()
-
+	helpers.InitTestConfig()
+	db = helpers.InitDB()
 	exitCode := m.Run()
 
-	testdb.CleanUpDB(db)
+	helpers.CleanUpDB(db)
 	os.Exit(exitCode)
 }
 
@@ -62,6 +51,7 @@ func TestQueryBuilder_ConstructQuery(t *testing.T) {
 			"url",
 			"",
 			1,
+			0,
 		)
 
 		result := constructQueryHelper(qb)
@@ -177,7 +167,7 @@ func TestQueryBuilder_RawQuery(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			assert := assert.New(t)
-			qb := querybuilder.NewQueryBuilder(nil, "", "", "", 0)
+			qb := querybuilder.NewQueryBuilder(nil, "", "", "", 0, 0)
 
 			err, data := qb.Raw(db, test.filePath)
 
