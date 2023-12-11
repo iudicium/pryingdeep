@@ -9,13 +9,16 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"gorm.io/gorm"
 
 	"github.com/iudicium/pryingdeep/configs"
 	"github.com/iudicium/pryingdeep/models"
 	"github.com/iudicium/pryingdeep/pkg/logger"
 	"github.com/iudicium/pryingdeep/pkg/pryingtools/phonenumber"
-	"github.com/iudicium/pryingdeep/pkg/utils"
+	"github.com/iudicium/pryingdeep/test/test_helpers"
 )
+
+var db *gorm.DB
 
 type PhoneNumberValidationTestConfig struct {
 	URL           string
@@ -49,13 +52,13 @@ func ReadFilesInDirectory(directoryPath string) (string, error) {
 
 func TestSetup(t *testing.T) {
 	configs.SetupEnvironment()
-	cfg := configs.GetConfig().DbConf
+	cfg := configs.GetConfig().DB
 
 	logger.InitLogger(false)
 	defer logger.Logger.Sync()
 
-	dbURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.DbTestName)
-	models.SetupDatabase(dbURL)
+	dbURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.TestName)
+	db = models.SetupDatabase(dbURL)
 }
 
 func testPhoneNumberValidation(t *testing.T, testConfig PhoneNumberValidationTestConfig) {
@@ -80,7 +83,7 @@ func testPhoneNumberValidation(t *testing.T, testConfig PhoneNumberValidationTes
 
 	phoneProcessor.ProcessPhoneNumbers(string(html), testConfig.WebPageId, testPatterns)
 
-	phones, err := models.GetPhoneNumbers(testConfig.WebPageId)
+	phones, err := test_helpers.GetPhoneNumbers(db, testConfig.WebPageId)
 	if err != nil {
 		logger.Errorf("Error getting phones from the database: %s", err)
 	}
@@ -88,7 +91,7 @@ func testPhoneNumberValidation(t *testing.T, testConfig PhoneNumberValidationTes
 	assert.Equal(len(phones), testConfig.ExpectedCount)
 
 	t.Cleanup(func() {
-		models.DeletePhoneNumbersByCountryCode(testConfig.CountryCode)
+		test_helpers.DeletePhoneNumbersByCountryCode(db, testConfig.CountryCode)
 		t.Log(fmt.Sprintf("Performing %s numbers clean up...", testConfig.CountryCode))
 	})
 }
@@ -132,7 +135,7 @@ func TestDEPhoneNumberValidation(t *testing.T) {
 
 // // FIXME: the nl regexp validation is a bit wrong but it works for now
 func TestConcurrentPhoneProcessing(t *testing.T) {
-	html, err := utils.ReadFilesInDirectory("data")
+	html, err := ReadFilesInDirectory("data")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -147,7 +150,7 @@ func TestConcurrentPhoneProcessing(t *testing.T) {
 	t.Cleanup(func() {
 		for countryCode, _ := range testCountryRegexPatterns {
 			logger.Debugf("removing %s phones from test database", countryCode)
-			models.DeletePhoneNumbersByCountryCode(countryCode)
+			test_helpers.DeletePhoneNumbersByCountryCode(db, countryCode)
 
 		}
 	})

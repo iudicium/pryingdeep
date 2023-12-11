@@ -46,7 +46,7 @@ func NewCrawler(torConf configs.TorConfig, crawlerConf configs.Crawler) *Crawler
 
 // Crawl starts the crawling process, entrypoints are StartingURLs in the config.
 // We only define the onHTML attributes here because it's easier to handle the maxSize
-// Errors here, we return them and exit application
+// Errors here, we return them and exit the application
 func (c *Crawler) Crawl() error {
 	var crawlErr error
 	c.collector.OnHTML("a[href]", func(e *colly.HTMLElement) {

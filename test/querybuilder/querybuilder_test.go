@@ -10,7 +10,7 @@ import (
 
 	"github.com/iudicium/pryingdeep/models"
 	"github.com/iudicium/pryingdeep/pkg/querybuilder"
-	"github.com/iudicium/pryingdeep/test/helpers"
+	"github.com/iudicium/pryingdeep/test/test_helpers"
 )
 
 var db *gorm.DB
@@ -31,11 +31,11 @@ func constructQueryHelper(qb *querybuilder.QueryBuilder) []models.WebPage {
 }
 
 func TestMain(m *testing.M) {
-	helpers.InitTestConfig()
-	db = helpers.InitDB()
+	test_helpers.InitTestConfig()
+	db = test_helpers.InitDB()
 	exitCode := m.Run()
 
-	helpers.CleanUpDB(db)
+	test_helpers.CleanUpDB(db)
 	os.Exit(exitCode)
 }
 

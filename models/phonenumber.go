@@ -40,17 +40,3 @@ func CreatePhoneNumber(webPageID int, interNum, natNum string, code string) erro
 
 	return nil
 }
-
-func GetPhoneNumbers(webPageID int) ([]PhoneNumber, error) {
-	var phoneNumbers []PhoneNumber
-	result := db.Where("web_page_id = ?", webPageID).Find(&phoneNumbers)
-	if result.Error != nil {
-		return nil, result.Error
-	}
-
-	return phoneNumbers, nil
-}
-
-func DeletePhoneNumbersByCountryCode(countryCode string) {
-	db.Where("country_code = ?", countryCode).Delete(&PhoneNumber{})
-}

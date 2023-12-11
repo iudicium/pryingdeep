@@ -10,11 +10,10 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/iudicium/pryingdeep/configs"
-	"github.com/iudicium/pryingdeep/models"
 	"github.com/iudicium/pryingdeep/pkg/exporters"
 	"github.com/iudicium/pryingdeep/pkg/logger"
 	"github.com/iudicium/pryingdeep/pkg/querybuilder"
-	"github.com/iudicium/pryingdeep/test/helpers"
+	"github.com/iudicium/pryingdeep/test/test_helpers"
 )
 
 var db *gorm.DB
@@ -43,18 +42,18 @@ func TestMain(m *testing.M) {
 	configs.SetupEnvironment()
 	logger.InitLogger(false)
 	defer logger.Logger.Sync()
-	db = helpers.InitDB()
+	db = test_helpers.InitDB()
 
 	exitCode := m.Run()
 
-	helpers.CleanUpDB(db)
+	test_helpers.CleanUpDB(db)
 	os.Exit(exitCode)
 }
 
 func TestJsonAndPreloadDBWithOneElement(t *testing.T) {
 	tmpDir := t.TempDir()
 
-	preloadedWebPage, err := models.PreloadWebPage(1)
+	preloadedWebPage, err := test_helpers.PreloadWebPage(db, 1)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -14,7 +14,7 @@ import (
 	"github.com/iudicium/pryingdeep/models"
 	"github.com/iudicium/pryingdeep/pkg/pryingtools/cryptoscanner"
 	"github.com/iudicium/pryingdeep/pkg/utils"
-	"github.com/iudicium/pryingdeep/test/helpers"
+	"github.com/iudicium/pryingdeep/test/test_helpers"
 )
 
 var client *http.Client
@@ -49,7 +49,7 @@ func runCryptoTest(t *testing.T, url string, tor bool) {
 	body := RequestHelper(url, tor)
 	cryptoScanner.Search(body, 1)
 
-	crypto, err := models.GetCrypto(1)
+	crypto, err := test_helpers.GetCrypto(db, 1)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -57,12 +57,12 @@ func runCryptoTest(t *testing.T, url string, tor bool) {
 	assert.Equal(len(crypto), 1)
 
 	t.Cleanup(func() {
-		models.DeleteCryptoByWebPageId(1)
+		test_helpers.DeleteCryptoByWebPageId(db, 1)
 	})
 }
 
 func TestSetup(t *testing.T) {
-	err := helpers.InitTestConfig()
+	err := test_helpers.InitTestConfig()
 	torProxy := fmt.Sprintf("socks5://localhost:9050")
 	client, err = utils.SetupNewTorClient(torProxy)
 	if err != nil {

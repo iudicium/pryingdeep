@@ -1,7 +1,5 @@
 package models
 
-import "gorm.io/gorm/clause"
-
 // PageData is embedded into the webPage model for structured data
 type PageData struct {
 	URL        string      `json:"url" gorm:"uniqueIndex;not null"`
@@ -38,16 +36,4 @@ func CreatePage(url string, title string, statusCode int, body string, headers P
 	}
 
 	return webPage.ID, nil
-}
-
-// Testing function. Should remove it.
-func PreloadWebPage(webPageID int) (*WebPage, error) {
-	var webPageData WebPage
-
-	if err := db.Preload(clause.Associations).Where("ID = ?", webPageID).Find(&webPageData).Error; err != nil {
-		return nil, err
-	}
-
-	return &webPageData, nil
-
 }

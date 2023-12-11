@@ -24,19 +24,3 @@ func CryptoCreate(c Crypto) (Crypto, error) {
 	}
 	return c, nil
 }
-
-// TODO: Move this into tests
-func GetCrypto(webPageID int) ([]Crypto, error) {
-	var crypto []Crypto
-	result := db.Where("web_page_id = ?", webPageID).Find(&crypto)
-	if result.Error != nil {
-		return nil, result.Error
-	}
-
-	return crypto, nil
-}
-
-// TODO: Move this into tests
-func DeleteCryptoByWebPageId(webPageId int) {
-	db.Where("web_page_id = ?", webPageId).Delete(&Crypto{})
-}
