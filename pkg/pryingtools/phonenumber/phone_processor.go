@@ -24,6 +24,11 @@ func (p *PhoneProcessor) SetCountryRegex(countryCode, regexPattern string) {
 func (p *PhoneProcessor) ProcessPhoneNumbers(html string, webPageID int, patterns map[string]string) {
 	var wg sync.WaitGroup
 
+	phoneHTML, err := FindTelTagPhones(html)
+	if err != nil {
+		logger.Errorf("Something went wrong during phone processing: %s", err)
+	}
+
 	for countryCode, regexPattern := range patterns {
 		wg.Add(1)
 		go func(countryCode, regexPattern string) {
@@ -34,7 +39,7 @@ func (p *PhoneProcessor) ProcessPhoneNumbers(html string, webPageID int, pattern
 				logger.Errorf("Establishing NewPhoneNumberValidator has encountered an error: %s", err)
 			}
 
-			phones := validator.FindPhoneNumbers(html)
+			phones := validator.FindPhoneNumbers(phoneHTML)
 
 			if len(phones) != 0 {
 				logger.Infof("Found %d phone numbers for countryCode: %s", len(phones), countryCode)

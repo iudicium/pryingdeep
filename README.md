@@ -68,12 +68,6 @@ This tool serves as a reminder that the best practices of OPSEC should always be
 
 ---
 
-Note:
- ⚠️ *PhoneNumber* module is currently not working.
-Please do not use it as of now.
----
-
-
 <!-- GETTING STARTED -->
 ## Getting Started
 
@@ -159,7 +153,7 @@ Exporter:
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Fix the phoneNumber module, get it to at least 50%
+- [x] Fix the phoneNumber module, get it to at least 50%
 - [ ] Implement file identification and search
 <!-- CONTRIBUTING -->
 ## Contributing

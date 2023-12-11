@@ -40,7 +40,7 @@ func ExportDataToJSON(data interface{}, path string) error {
 	return exporter.ToJSON(data)
 }
 
-//TODO: fix this funciton, later on
+// TODO: fix this funciton, later on
 //func (e Exporter) ToCSV(data []models.WebPage) error {
 //	headers := []string{"pageData", "email", "crypto", "wordpress", "phone"}
 //

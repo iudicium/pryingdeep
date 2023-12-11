@@ -11,7 +11,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
 
-	"github.com/iudicium/pryingdeep/models"
 	"github.com/iudicium/pryingdeep/pkg/pryingtools/cryptoscanner"
 	"github.com/iudicium/pryingdeep/pkg/utils"
 	"github.com/iudicium/pryingdeep/test/test_helpers"
@@ -69,15 +68,10 @@ func TestSetup(t *testing.T) {
 		t.Fatal(err)
 	}
 	cryptoScanner = cryptoscanner.NewCryptoScanner()
-	db = models.GetDB()
-
-	sql := "INSERT INTO web_pages (id, url, title, status_code, body, headers) VALUES (1, 'https://example.com', 'Example Page', 200, '<html><body>Hello, world!</body></html>', '{\"Content-Type\": \"text/html\"}')"
-
-	result := db.Exec(sql)
-	if result.Error != nil {
-		t.Fatal(result.Error)
+	err = test_helpers.CreateTestWebPage()
+	if err != nil {
+		t.Fatal(err)
 	}
-
 }
 
 func TestCryptoCases(t *testing.T) {

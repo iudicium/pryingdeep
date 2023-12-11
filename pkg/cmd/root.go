@@ -91,7 +91,7 @@ func initializeConfig(cmd *cobra.Command, args []string) error {
 
 }
 
-// Bind each cobra flag to its associated viper configuration (config file and environment variable)
+// bindFlags Binds each cobra flag to its associated viper configuration (config file and environment variable)
 func bindFlags(cmd *cobra.Command) {
 	call := func(f *pflag.Flag) {
 		configName := f.Name

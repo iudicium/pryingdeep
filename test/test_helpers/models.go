@@ -45,3 +45,15 @@ func PreloadWebPage(db *gorm.DB, webPageID int) (*models.WebPage, error) {
 	return &webPageData, nil
 
 }
+
+func CreateTestWebPage() error {
+	db := models.GetDB()
+
+	sql := "INSERT INTO web_pages (id, url, title, status_code, body, headers) VALUES (1, 'https://example.com', 'Example Page', 200, '<html><body>Hello, world!</body></html>', '{\"Content-Type\": \"text/html\"}')"
+
+	result := db.Exec(sql)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}

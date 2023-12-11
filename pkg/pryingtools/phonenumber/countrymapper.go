@@ -1,6 +1,6 @@
 package phonenumber
 
-// MapCouuntryCodeToRegex maps each countryCode to the speciifc regexp
+// MapCountryCodeToRegex maps each countryCode to the specific regexp
 func MapCountryCodeToRegex(countryCodes []string) map[string]string {
 	countryMap := make(map[string]string)
 	for _, code := range countryCodes {
@@ -11,8 +11,6 @@ func MapCountryCodeToRegex(countryCodes []string) map[string]string {
 			countryMap[code] = RuRegex
 		case "US":
 			countryMap[code] = USRegex
-		case "GB":
-			countryMap[code] = UKRegex
 		case "NL":
 			countryMap[code] = NLRegex
 

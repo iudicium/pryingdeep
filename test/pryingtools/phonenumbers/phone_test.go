@@ -6,13 +6,14 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
 
-	"github.com/iudicium/pryingdeep/configs"
 	"github.com/iudicium/pryingdeep/models"
+	"github.com/iudicium/pryingdeep/pkg/fsutils"
 	"github.com/iudicium/pryingdeep/pkg/logger"
 	"github.com/iudicium/pryingdeep/pkg/pryingtools/phonenumber"
 	"github.com/iudicium/pryingdeep/test/test_helpers"
@@ -51,14 +52,9 @@ func ReadFilesInDirectory(directoryPath string) (string, error) {
 }
 
 func TestSetup(t *testing.T) {
-	configs.SetupEnvironment()
-	cfg := configs.GetConfig().DB
-
-	logger.InitLogger(false)
-	defer logger.Logger.Sync()
-
-	dbURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.TestName)
-	db = models.SetupDatabase(dbURL)
+	test_helpers.InitTestConfig()
+	test_helpers.CreateTestWebPage()
+	db = models.GetDB()
 }
 
 func testPhoneNumberValidation(t *testing.T, testConfig PhoneNumberValidationTestConfig) {
@@ -101,11 +97,12 @@ func TestRussianPhoneNumberValidation(t *testing.T) {
 		URL:           "https://mysmsbox.ru/",
 		Regex:         phonenumber.RuRegex,
 		CountryCode:   "RU",
-		ExpectedCount: 47,
+		ExpectedCount: 37,
 		WebPageId:     1,
 	}
 	testPhoneNumberValidation(t, testConfig)
 }
+
 func TestUSAPhoneNumberValidation(t *testing.T) {
 	testConfig := PhoneNumberValidationTestConfig{
 		URL:           "https://www.thisnumber.com/270-258",
@@ -117,11 +114,10 @@ func TestUSAPhoneNumberValidation(t *testing.T) {
 	testPhoneNumberValidation(t, testConfig)
 }
 
-// //
-// //There's 15-16 duplicate numbers in the html, so we store only 15
-//
-// // // DE = Germany
-// // // 5 Duplicates, only 1 Correct
+// There are 15-16 duplicate numbers in the html, so we store only 15
+// // DE = Germany
+// // 5 Duplicates, only 1 Correct
+
 func TestDEPhoneNumberValidation(t *testing.T) {
 	testConfig := PhoneNumberValidationTestConfig{
 		URL:           "https://allaboutberlin.com/guides/dial-phone-numbers-germany",
@@ -134,6 +130,7 @@ func TestDEPhoneNumberValidation(t *testing.T) {
 }
 
 // // FIXME: the nl regexp validation is a bit wrong but it works for now
+
 func TestConcurrentPhoneProcessing(t *testing.T) {
 	html, err := ReadFilesInDirectory("data")
 	if err != nil {
@@ -142,8 +139,8 @@ func TestConcurrentPhoneProcessing(t *testing.T) {
 	phoneProcessor := phonenumber.NewPhoneProcessor()
 
 	testCountryRegexPatterns := map[string]string{
-		"GB": phonenumber.UKRegex,
 		"NL": phonenumber.NLRegex,
+		"RU": phonenumber.RuRegex,
 	}
 
 	phoneProcessor.ProcessPhoneNumbers(html, 1, testCountryRegexPatterns)
@@ -155,4 +152,38 @@ func TestConcurrentPhoneProcessing(t *testing.T) {
 		}
 	})
 
+}
+func TestRegexpForTelTag(t *testing.T) {
+	regex := `<(?:a|input)[^>]*(?:\s+href\s*=\s*["']\s*tel:([^"']*)["']|type\s*=\s*["']\s*tel["'][^>]*)>`
+
+	html, err := fsutils.ReadTextFile("data/tel.html")
+	if err != nil {
+		t.Fatal(err)
+	}
+	validator, err := phonenumber.NewPhoneNumberValidator(regex, "")
+	phones := validator.FindPhoneNumbers(html)
+	phoneHTML := strings.Join(phones, " ")
+	phoneProcessor := phonenumber.NewPhoneProcessor()
+	testCountryRegexPatterns := map[string]string{
+		"NL": phonenumber.NLRegex,
+		"RU": phonenumber.RuRegex,
+		"US": phonenumber.USRegex,
+		"DE": phonenumber.DERegex,
+	}
+
+	phoneProcessor.ProcessPhoneNumbers(phoneHTML, 1, testCountryRegexPatterns)
+	t.Cleanup(func() {
+		for countryCode, _ := range testCountryRegexPatterns {
+			logger.Debugf("removing %s phones from test database", countryCode)
+			test_helpers.DeletePhoneNumbersByCountryCode(db, countryCode)
+
+		}
+	})
+}
+
+func TestTearDown(t *testing.T) {
+	result := db.Exec("DELETE FROM web_pages WHERE id = ?", 1)
+	if result.Error != nil {
+		t.Fatal(result.Error)
+	}
 }
