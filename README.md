@@ -153,7 +153,9 @@ Exporter:
 <!-- ROADMAP -->
 ## Roadmap
 
-- [x] Fix the phoneNumber module, get it to at least 50%
+- [ ] Add a search command which will not require any onion links
+- [ ] Acquire a shodan api key for testing the favicon module
+- [ ] Think of a way to acquire IP address of the server
 - [ ] Implement file identification and search
 <!-- CONTRIBUTING -->
 ## Contributing
