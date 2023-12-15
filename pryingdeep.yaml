@@ -8,18 +8,19 @@ crawler:
     disallowed-url-filters: []
     email: false
     ignore-robots-txt: false
-    keywords: []
+    keywords:
+        - test
     limit-delay: 0
     limit-random-delay: 0
     max-depth: 0
     phone: []
     queue-max-size: 500000
     queue-threads: 4
-    tor: false
+    tor: true
     url-filters: []
     url-revisit: false
     urls:
-        - example.com
+        - https://example.com
     user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0
     wordpress: false
 database:
