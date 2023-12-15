@@ -18,8 +18,8 @@ var SearchCMD = &cobra.Command{
 	Use:   "search",
 	Short: "Search different dark web search engines",
 	Run: func(cmd *cobra.Command, args []string) {
-		cfg = setupCrawlerConfig(cmd)
-		Crawl(cfg.Crawler.StartingURLS)
+		cfg = setupCrawlerConfig(cmd, "search")
+		Crawl()
 
 	},
 }

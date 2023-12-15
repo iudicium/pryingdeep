@@ -18,20 +18,23 @@ var CrawlCMD = &cobra.Command{
 	Use:   "crawl",
 	Short: "Start the crawling process",
 	Run: func(cmd *cobra.Command, args []string) {
-		setupCrawlerConfig(cmd)
-		//Empty list, we don't want to override the actual urls that the user passes
-		Crawl([]string{})
+		setupCrawlerConfig(cmd, "default")
+		Crawl()
 	},
 }
 
-func setupCrawlerConfig(cmd *cobra.Command) *configs.Configuration {
+func setupCrawlerConfig(cmd *cobra.Command, crawlerType string) *configs.Configuration {
 	configs.SetupEnvironment()
 	cfg = configs.GetConfig()
+
 	setCrawlerOptions(&cfg.Crawler, cmd)
+	if crawlerType != "default" {
+		handleCrawlerTypeOptions(&cfg.Crawler, cmd)
+	}
 	return cfg
 }
 
-func Crawl(urls []string) {
+func Crawl() {
 	newCrawler := crawler.NewCrawler(cfg.Tor, cfg.Crawler)
 	if err := newCrawler.Crawl(); err != nil {
 		handleCrawlError(err)
@@ -68,13 +71,9 @@ func initCrawler(cmd *cobra.Command, crawlerType string) {
 	cmd.Flags().BoolVarP(&email, "email", "e", false, "Enable email search")
 	cmd.Flags().StringSliceVarP(&phone, "phone", "p", []string{}, "List of countries. RU,NL,DE,US. You can specify multiple or just one.")
 
-	switch crawlerType {
-	case "search":
-		{
-			cmd.Flags().StringSliceVarP(&keywords, "keywords", "k", nil, "List of keywords or sentences for search")
-			cmd.Flags().MarkHidden("urls")
-
-		}
+	if crawlerType == "search" {
+		cmd.Flags().StringSliceVarP(&keywords, "keywords", "k", nil, "List of keywords or sentences for search")
+		cmd.Flags().MarkHidden("urls")
 	}
 
 	cli := configs.NewCLIConfig()
@@ -151,19 +150,19 @@ func setCrawlerOptions(c *configs.Crawler, cmd *cobra.Command) {
 		c.PhoneNumbers = phone
 	}
 
+	logger.Infof("Wordpress: %t, Crypto: %t, Email: %t, Phone: %s", c.Wordpress, c.Crypto, c.Email, c.PhoneNumbers)
+
+}
+
+// Is this necessary? Maybe for future flags in the search command
+func handleCrawlerTypeOptions(c *configs.Crawler, cmd *cobra.Command) {
 	if cmd.Flags().Changed("keywords") {
 		c.Keywords = keywords
 		generateSearchURLS(keywords)
-	} else {
-		if len(c.Keywords) == 0 {
-			fmt.Println(color.RedString("No keywords were provided while using the search command."))
-			os.Exit(1)
-
-		}
+	} else if len(c.Keywords) == 0 {
+		fmt.Println(color.RedString("No keywords were provided while using the search command."))
+		os.Exit(1)
 	}
-
-	logger.Infof("Wordpress: %t, Crypto: %t, Email: %t, Phone: %s", c.Wordpress, c.Crypto, c.Email, c.PhoneNumbers)
-
 }
 
 func handleCrawlError(err error) {
