@@ -163,7 +163,7 @@ Search:
 - [ ] Acquire a shodan api key for testing the favicon module
 - [ ] Think of a way to acquire IP address of the server
 - [ ] Implement file identification and search
-
+- [ ] Find  away to supress gorm unique duplicate errors as they take half the screen...
 <!-- CONTRIBUTING -->
 ## Contributing
 
