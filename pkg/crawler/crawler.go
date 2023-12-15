@@ -26,6 +26,7 @@ func NewCrawler(torConf configs.TorConfig, crawlerConf configs.Crawler) *Crawler
 	}
 
 	c.collector.OnError(func(r *colly.Response, err error) {
+
 		logger.Errorf("Request URL: %s failed with status code: %d Error: %s",
 			r.Request.URL, r.StatusCode, err)
 	})
@@ -50,6 +51,7 @@ func NewCrawler(torConf configs.TorConfig, crawlerConf configs.Crawler) *Crawler
 func (c *Crawler) Crawl() error {
 	var crawlErr error
 	c.collector.OnHTML("a[href]", func(e *colly.HTMLElement) {
+
 		url := e.Attr("href")
 		absoluteUrl := e.Request.AbsoluteURL(url)
 		err := c.queue.AddURL(absoluteUrl)

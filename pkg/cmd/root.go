@@ -15,6 +15,7 @@ import (
 	"github.com/iudicium/pryingdeep/models"
 	"github.com/iudicium/pryingdeep/pkg/cmd/crawler"
 	"github.com/iudicium/pryingdeep/pkg/cmd/exporter"
+	"github.com/iudicium/pryingdeep/pkg/cmd/install"
 	"github.com/iudicium/pryingdeep/pkg/logger"
 )
 
@@ -53,8 +54,9 @@ func init() {
 	rootCmd.PersistentFlags().BoolVarP(&saveConfig, "save-config", "z", saveConfig, "Save chosen options to your .yaml configuration")
 	rootCmd.PersistentFlags().StringVarP(&cfg, "config", "c", cfg, "Path to the .yaml configuration.")
 	rootCmd.AddCommand(exporter.ExporterCMD)
-	rootCmd.AddCommand(crawler.CrawlCmd)
-	rootCmd.AddCommand(installCmd)
+	rootCmd.AddCommand(crawler.CrawlCMD)
+	rootCmd.AddCommand(crawler.SearchCMD)
+	rootCmd.AddCommand(install.InstallCMD)
 	viper.BindPFlags(rootCmd.PersistentFlags())
 
 }

@@ -56,12 +56,15 @@ type Crawler struct {
 	Delay       int `mapstructure:"delay"`
 	RandomDelay int `mapstructure:"random-delay"`
 
-	//PhoneNumbers List of countries. RU,NL,DE,GB,US. You can specify multiple or just one.
+	//PhoneNumbers List of countries. RU,NL,DE,US. You can specify multiple or just one.
 	//Default is blank
 	PhoneNumbers []string `mapstructure:"phone-numbers"`
 	Email        bool     `mapstructure:"email"`
 	Crypto       bool     `mapstructure:"crypto"`
 	Wordpress    bool     `mapstructure:"wordpress"`
+
+	// Search command config
+	Keywords []string `mapstructure:"keywords"`
 }
 type LimitRule struct {
 }

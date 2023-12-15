@@ -31,7 +31,7 @@ var (
 )
 
 func init() {
-	JSONCmd.Flags().BoolVarP(&rawSQL, "raw", "r", rawSQL, "--raw to use raw sql queries that you provide. All other flags except silent, rawFilePath and filepath will not matter.")
+	JSONCmd.Flags().BoolVarP(&rawSQL, "raw-sql", "r", rawSQL, "--raw to use raw sql queries that you provide. All other flags except silent, rawFilePath and filepath will not matter.")
 	JSONCmd.Flags().StringVarP(&rawFilePath, "raw-sql-filepath", "p", rawFilePath, "-rp to specify the file path to the sql file. Only use this flag if you specify -raw")
 	JSONCmd.Flags().StringToStringVarP(&criteria, "criteria", "q", criteria, "JSON-formatted criteria, e.g., -q 'title=test,\"url=LIKE example.com\"'")
 	JSONCmd.Flags().StringVarP(&associations, "associations", "a", associations, "-a WP,E,P,C")
@@ -40,7 +40,7 @@ func init() {
 	JSONCmd.Flags().IntVarP(&limit, "limit", "l", limit, "Limit e.g -> -l 100 -> 100 items will be taken from the database. Default limit will acquire all results from the database")
 	JSONCmd.Flags().IntVarP(&offset, "offset", "o", offset, "Offset is the number of records that get skipped during export.")
 	JSONCmd.Flags().StringVarP(&filePath, "filepath", "f", filePath, "FilePath -f myfilepath")
-	JSONCmd.MarkFlagsRequiredTogether("raw", "raw-sql-filepath")
+	JSONCmd.MarkFlagsRequiredTogether("raw-sql", "raw-sql-filepath")
 
 	cli := configs.NewCLIConfig()
 	JSONCmd.Flags().VisitAll(cli.ConfigureViper("exporter"))

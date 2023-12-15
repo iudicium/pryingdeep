@@ -1,4 +1,4 @@
-package cmd
+package install
 
 import (
 	"context"
@@ -21,7 +21,7 @@ const (
 	defaultCfgPath = ".pryingdeep/pryingdeep.yaml"
 )
 
-var installCmd = &cobra.Command{
+var InstallCMD = &cobra.Command{
 
 	Use:   "install",
 	Short: "Installation of config files",

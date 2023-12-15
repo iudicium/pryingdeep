@@ -2,6 +2,8 @@ package crawler
 
 import (
 	"errors"
+	"fmt"
+	"os"
 
 	"github.com/fatih/color"
 	"github.com/gocolly/colly/v2"
@@ -12,81 +14,72 @@ import (
 	"github.com/iudicium/pryingdeep/pkg/logger"
 )
 
-var (
-	//Crawler options
-	urls                 []string
-	tor                  bool
-	userAgent            string
-	maxDepth             int
-	maxBodySize          int
-	cacheDir             string
-	ignoreRobotsTxt      bool
-	debug                bool
-	queueThreads         int
-	queueMaxSize         int
-	allowedDomains       []string
-	disallowedDomains    []string
-	disallowedURLFilters []string
-	urlFilters           []string
-	allowURLRevisit      bool
-	delay                int
-	randomDelay          int
-	// Prying options - (more to come!)
-	wordpress bool
-	crypto    bool
-	email     bool
-	phone     []string
-)
-
-var CrawlCmd = &cobra.Command{
+var CrawlCMD = &cobra.Command{
 	Use:   "crawl",
 	Short: "Start the crawling process",
-	Run:   Crawl,
+	Run: func(cmd *cobra.Command, args []string) {
+		setupCrawlerConfig(cmd)
+		//Empty list, we don't want to override the actual urls that the user passes
+		Crawl([]string{})
+	},
 }
 
-func Crawl(cmd *cobra.Command, args []string) {
+func setupCrawlerConfig(cmd *cobra.Command) *configs.Configuration {
 	configs.SetupEnvironment()
-	cfg := configs.GetConfig()
+	cfg = configs.GetConfig()
 	setCrawlerOptions(&cfg.Crawler, cmd)
+	return cfg
+}
+
+func Crawl(urls []string) {
 	newCrawler := crawler.NewCrawler(cfg.Tor, cfg.Crawler)
 	if err := newCrawler.Crawl(); err != nil {
-		if errors.Is(err, colly.ErrQueueFull) {
-			color.HiRed("\nQueue max size has been reached! Exiting.")
-		} else {
-			logger.Errorf("Crawl error: %s", err)
-		}
+		handleCrawlError(err)
 	}
-
 }
 
 func init() {
-	CrawlCmd.Flags().StringSliceVarP(&urls, "urls", "u", nil, "Entry point URLs")
-	CrawlCmd.Flags().BoolVarP(&tor, "tor", "t", false, "Turn on/off connecting to Tor.")
-	CrawlCmd.Flags().StringVar(&userAgent, "user-agent", userAgent, "Specify any user agents for the crawler to use.")
-	CrawlCmd.Flags().IntVar(&maxDepth, "max-depth", 0, "Maximum recursion depth")
-	CrawlCmd.Flags().IntVar(&maxBodySize, "body-size", 0, "Max body size in bytes (0 for unlimited)")
-	CrawlCmd.Flags().StringVar(&cacheDir, "cache-dir", "", "Cache directory")
-	CrawlCmd.Flags().BoolVar(&ignoreRobotsTxt, "ignore-robots-txt", false, "Ignore robots.txt")
-	CrawlCmd.Flags().BoolVar(&debug, "debug", false, "Enable debug mode")
-	CrawlCmd.Flags().IntVar(&queueThreads, "queue-threads", 4, "Number of queue threads")
-	CrawlCmd.Flags().IntVar(&queueMaxSize, "queue-max-size", 50000, "Queue max size")
+	initCrawler(CrawlCMD, "default")
+}
 
-	CrawlCmd.Flags().StringSliceVar(&allowedDomains, "allowed-domains", nil, "Allowed domains")
-	CrawlCmd.Flags().StringSliceVar(&disallowedDomains, "disallowed-domains", nil, "Disallowed domains")
-	CrawlCmd.Flags().StringSliceVar(&disallowedURLFilters, "disallowed-url-filters", nil, "Disallowed URL filters")
-	CrawlCmd.Flags().StringSliceVar(&urlFilters, "url-filters", nil, "URL filters")
-	CrawlCmd.Flags().BoolVar(&allowURLRevisit, "url-revisit", false, "Allow URL revisit")
+func initCrawler(cmd *cobra.Command, crawlerType string) {
+	cmd.Flags().StringSliceVarP(&urls, "urls", "u", nil, "Entry point URLs")
+	cmd.Flags().BoolVarP(&tor, "tor", "t", false, "Turn on/off connecting to Tor.")
+	cmd.Flags().StringVar(&userAgent, "user-agent", userAgent, "Specify any user agents for the crawler to use.")
+	cmd.Flags().IntVar(&maxDepth, "max-depth", 0, "Maximum recursion depth")
+	cmd.Flags().IntVar(&maxBodySize, "body-size", 0, "Max body size in bytes (0 for unlimited)")
+	cmd.Flags().StringVar(&cacheDir, "cache-dir", "", "Cache directory")
+	cmd.Flags().BoolVar(&ignoreRobotsTxt, "ignore-robots-txt", false, "Ignore robots.txt")
+	cmd.Flags().BoolVar(&debug, "debug", false, "Enable debug mode")
+	cmd.Flags().IntVar(&queueThreads, "queue-threads", 4, "Number of queue threads")
+	cmd.Flags().IntVar(&queueMaxSize, "queue-max-size", 50000, "Queue max size")
 
-	CrawlCmd.Flags().IntVar(&delay, "limit-delay", 0, "Limit delay")
-	CrawlCmd.Flags().IntVar(&randomDelay, "limit-random-delay", 0, "Limit random delay")
+	cmd.Flags().StringSliceVar(&allowedDomains, "allowed-domains", nil, "Allowed domains")
+	cmd.Flags().StringSliceVar(&disallowedDomains, "disallowed-domains", nil, "Disallowed domains")
+	cmd.Flags().StringSliceVar(&disallowedURLFilters, "disallowed-url-filters", nil, "Disallowed URL filters")
+	cmd.Flags().StringSliceVar(&urlFilters, "url-filters", nil, "URL filters")
+	cmd.Flags().BoolVar(&allowURLRevisit, "url-revisit", false, "Allow URL revisit")
 
-	CrawlCmd.Flags().BoolVarP(&wordpress, "wordpress", "w", false, "Enable WordPress support")
-	CrawlCmd.Flags().BoolVarP(&crypto, "crypto", "k", false, "Enable crypto features")
-	CrawlCmd.Flags().BoolVarP(&email, "email", "e", false, "Enable email search")
-	CrawlCmd.Flags().StringSliceVarP(&phone, "phone", "p", []string{}, "List of countries. RU,NL,DE,GB,US. You can specify multiple or just one.")
+	cmd.Flags().IntVar(&delay, "limit-delay", 0, "Limit delay")
+	cmd.Flags().IntVar(&randomDelay, "limit-random-delay", 0, "Limit random delay")
+
+	cmd.Flags().BoolVarP(&wordpress, "wordpress", "w", false, "Enable WordPress support")
+	cmd.Flags().BoolVarP(&crypto, "crypto", "b", false, "Enable crypto features")
+	cmd.Flags().BoolVarP(&email, "email", "e", false, "Enable email search")
+	cmd.Flags().StringSliceVarP(&phone, "phone", "p", []string{}, "List of countries. RU,NL,DE,US. You can specify multiple or just one.")
+
+	switch crawlerType {
+	case "search":
+		{
+			cmd.Flags().StringSliceVarP(&keywords, "keywords", "k", nil, "List of keywords or sentences for search")
+			cmd.Flags().MarkHidden("urls")
+
+		}
+	}
 
 	cli := configs.NewCLIConfig()
-	CrawlCmd.Flags().VisitAll(cli.ConfigureViper("crawler"))
+	cmd.Flags().VisitAll(cli.ConfigureViper("crawler"))
+
 }
 
 func setCrawlerOptions(c *configs.Crawler, cmd *cobra.Command) {
@@ -157,6 +150,26 @@ func setCrawlerOptions(c *configs.Crawler, cmd *cobra.Command) {
 	if cmd.Flags().Changed("phone") {
 		c.PhoneNumbers = phone
 	}
+
+	if cmd.Flags().Changed("keywords") {
+		c.Keywords = keywords
+		generateSearchURLS(keywords)
+	} else {
+		if len(c.Keywords) == 0 {
+			fmt.Println(color.RedString("No keywords were provided while using the search command."))
+			os.Exit(1)
+
+		}
+	}
+
 	logger.Infof("Wordpress: %t, Crypto: %t, Email: %t, Phone: %s", c.Wordpress, c.Crypto, c.Email, c.PhoneNumbers)
 
+}
+
+func handleCrawlError(err error) {
+	if errors.Is(err, colly.ErrQueueFull) {
+		color.HiRed("\nQueue max size has been reached! Exiting.")
+	} else {
+		logger.Errorf("Crawl error: %s", err)
+	}
 }

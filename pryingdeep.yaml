@@ -8,6 +8,7 @@ crawler:
     disallowed-url-filters: []
     email: false
     ignore-robots-txt: false
+    keywords: []
     limit-delay: 0
     limit-random-delay: 0
     max-depth: 0
@@ -18,7 +19,7 @@ crawler:
     url-filters: []
     url-revisit: false
     urls:
-        - https://example.com
+        - example.com
     user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0
     wordpress: false
 database:
@@ -34,7 +35,6 @@ exporter:
     filepath: data.json
     limit: 0
     offset: 0
-    raw: false
     raw-sql: false
     raw-sql-filepath: pkg/querybuilder/queries/select.sql
     sort-by: id
