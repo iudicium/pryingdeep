@@ -8,15 +8,14 @@ crawler:
     disallowed-url-filters: []
     email: false
     ignore-robots-txt: false
-    keywords:
-        - test
+    keywords: []
     limit-delay: 0
     limit-random-delay: 0
     max-depth: 0
     phone: []
     queue-max-size: 500000
     queue-threads: 4
-    tor: true
+    tor: false
     url-filters: []
     url-revisit: false
     urls:
