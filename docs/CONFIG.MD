@@ -172,6 +172,15 @@ The following sections explain each setting in the `crawler` configuration:
   - ***Source:*** [useragents.me](https://www.useragents.me/)
 </details>
 
+
+<details>
+  <summary><strong>keywords</strong></summary>
+
+  - **Description:** A keyword, sentence, list of keywords
+  - **Default Value:** `[]`
+  - ***Example:*** `search -k owasp -k hacking -k "Please hack the box!"`
+
+</details>
 ---
 
 # Exporter
