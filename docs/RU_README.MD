@@ -8,10 +8,10 @@
   <h3 align="center">Prying Deep</h3>
 
   <p align="center">
-    <b>OSINT инструмент для cбора информации с черного и белого интернета.
+    <b>OSINT инструмент для сбора информации с тёмного и обычного интернета.
     <br />
     <br />
-    <a href="https://github.com/iudicium/pryingdeep/issues">Сообщить о ошибке</a>
+    <a href="https://github.com/iudicium/pryingdeep/issues">Сообщить об ошибке</a>
     <a href="https://github.com/iudicium/pryingdeep/issues">Предложить улучшение</a>
   </p>
 </div>
