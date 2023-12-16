@@ -2,7 +2,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/pryingbytez/pryingdeep/web/static/logo.png">
+  <a href="https://github.com/iudicium/pryingdeep/web/static/logo.png">
     <img src="web/static/logo.png" alt="Logo" width="350" height="200">
   </a>
 
@@ -12,8 +12,8 @@
     <b>OSINT intellegence gathering tool for the dark/clear web
     <br />
     <br />
-    <a href="https://github.com/pryingbytez/pryingdeep/issues">Report Bug</a>
-    <a href="https://github.com/pryingbytez/pryingdeep/issues">Request Feature</a>
+    <a href="https://github.com/iudicium/pryingdeep/issues">Report Bug</a>
+    <a href="https://github.com/iudicium/pryingdeep/issues">Request Feature</a>
   </p>
 </div>
 
@@ -50,6 +50,9 @@
 
 
 
+## Translation (Перевод)
+ - [Click](./docs/RU_README.MD)
+
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
@@ -62,7 +65,7 @@ This tool serves as a reminder that the best practices of OPSEC should always be
 
 <u>The author of this project is not responsible for any possible harm caused by the usage of this tool.</u>
 
-## What does it do?
+## What does this tool do?
 
 *Prying Deep crawls dark/clear net platforms and extracts as much intelligence as possible effectively.*
 
@@ -107,7 +110,7 @@ pryingdeep install
 
 1. Clone the repo: 
    ```sh
-    git clone https://github.com/pryingbytez/pryingdeep.git     
+    git clone https://github.com/iudicium/pryingdeep.git
    ```
 
 2. Adjust the values in the .yaml configuration either through flags or manually.
@@ -116,7 +119,7 @@ pryingdeep install
 <u>You *will need to read*</u> [Colly Docs](https://github.com/gocolly/colly/blob/v1.2.0/colly.go). Also, refer to [Config Explanation](./docs/CONFIG.MD#table-of-contents)
 
 
-3. Build the binary via
+3. Build the binary via:
    - `go build` -> directory: `cmd/pryingdeep`
    - `go build cmd/pryingdeep/pryingdeep.go` -> root directory, binary will also be there. 
 
@@ -164,7 +167,7 @@ Search:
 - [ ] Acquire a shodan api key for testing the favicon module
 - [ ] Think of a way to acquire IP address of the server
 - [ ] Implement file identification and search
-- [ ] Find  away to supress gorm unique duplicate errors as they take half the screen...
+- [ ] Find  a way to supress gorm unique duplicate errors as they take half the screen...
 <!-- CONTRIBUTING -->
 ## Contributing
 

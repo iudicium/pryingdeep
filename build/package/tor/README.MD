@@ -1,5 +1,9 @@
 # Tor container
 
+## Перевод (Translation)
+
+[Тор](../../docs/RU_TOR.MD)
+
 ## Build
 
 *Directory that the docker container is in:*

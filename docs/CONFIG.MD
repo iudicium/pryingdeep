@@ -111,7 +111,7 @@ The following sections explain each setting in the `crawler` configuration:
 
   - **Description:** List of countries to parse phone numbers from.
   - **Default Value:** `[]` (empty list)
-  - ***Example:*** "RU,NL,DE,GB,US" &rarr; You can choose which countries don't have to be every
+  - ***Example:*** "RU,NL,DE,US" &rarr; You can choose which countries don't have to be every
 </details>
 
 <details>
@@ -167,7 +167,6 @@ The following sections explain each setting in the `crawler` configuration:
   <summary><strong>user-agent</strong></summary>
 
   - **Description:** User agent string for HTTP requests.
-  - **Default Value:** `colly - https://github.com/gocolly/colly/v2`
   - ***Example:*** `Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0`
   - ***Source:*** [useragents.me](https://www.useragents.me/)
 </details>
@@ -189,7 +188,7 @@ The following sections explain each setting in the `crawler` configuration:
   <summary><strong>associations</strong></summary>
   <ul>
     <li>
-      <strong>Description:</strong> Specify the different tables you want to export from the database.
+      <strong>Description:</strong> Specify the different SQL tables you want to export from the database.
     </li>
     <li>
       <strong>Default:</strong> <code>all</code>
