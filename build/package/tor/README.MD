@@ -2,7 +2,7 @@
 
 ## Перевод (Translation)
 
-[Тор](../../docs/RU_TOR.MD)
+[Tor](../../../docs/RU_TOR.MD)
 
 ## Build
 
