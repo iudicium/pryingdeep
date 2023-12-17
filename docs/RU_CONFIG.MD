@@ -282,7 +282,7 @@
             <strong>Значение:</strong> <code>false</code>
         </li>
         <li>
-            <strong>Описание:</strong> Включение или отключение выполнения запросов сырого SQL.
+            <strong>Описание:</strong> Включение или отключение выполнения запросов чистого SQL.
         </li>
         <li>
             <strong>Значение по умолчанию:</strong> <code>false</code>
