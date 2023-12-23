@@ -5,7 +5,7 @@
 ## Tor
 Read more about building and running our tor container here:
 
-- [Tor](./build/package/tor/README.MD#build)
+- [Tor](.././build/package/tor/README.MD#build)
 
 Russian:
 
@@ -20,6 +20,6 @@ Russian:
 
 # Main README
 
-- [**Main README**](../README.MD#table-of-contents): The primary README document contains essential information about the project.
+- [**Main README**](../README.md#table-of-contents): The primary README document contains essential information about the project.
 
 - [**Русское README**](./RU_README.MD)
