@@ -88,7 +88,7 @@ Before you can use our OSINT tool, please ensure you have the following dependen
     - [Golang Installation Guide](https://go.dev/doc/install).
 
 3. **PostgresSQL: (required if you don't use docker)**
-    - Make sure your .yaml environment variables match the environment in `docker-compose.yaml`
+    - Make sure your `pryingdeep.yaml` environment variables match the environment in `docker-compose.yaml`
     - [PostgreSQL Installation](https://www.postgresql.org/download/)
 
 
@@ -120,8 +120,8 @@ pryingdeep install
 
 
 3. Build the binary via:
-   - `go build` -> directory: `cmd/pryingdeep`
-   - `go build cmd/pryingdeep/pryingdeep.go` -> root directory, binary will also be there. 
+   - `go build` -> inside the `cmd/pryingdeep` directory
+   - `go build cmd/pryingdeep/pryingdeep.go` -> root directory, binary will also be there.
 
 ## Docker
 

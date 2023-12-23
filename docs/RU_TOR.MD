@@ -4,16 +4,15 @@
 
 *Каталог, в котором находится контейнер Docker:*
 
-
 - ```sh
-docker build -t tor .
-```
+    docker build -t tor .
+  ```
 
 *Корневой каталог:*
 
 - ```sh
-docker build -t tor -f build/package/tor/Dockerfile .
-```
+    docker build -t tor -f build/package/tor/Dockerfile .
+  ```
 
 ## Запуск
 

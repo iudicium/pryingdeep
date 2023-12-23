@@ -15,11 +15,9 @@
 
 
 
-
 # Crawler Configuration
 
 Следующие разделы поясняют каждую настройку в конфигурации `crawler`:
-
 
 <details>
     <summary><strong>allowed-domains</strong></summary>
@@ -28,7 +26,6 @@
     - **Значение по умолчанию:** `пустой список`
     - ***Пример:*** `old.reddit.com`  &rarr; посещение только доменов old.reddit.com
 </details>
-
 
 <details>
     <summary><strong>body-size</strong></summary>

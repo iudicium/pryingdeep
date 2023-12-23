@@ -24,7 +24,7 @@ The following sections explain each setting in the `crawler` configuration:
 
   - **Description:** White list allowed domains
   - **Default Value:** `empty list`
-  - ***Example:*** `old.reddit.com` &rarr; visit only old.reddit.com domains
+  - ***Example:*** `old.reddit.com` -> visit only old.reddit.com domains
 </details>
 
 <details>

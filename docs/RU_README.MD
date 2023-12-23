@@ -84,10 +84,10 @@
     - [Руководство по установке Docker](https://docs.docker.com/get-docker/).
 
 2. **Go: (обязательно)**
-    - [Руководство по установке Golang.](https://go.dev/doc/install).
+    - [Руководство по установке Golang.](https://go.dev/doc/install)
 
 3. **PostgresSQL: (требуется, если вы не используете Docker)**
-    - Убедитесь, что переменные окружения в вашем файле .yaml соответствуют среде в docker-compose.yaml
+    - Убедитесь, что переменные окружения в вашем файле `pryingdeep.yaml` соответствуют среде в `docker-compose.yaml`
     - [Установка PostgreSQL](https://www.postgresql.org/download/)
 
 
@@ -112,7 +112,7 @@ pryingdeep install
     git clone https://github.com/pryingbytez/pryingdeep.git
    ```
 
-2.Настройте значения в файле конфигурации .yaml либо с использованием флагов, либо вручную.
+2. Настройте значения в файле конфигурации .yaml либо с использованием флагов, либо вручную.
   `Database`, `logger`, `tor` требуют ручной настройки. <br>
 
 
@@ -120,10 +120,10 @@ pryingdeep install
 
 
 3. Соберите бинарный файл с помощью:
-   - `go build` -> directory: `cmd/pryingdeep`
    - `go build cmd/pryingdeep/pryingdeep.go` -> c корневой директории, бинарный файл также будет там.
+    - `go build` -> в директории где находится файл, `pryingdeep.go`
 
-## Docker
+    ## Docker
 
 Для запуска *pryingdeep* внутри контейнера Docker используйте эту команду:
 
