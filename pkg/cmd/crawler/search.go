@@ -7,12 +7,9 @@ import (
 var (
 	keywords      []string
 	searchEngines = []string{
-		//Torch, not so much
-		//"http://xmh57jrknzkhv6y3ls3ubitzfqnkrwxhopf5aygthi7d6rplyvk3noyd.onion/cgi-bin/omega/omega?P=",
 		//Tordex works perfectly
 		"http://tordexyb63aknnvuzyqabeqx6l7zdiesfos22nisv6zbj6c6o3h6ijyd.onion/search?query=",
-		//	IceBerg. Not tested.
-		//	http://iceberget6r64etudtzkyh5nanpdsqnkgav5fh72xtvry3jyu5u2r5qd.onion/
+		"http://orealmvxooetglfeguv2vp65a3rig2baq2ljc7jxxs4hsqsrcemkxcad.onion/search?query=",
 	}
 )
 
