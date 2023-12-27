@@ -176,6 +176,7 @@ Use "pryingdeep [command] --help" for more information about a command.
 - [x] Add a search command which will not require any onion links
 - [ ] Acquire a shodan api key for testing the favicon module
 - [ ] Think of a way to acquire IP address of the server
+- [ ] Implement scan command
 - [ ] Implement file identification and search
 - [x] Find  a way to supress gorm unique duplicate errors as they take half the screen...
 <!-- CONTRIBUTING -->
