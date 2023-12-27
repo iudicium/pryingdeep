@@ -1,9 +1,12 @@
 package crawler
 
 import (
+	"errors"
+
 	"github.com/fatih/color"
 	"github.com/gocolly/colly/v2"
 	"github.com/gocolly/colly/v2/queue"
+	"gorm.io/gorm"
 
 	"github.com/iudicium/pryingdeep/configs"
 	"github.com/iudicium/pryingdeep/pkg/logger"
@@ -33,6 +36,7 @@ func NewCrawler(torConf configs.TorConfig, crawlerConf configs.Crawler) *Crawler
 
 	c.collector.OnResponse(func(response *colly.Response) {
 		c.handleResponse(response, &crawlerConf)
+
 	})
 
 	for i, url := range crawlerConf.StartingURLS {
@@ -71,12 +75,18 @@ func (c *Crawler) Crawl() error {
 func (c *Crawler) handleResponse(response *colly.Response, options *configs.Crawler) {
 	body := string(response.Body)
 	url := response.Request.URL.String()
-	logger.Infof("Crawling url: %s", url)
 	pageId, err := ParseResponse(url, body, response)
 
 	if err != nil {
+		if errors.Is(err, gorm.ErrDuplicatedKey) {
+			logger.Warnf("Duplicate record found in the database for URL: %s", url)
+			return
+		}
+
 		logger.Errorf("Something went wrong during parsing the response from: %s Err: %s ", url, err)
 	}
+
+	logger.Infof("Crawling url: %s", url)
 
 	if options.Wordpress {
 		go processWordPress(body, pageId)

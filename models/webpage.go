@@ -31,9 +31,12 @@ func CreatePage(url string, title string, statusCode int, body string, headers P
 		PageData: pageData,
 	}
 	// BUG: ERROR: invalid byte sequence for encoding "UTF8": 0xfc (SQLSTATE 22021)
+
 	if err := db.Create(&webPage).Error; err != nil {
+
 		return 0, err
 	}
 
 	return webPage.ID, nil
+
 }
