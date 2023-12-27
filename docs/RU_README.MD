@@ -219,3 +219,11 @@ Flags:
 ![Data Preview](../web/static/data_preview.png)
 ![Data Preview 2](../web/static/data_preview2.png)
 
+## Support
+
+Если вы нашли этот репозиторий полезным и чувствуете себя щедрым, вы можете отправить немного Monero (XMR) по следующему адресу:
+
+
+48bEkvkzP3W4SGKSJAkWx2V8s4axCKwpDFf7ZmwBawg5DBSq2imbcZVKNzMriukuPqjCyf2BSax1D3AktiUq5vWk1satWJt
+
+Спасибо!

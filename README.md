@@ -212,3 +212,11 @@ Distributed under the GPL-3.0 license. See `LICENSE` for more information.
 ![Data Preview](./web/static/data_preview.png)
 ![Data Preview 2](./web/static/data_preview2.png)
 
+
+## Support
+
+If you have found this repository useful and feel generous, you can donate some Monero (XMR) to the following address:
+
+48bEkvkzP3W4SGKSJAkWx2V8s4axCKwpDFf7ZmwBawg5DBSq2imbcZVKNzMriukuPqjCyf2BSax1D3AktiUq5vWk1satWJt
+
+Thank you!
