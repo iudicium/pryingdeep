@@ -146,7 +146,7 @@ Read more about building and running our tor container here:
 
 ```
 Pryingdeep specializes in collecting information about dark-web/clearnet websites.
-This tool was specifically built to extract as much information as possible from the dark web.
+This tool was specifically built to extract as much information as possible from a .onion website
 
 Usage:
 pryingdeep [command]
@@ -157,7 +157,6 @@ crawl       Start the crawling process
 export      Export the collected data into a file.
 help        Help about any command
 install     Installation of config files
-search      Search different dark web search engines
 
 Flags:
 -c, --config string   Path to the .yaml configuration. (default "pryingdeep.yaml")
@@ -165,7 +164,6 @@ Flags:
 -z, --save-config     Save chosen options to your .yaml configuration
 -s, --silent          -s to disable logging and run silently
 
-Use "pryingdeep [command] --help" for more information about a command.
 
 ```
 
