@@ -1,7 +1,13 @@
 package crawler
 
 import (
+	"fmt"
+	"os"
+
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
+
+	"github.com/iudicium/pryingdeep/configs"
 )
 
 var (
@@ -18,14 +24,18 @@ var SearchCMD = &cobra.Command{
 	Short: "Search different dark web search engines",
 	Long:  "Search different dark web search engines using keywords or sentences to find the most accurate result.",
 	Run: func(cmd *cobra.Command, args []string) {
-		cfg = setupCrawlerConfig(cmd, "search")
+		cfg = setupCrawlerConfig(cmd)
+		handleCrawlerTypeOptions(&cfg.Crawler, cmd)
 		Crawl()
 
 	},
 }
 
 func init() {
-	initCrawler(SearchCMD, "search")
+	SearchCMD.Flags().StringSliceVarP(&keywords, "keywords", "k", nil, "List of keywords or sentences for search")
+	SearchCMD.Flags().MarkHidden("urls")
+
+	SearchCMD.Flags().VisitAll(cli.ConfigureViper("crawler"))
 
 }
 
@@ -41,4 +51,17 @@ func generateSearchURLS(keywords []string) {
 		}
 	}
 	cfg.Crawler.StartingURLS = searchURLS
+}
+
+// Is this necessary? Maybe for future flags in the search command
+func handleCrawlerTypeOptions(c *configs.Crawler, cmd *cobra.Command) {
+	if cmd.Flags().Changed("keywords") {
+		c.Keywords = keywords
+		generateSearchURLS(keywords)
+	} else if len(c.Keywords) == 0 {
+		fmt.Println(color.RedString("No keywords were provided while using the search command."))
+		os.Exit(1)
+	} else {
+		generateSearchURLS(c.Keywords)
+	}
 }

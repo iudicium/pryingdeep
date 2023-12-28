@@ -55,8 +55,8 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&cfg, "config", "c", cfg, "Path to the .yaml configuration.")
 	rootCmd.AddCommand(exporter.ExporterCMD)
 	rootCmd.AddCommand(crawler.CrawlCMD)
-	rootCmd.AddCommand(crawler.SearchCMD)
 	rootCmd.AddCommand(install.InstallCMD)
+
 	viper.BindPFlags(rootCmd.PersistentFlags())
 
 }

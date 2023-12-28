@@ -5,6 +5,7 @@ import (
 )
 
 var (
+	cli *configs.CLIConfig
 	cfg *configs.Configuration
 	//Crawler options
 	urls                 []string

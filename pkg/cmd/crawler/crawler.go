@@ -2,8 +2,6 @@ package crawler
 
 import (
 	"errors"
-	"fmt"
-	"os"
 
 	"github.com/fatih/color"
 	"github.com/gocolly/colly/v2"
@@ -18,20 +16,29 @@ var CrawlCMD = &cobra.Command{
 	Use:   "crawl",
 	Short: "Start the crawling process",
 	Run: func(cmd *cobra.Command, args []string) {
-		setupCrawlerConfig(cmd, "default")
+		setupCrawlerConfig(cmd)
 		Crawl()
 	},
 }
 
-func setupCrawlerConfig(cmd *cobra.Command, crawlerType string) *configs.Configuration {
+func init() {
+	initCrawler(CrawlCMD)
+}
+
+func setupCrawlerConfig(cmd *cobra.Command) *configs.Configuration {
 	configs.SetupEnvironment()
 	cfg = configs.GetConfig()
-
 	setCrawlerOptions(&cfg.Crawler, cmd)
-	if crawlerType != "default" {
-		handleCrawlerTypeOptions(&cfg.Crawler, cmd)
-	}
+
 	return cfg
+}
+
+func handleCrawlError(err error) {
+	if errors.Is(err, colly.ErrQueueFull) {
+		color.HiRed("\nQueue max size has been reached! Exiting.")
+	} else {
+		logger.Errorf("Crawl error: %s", err)
+	}
 }
 
 func Crawl() {
@@ -41,43 +48,36 @@ func Crawl() {
 	}
 }
 
-func init() {
-	initCrawler(CrawlCMD, "default")
-}
+func initCrawler(cmd *cobra.Command) {
+	cmd.PersistentFlags().StringSliceVarP(&urls, "urls", "u", nil, "Entry point URLs")
+	cmd.PersistentFlags().BoolVarP(&tor, "tor", "t", false, "Turn on/off connecting to Tor.")
+	cmd.PersistentFlags().StringVar(&userAgent, "user-agent", userAgent, "Specify any user agents for the crawler to use.")
 
-func initCrawler(cmd *cobra.Command, crawlerType string) {
-	cmd.Flags().StringSliceVarP(&urls, "urls", "u", nil, "Entry point URLs")
-	cmd.Flags().BoolVarP(&tor, "tor", "t", false, "Turn on/off connecting to Tor.")
-	cmd.Flags().StringVar(&userAgent, "user-agent", userAgent, "Specify any user agents for the crawler to use.")
-	cmd.Flags().IntVar(&maxDepth, "max-depth", 0, "Maximum recursion depth")
-	cmd.Flags().IntVar(&maxBodySize, "body-size", 0, "Max body size in bytes (0 for unlimited)")
-	cmd.Flags().StringVar(&cacheDir, "cache-dir", "", "Cache directory")
-	cmd.Flags().BoolVar(&ignoreRobotsTxt, "ignore-robots-txt", false, "Ignore robots.txt")
-	cmd.Flags().BoolVar(&debug, "debug", false, "Enable debug mode")
-	cmd.Flags().IntVar(&queueThreads, "queue-threads", 4, "Number of queue threads")
-	cmd.Flags().IntVar(&queueMaxSize, "queue-max-size", 50000, "Queue max size")
+	cmd.PersistentFlags().IntVar(&maxDepth, "max-depth", 0, "Maximum recursion depth")
+	cmd.PersistentFlags().IntVar(&maxBodySize, "body-size", 0, "Max body size in bytes (0 for unlimited)")
+	cmd.PersistentFlags().StringVar(&cacheDir, "cache-dir", "", "Cache directory")
+	cmd.PersistentFlags().BoolVar(&ignoreRobotsTxt, "ignore-robots-txt", false, "Ignore robots.txt")
+	cmd.PersistentFlags().BoolVar(&debug, "debug", false, "Enable debug mode")
+	cmd.PersistentFlags().IntVar(&queueThreads, "queue-threads", 4, "Number of queue threads")
+	cmd.PersistentFlags().IntVar(&queueMaxSize, "queue-max-size", 50000, "Queue max size")
 
-	cmd.Flags().StringSliceVar(&allowedDomains, "allowed-domains", nil, "Allowed domains")
-	cmd.Flags().StringSliceVar(&disallowedDomains, "disallowed-domains", nil, "Disallowed domains")
-	cmd.Flags().StringSliceVar(&disallowedURLFilters, "disallowed-url-filters", nil, "Disallowed URL filters")
-	cmd.Flags().StringSliceVar(&urlFilters, "url-filters", nil, "URL filters")
-	cmd.Flags().BoolVar(&allowURLRevisit, "url-revisit", false, "Allow URL revisit")
+	cmd.PersistentFlags().StringSliceVar(&allowedDomains, "allowed-domains", nil, "Allowed domains")
+	cmd.PersistentFlags().StringSliceVar(&disallowedDomains, "disallowed-domains", nil, "Disallowed domains")
+	cmd.PersistentFlags().StringSliceVar(&disallowedURLFilters, "disallowed-url-filters", nil, "Disallowed URL filters")
+	cmd.PersistentFlags().StringSliceVar(&urlFilters, "url-filters", nil, "URL filters")
+	cmd.PersistentFlags().BoolVar(&allowURLRevisit, "url-revisit", false, "Allow URL revisit")
 
-	cmd.Flags().IntVar(&delay, "limit-delay", 0, "Limit delay")
-	cmd.Flags().IntVar(&randomDelay, "limit-random-delay", 0, "Limit random delay")
+	cmd.PersistentFlags().IntVar(&delay, "limit-delay", 0, "Limit delay")
+	cmd.PersistentFlags().IntVar(&randomDelay, "limit-random-delay", 0, "Limit random delay")
 
-	cmd.Flags().BoolVarP(&wordpress, "wordpress", "w", false, "Enable WordPress support")
-	cmd.Flags().BoolVarP(&crypto, "crypto", "b", false, "Enable crypto features")
-	cmd.Flags().BoolVarP(&email, "email", "e", false, "Enable email search")
-	cmd.Flags().StringSliceVarP(&phone, "phone", "p", []string{}, "List of countries. RU,NL,DE,US. You can specify multiple or just one.")
+	cmd.PersistentFlags().BoolVarP(&wordpress, "wordpress", "w", false, "Enable WordPress support")
+	cmd.PersistentFlags().BoolVarP(&crypto, "crypto", "b", false, "Enable crypto features")
+	cmd.PersistentFlags().BoolVarP(&email, "email", "e", false, "Enable email search")
+	cmd.PersistentFlags().StringSliceVarP(&phone, "phone", "p", []string{}, "List of countries. RU,NL,DE,US. You can specify multiple or just one.")
 
-	if crawlerType == "search" {
-		cmd.Flags().StringSliceVarP(&keywords, "keywords", "k", nil, "List of keywords or sentences for search")
-		cmd.Flags().MarkHidden("urls")
-	}
-
-	cli := configs.NewCLIConfig()
-	cmd.Flags().VisitAll(cli.ConfigureViper("crawler"))
+	cli = configs.NewCLIConfig()
+	cmd.PersistentFlags().VisitAll(cli.ConfigureViper("crawler"))
+	CrawlCMD.AddCommand(SearchCMD)
 
 }
 
@@ -152,23 +152,4 @@ func setCrawlerOptions(c *configs.Crawler, cmd *cobra.Command) {
 
 	logger.Infof("Wordpress: %t, Crypto: %t, Email: %t, Phone: %s", c.Wordpress, c.Crypto, c.Email, c.PhoneNumbers)
 
-}
-
-// Is this necessary? Maybe for future flags in the search command
-func handleCrawlerTypeOptions(c *configs.Crawler, cmd *cobra.Command) {
-	if cmd.Flags().Changed("keywords") {
-		c.Keywords = keywords
-		generateSearchURLS(keywords)
-	} else if len(c.Keywords) == 0 {
-		fmt.Println(color.RedString("No keywords were provided while using the search command."))
-		os.Exit(1)
-	}
-}
-
-func handleCrawlError(err error) {
-	if errors.Is(err, colly.ErrQueueFull) {
-		color.HiRed("\nQueue max size has been reached! Exiting.")
-	} else {
-		logger.Errorf("Crawl error: %s", err)
-	}
 }

@@ -66,8 +66,6 @@ type Crawler struct {
 	// Search command config
 	Keywords []string `mapstructure:"keywords"`
 }
-type LimitRule struct {
-}
 
 func loadCrawlerConfig() {
 	var config Crawler
