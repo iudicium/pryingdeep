@@ -16,7 +16,7 @@ import (
 	"github.com/iudicium/pryingdeep/pkg/fsutils"
 	"github.com/iudicium/pryingdeep/pkg/logger"
 	"github.com/iudicium/pryingdeep/pkg/pryingtools/phonenumber"
-	"github.com/iudicium/pryingdeep/test/test_helpers"
+	"github.com/iudicium/pryingdeep/tests/test_helpers"
 )
 
 var db *gorm.DB

@@ -13,7 +13,7 @@ import (
 
 	"github.com/iudicium/pryingdeep/pkg/pryingtools/cryptoscanner"
 	"github.com/iudicium/pryingdeep/pkg/utils"
-	"github.com/iudicium/pryingdeep/test/test_helpers"
+	"github.com/iudicium/pryingdeep/tests/test_helpers"
 )
 
 var client *http.Client

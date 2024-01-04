@@ -10,7 +10,7 @@ import (
 
 	"github.com/iudicium/pryingdeep/models"
 	"github.com/iudicium/pryingdeep/pkg/querybuilder"
-	"github.com/iudicium/pryingdeep/test/test_helpers"
+	"github.com/iudicium/pryingdeep/tests/test_helpers"
 )
 
 var db *gorm.DB
