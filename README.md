@@ -2,7 +2,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/iudicium/pryingdeep/web/static/logo.png">
+  <a href="https://raw.githubusercontent.com/iudicium/pryingdeep/main/web/static/logo.png">
     <img src="web/static/logo.png" alt="Logo" width="350" height="200">
   </a>
 
@@ -176,6 +176,8 @@ Flags:
 - [ ] Think of a way to acquire IP address of the server
 - [ ] Implement scan command
 - [ ] Implement file identification and search
+- [ ] Move tests into their corresponding packages
+
 
 <!-- CONTRIBUTING -->
 ## Contributing
