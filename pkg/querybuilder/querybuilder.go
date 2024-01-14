@@ -101,7 +101,6 @@ func (qb *QueryBuilder) Raw(db *gorm.DB, relativePath string) (error, []map[stri
 	if err != nil {
 		return err, results
 	}
-
 	return nil, results
 }
 
