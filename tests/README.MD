@@ -1,2 +1,2 @@
+This directory will contain tests for modules that have not been implemented yet, or contain things like config test, etc.
 
-Some of the tests use tor links, so a tor container/torcc has to be running for them to complete.
