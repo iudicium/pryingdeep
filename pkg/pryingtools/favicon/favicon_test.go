@@ -1,4 +1,4 @@
-package tests
+package favicon
 
 import (
 	"fmt"
@@ -9,7 +9,6 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/iudicium/pryingdeep/pkg/fsutils"
-	"github.com/iudicium/pryingdeep/pkg/pryingtools/favicon"
 )
 
 var filePath string
@@ -29,12 +28,12 @@ func TestFaviconExtraction(t *testing.T) {
 	HtmlString := string(fileContents)
 	baseUrl := "http://explorerzydxu5ecjrkwceayqybizmpjjznk5izmitf2modhcusuqlid.onion"
 	torProxy := "socks5://localhost:9050"
-	urls := favicon.ExtractFaviconUrls(HtmlString, baseUrl)
+	urls := ExtractFaviconUrls(HtmlString, baseUrl)
 	if len(urls) != 1 {
 		t.Errorf("there's only 1 favicon in that baseUrl")
 	}
 
-	hashes := favicon.GetFaviconHash(urls, torProxy)
+	hashes := GetFaviconHash(urls, torProxy)
 	fmt.Println(hashes)
 
 }
@@ -57,7 +56,7 @@ func TestIconHash(t *testing.T) {
 				t.Fatal(err)
 			}
 
-			hash := favicon.IconHash([]byte(file))
+			hash := IconHash([]byte(file))
 
 			assert.Equal(hash, tt.expectedHash)
 		})
