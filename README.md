@@ -53,6 +53,8 @@
 ## Translation (Перевод)
  - [Click](./docs/RU_README.MD)
 
+## IMPORTANT
+ - This repo is no longer active, sorry guys, I no longer want to keep working on this :)
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
